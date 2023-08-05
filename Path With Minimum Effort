@@ -1,0 +1,62 @@
+https://leetcode.com/problems/path-with-minimum-effort/description/
+Solution using dijkstra algo
+
+class Solution {
+public:
+
+    typedef pair<int,pair<int,int>>pr;
+    
+   
+    bool isValid(int x,int y,int n,int m)
+    {
+        if(x>=0 && x<n && y<m && y>=0)
+        {
+            return true;
+        }
+        return false;
+    }
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        
+        int n=heights.size();
+        int m=heights[0].size();
+        vector<vector<int>>efforts(n,vector<int>(m,INT_MAX));
+         int xdir[]={0,0,1,-1};
+         int ydir[]={1,-1,0,0};
+        efforts[0][0]=0;
+
+        priority_queue<pr,vector<pr>,greater<pr>>pq;
+        pq.push({0,{0,0}});
+
+        while(!pq.empty())
+        {
+            int effort=pq.top().first;
+            int x=pq.top().second.first;
+            int y=pq.top().second.second;
+            pq.pop();
+            for(int i=0;i<4;i++)
+            {
+                int x_curr=x+xdir[i];
+                int y_curr=y+ydir[i];
+                
+                if(isValid(x_curr,y_curr,n,m))
+                {
+                    int curr_effort=max(effort,abs(heights[x][y]-heights[x_curr][y_curr]));
+                    if(curr_effort<efforts[x_curr][y_curr])
+                    {
+                        efforts[x_curr][y_curr]=curr_effort;
+                        pq.push({curr_effort,{x_curr,y_curr}});
+                    }
+                }
+            }
+        }
+
+
+
+        return efforts[n-1][m-1];
+
+
+
+
+    }
+};
+
