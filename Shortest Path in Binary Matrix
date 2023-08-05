@@ -1,0 +1,82 @@
+https://leetcode.com/problems/shortest-path-in-binary-matrix/
+
+Solution using dijkstra algo
+
+
+
+
+class Solution {
+public:
+
+
+    bool isValid(int x,int y ,int n)
+    {
+        if(x >= 0 && x< n && y>=0 && y<n)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+
+   
+
+    int n=grid.size();
+    if(grid[0][0]==1 || grid[n-1][n-1]==1)
+    {
+        return -1;   
+    }
+    
+    if(grid.size()==1)
+    {
+        return true;
+    }
+    vector<vector<bool>>vis(n,vector<bool>(n,false));
+    queue<pair<int,int>>pendingnodes;
+    pendingnodes.push({0,0});
+    vis[0][0]=true;
+    int xdir[]={0,0,1,-1,-1,-1,+1,+1};
+    int ydir[]={-1,1,0,0,+1,-1,-1,+1};
+    int ans=1;
+   
+    while(!pendingnodes.empty())
+    {
+        int size=pendingnodes.size();
+        while(size--)
+        {
+            pair<int,int>node=pendingnodes.front();
+            pendingnodes.pop();
+            int x=node.first;
+            int y=node.second;
+            for(int i=0;i<8;i++)
+            {
+                int x_curr=x+xdir[i];
+                int y_curr=y+ydir[i];
+                if(x_curr==n-1 && y_curr==n-1)
+                {
+                    ans++;
+                    return ans;
+                }
+                if(isValid(x_curr,y_curr,n) && grid[x_curr][y_curr]==0 && !vis[x_curr][y_curr])
+                {
+                    vis[x_curr][y_curr]=true;
+                    pendingnodes.push({x_curr,y_curr});
+                }
+            }
+        }
+       
+        ans++;
+    }
+
+
+
+    return -1;
+
+
+
+
+
+        
+    }
+};
