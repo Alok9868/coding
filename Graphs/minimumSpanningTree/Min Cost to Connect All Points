@@ -1,0 +1,111 @@
+//https://leetcode.com/problems/min-cost-to-connect-all-points/description/
+// this question can be easily solved by using minimum spanning tree prim's algorihtm 
+// just create a graph using all the points and push them to a graph and then simply apply prim's algo
+
+
+class Solution {
+public:
+
+    class node {
+    public:
+    int weight;
+    int ele;
+    int parent;
+    
+    node(int p, int w, int e) {
+        parent = p;
+        weight = w;
+        ele = e;
+    }
+};
+	
+	
+	class comp
+	{
+	    public:
+	  
+	  bool operator()(node&a, node&b)
+	  {
+	     return a.weight>b.weight;   
+	  }
+	};
+
+     int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        
+        priority_queue<node,vector<node>,comp>pq;
+        
+        vector<bool>vis(V,false);
+        // node n=new node(-1,0,0);
+        vector<int>parent(V,-1);
+        pq.push(node(-1,0,0));
+        int sum=0;
+        while(!pq.empty())
+        {
+            node curr_node=pq.top();
+            pq.pop();
+            if(vis[curr_node.ele])
+            {
+                continue;
+            }
+           
+            int ele=curr_node.ele;
+            int weight=curr_node.weight;
+            int par=curr_node.parent;
+            
+            sum+=weight;
+            
+            vis[ele]=true;
+            parent[ele]=par;
+            
+            for(auto it:adj[ele])
+            {
+                int child_ele=it[0];
+                int child_weight=it[1];
+                
+                if(!vis[child_ele])
+                {
+                    // node child_node=new node(ele,child_weight,child_ele);
+                    pq.push(node(ele,child_weight,child_ele));
+                }
+            }
+        }
+        
+        
+        return sum;
+    }
+
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        
+        
+
+        vector<vector<int>>adj[points.size()];
+
+
+        for(int i=0;i<points.size();i++)
+        {
+            for(int j=i+1;j<points.size();j++)
+            {
+                int x1=points[i][0];
+                int y1=points[i][1];
+                int x2=points[j][0];
+                int y2=points[j][1];
+
+
+                int dist=abs(x2-x1)+abs(y2-y1);
+                adj[i].push_back({j,dist});
+                adj[j].push_back({i,dist});
+            }
+        }
+
+
+        return spanningTree(points.size(),adj);
+
+
+
+
+
+
+
+    }
+};
