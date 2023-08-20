@@ -1,0 +1,89 @@
+//https://leetcode.com/problems/check-if-there-is-a-valid-partition-for-the-array/
+// can be solved by simple dynamic programming ,only problem encounter was of checking the equations , for that i have created 3 functions ,
+//which makes code more clear and clean and easy .
+
+
+class Solution {
+public: 
+
+    bool checkForConsecutivetwoEqualElements(vector<int>&nums,int idx)
+    {
+        if(idx+1 >=nums .size()) 
+        {
+            return false;
+        }
+         if(nums[idx]==nums[idx+1] )
+        {
+            return true;
+        }
+        return false;   
+    }
+    bool checkForConsecutivethreeEqualElements(vector<int>&nums,int idx)
+    {
+          if(idx+2 >=nums .size()) 
+        {
+            return false;
+        }   
+        if(nums[idx]==nums[idx+1] && nums[idx+1] == nums[idx+2])
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool checkForConsecutivethreeIncreasingElements(vector<int>&nums,int idx)
+    {
+        if(idx+2 >=nums .size()) 
+        {
+            return false;
+        }
+
+        if(nums[idx]+1==nums[idx+1] && nums[idx+1]+1 == nums[idx+2])
+        {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    bool helper(vector<int>& nums,int idx,vector<int>&dp)
+    {
+        if(idx >=nums.size())
+        {
+            return 1;
+        }
+        if(dp[idx]!=-1)
+        {
+            return dp[idx];
+        }
+
+        if(checkForConsecutivetwoEqualElements(nums,idx) && helper(nums,idx+2,dp))
+        {
+            return dp[idx]=1;
+        }
+        if(checkForConsecutivethreeEqualElements(nums,idx) && helper(nums,idx+3,dp))
+        {
+            return dp[idx]=1;;
+        }
+        if(checkForConsecutivethreeIncreasingElements(nums,idx) && helper(nums,idx+3,dp))
+        {
+            return dp[idx]=1;;
+        }
+
+        return dp[idx]=0;
+
+    }
+
+
+
+
+    bool validPartition(vector<int>& nums) {
+        
+        vector<int>dp(nums.size(),-1);
+        return helper(nums,0,dp);
+
+
+
+    }
+};

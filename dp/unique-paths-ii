@@ -1,0 +1,50 @@
+//https://leetcode.com/problems/unique-paths-ii/description/
+// question can be easily solved by only applying dynamic programming
+
+
+class Solution {
+public:
+
+
+    int helper(vector<vector<int>>& obstacle,int i,int j, vector<vector<int>>&dp)
+    {   
+        if(i<0 || i>=n || j<0 || j>=m)
+        {
+            return 0;
+        }
+        if(obstacle[i][j]==1)
+        {
+            return 0;
+        }
+
+        if(i==n-1 && j==m-1)
+        {
+            return 1;
+        }
+
+
+        if(dp[i][j]!=-1)
+        {
+            return dp[i][j];
+        }
+
+        
+
+        int right=helper(obstacle,i,j+1,dp);
+        int down=helper(obstacle,i+1,j,dp);
+        return dp[i][j]=right+down;
+        
+
+
+
+    }
+
+    int n,m;
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        
+        this->n=obstacleGrid.size();
+        this->m=obstacleGrid[0].size();
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        return helper(obstacleGrid,0,0,dp);
+    }
+};
