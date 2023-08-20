@@ -1,0 +1,63 @@
+//https://leetcode.com/problems/minimize-maximum-of-array/description/
+//https://www.youtube.com/watch?v=lWU1wI7koGk&t=0s&ab_channel=codestorywithMIK
+
+// we can  use binary search to do this question , we will set low and high , and check if we can achieve that value
+// or not , if we can we will set that as the result 
+// isValid function is very important
+
+class Solution {
+public:
+
+
+    bool isValid(vector<int>arr,int max)
+    {   
+       
+        vector<long long>nums(arr.begin(),arr.end());
+        int n=nums.size();
+        for(int i=0;i<n-1;i++)
+        {
+            if(nums[i]>max)
+            {
+                return false;
+            }
+
+            long long buffer=max-nums[i];
+            nums[i+1]-=buffer;
+        }
+
+        return nums[n-1]<=max;
+
+    }
+
+
+    int minimizeArrayValue(vector<int>& nums) {
+
+        int mini=1;
+        int maxi=nums[0];
+        for(auto it:nums)
+        {
+            maxi=max(maxi,it);
+        }
+
+        int ans=maxi;
+        while(mini<=maxi)
+        {
+            int mid=(maxi-mini)/2+mini;
+            if(isValid(nums,mid))
+            {
+                ans=mid;
+                maxi=mid-1;
+            }
+            else
+            {
+                mini=mid+1;
+            }
+        }
+
+
+        return ans;
+
+
+
+    }
+};

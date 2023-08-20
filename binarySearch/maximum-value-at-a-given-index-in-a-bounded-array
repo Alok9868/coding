@@ -1,0 +1,59 @@
+//https://leetcode.com/problems/maximum-value-at-a-given-index-in-a-bounded-array/description/?source=submission-noac
+//https://www.youtube.com/watch?v=d50vvNSrqfk&t=0s&ab_channel=codestorywithMIK
+
+// we can solve this question using greedy appraoch , first we have low and high , which we can set as our index value
+// and then we can find if that is possible or not , we have use findSum function for that , and also array should be like this
+
+
+// 1 2 3 4 3 2 1 1 1 
+
+
+class Solution {
+public:
+
+    long findSum(int size,long long mid)
+    {
+        long long sum;
+        if(size>=mid)
+        {
+           int rem=size-mid;
+           sum =((mid)*(mid+1))/2 +rem;
+        }
+        else
+        {
+            sum=((mid)*(mid+1))/2 -((mid-size)*(mid-size+1))/2;
+        }
+        return sum;
+    }
+
+
+
+    int maxValue(int n, int index, int maxSum) {
+
+        int low=1;
+        int high=maxSum;
+        int ans=1;
+        int emptyRight=n-index-1,emptyLeft=index;
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            long leftSum=findSum(emptyLeft,mid-1);
+            long rightSum=findSum(emptyRight,mid-1);
+            long totalSum=mid+leftSum+rightSum;
+            if(totalSum<=maxSum)
+            {
+                ans=mid;
+                low=mid+1;
+            }
+            else
+            {
+                high=mid-1;
+            }
+        }
+
+
+
+        return ans;
+        
+    }
+};

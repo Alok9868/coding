@@ -1,0 +1,53 @@
+//https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/
+class Solution 
+{
+public:
+
+    bool ispossiblePPairs(vector<int>& nums,int p,int diff)
+    {
+        int cnt=0;
+        for(int i=0;i<nums.size()-1;i++)
+        {
+            if(nums[i+1]-nums[i]<=diff)
+            {
+                cnt++;
+                i++;
+            }
+            if(cnt==p)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    int minimizeMax(vector<int>& nums, int p) {
+        
+        sort(nums.begin(),nums.end());
+        int n=nums.size();
+        int low=0;
+        int high=nums[n-1]-nums[0];
+        int result=0;
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            if(ispossiblePPairs(nums,p,mid))
+            {
+                result=mid;
+                high=mid-1;
+            }
+            else
+            {
+                low=mid+1;
+            }
+        }
+
+        return result;
+
+
+
+
+
+    }
+};
