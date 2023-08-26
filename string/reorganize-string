@@ -1,0 +1,59 @@
+//https://leetcode.com/problems/reorganize-string/
+
+class Solution {
+public:
+    string reorganizeString(string s) {
+        
+        vector<int>dict(26,0);
+        int maxicount=0;
+        int maxindex=-1;
+        for(auto it:s)
+        {
+            dict[it-'a']+=1;
+            if(maxicount < dict[it-'a'])
+            {
+                maxicount=dict[it-'a'];
+                maxindex=it-'a';
+            }
+        }
+        
+        cout<<maxicount<<" "<<maxindex<<endl;
+        if( maxicount-1 > ((s.size()-1)/2))
+        {
+            return "";
+        }   
+
+
+
+        int k=0;
+        char ch='a'+maxindex;
+        while(dict[maxindex]--)
+        {   
+            s[k]=ch;
+            k+=2;
+        }
+
+
+        
+        //  a_ _ a_
+        for(int i=0;i<26;i++)
+        {
+            if(dict[i]>0)
+            {
+                ch='a'+i;
+                while(dict[i]--)
+                {
+                    if(k>=s.size())
+                    {
+                        k=1;
+                    }
+                    s[k]=ch;
+                    k+=2;
+                }
+            }
+            
+        }
+        return s;
+
+    }
+};

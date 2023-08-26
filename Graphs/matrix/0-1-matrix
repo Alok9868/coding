@@ -1,0 +1,84 @@
+//https://leetcode.com/problems/01-matrix/
+
+
+class Solution {
+public:
+
+
+    bool isValid(int x,int y)
+        {
+            if(x>=0 && x<n && y>=0 && y<m)
+            {
+                return true;
+            }
+            return false;
+        } 
+        int n,m;
+    vector<vector<int>> helper(vector<vector<int>>& mat ,int i , int j ,
+    vector<vector<int>>&ans)
+    {
+        
+        
+       
+        queue<pair<pair<int,int>,int>>q;
+        q.push({{i,j},0});
+        int xdir[]={0,0,1,-1};
+        int ydir[]={1,-1,0,0};
+        ans[i][j]=0;
+        while(!q.empty())
+        {
+            pair<pair<int,int>,int>front=q.front();
+            q.pop();
+            int x=front.first.first;
+            int y=front.first.second;
+            int dist=front.second;
+            for(int k=0;k<4;k++)
+            {
+                int x_curr=x+xdir[k];
+                int y_curr=y+ydir[k];
+                if(isValid(x_curr,y_curr))
+                {
+                    int curr_dist=0;
+                    if(mat[x_curr][y_curr]==1)
+                    {
+                        curr_dist=dist+1;
+                    }
+                    if(ans[x_curr][y_curr]==-1)
+                        {
+                            ans[x_curr][y_curr]=curr_dist;
+                            q.push({{x_curr,y_curr},curr_dist});
+                        }
+                }
+            }
+        }
+
+        return ans;
+
+    }
+
+
+
+
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        
+         n=mat.size();
+         m=mat[0].size();
+        vector<vector<int>>ans(n,vector<int>(m,-1));
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(mat[i][j]==0)
+                {
+                    return helper(mat, i ,j ,ans);
+                }
+            }
+        }
+
+        return ans;
+        
+
+
+
+    }
+};

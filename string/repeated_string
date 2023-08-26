@@ -1,0 +1,42 @@
+//https://leetcode.com/problems/repeated-substring-pattern/
+class Solution {
+    public:
+    
+    
+        bool checkIfRepeatedSubString(string &temp,string &s,int idx)
+        {
+            
+            int k=0;
+            bool flag=false;
+            for(int i=idx;i<s.size();i++)
+            {
+                if(temp[k]==s[i])
+                {
+                    k=(k+1)%temp.size();
+                    flag=true;
+                    continue;
+                }
+                return false;
+            }
+    
+            if( k==0 && flag==true)
+            {
+                return true;
+            }
+            return false;
+        }
+        bool repeatedSubstringPattern(string s) {
+    
+            
+            string temp="";
+            for(int i=0;i<s.size();i++)
+            {   
+                temp+=s[i];
+                if(checkIfRepeatedSubString(temp,s,i+1) == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    };

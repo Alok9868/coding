@@ -1,0 +1,95 @@
+//https://leetcode.com/problems/text-justification/
+
+class Solution {
+public:
+
+    string createLine(int i,int j,int space,int extraspace,vector<string>& words)
+    {
+        string temp="";
+        while(i<j)
+        {
+            temp+=words[i];
+            int curr_space=space;
+            if(temp.size()==maxWidth)
+            {
+                break;
+            }
+            while(curr_space --)
+            {
+                temp+=" ";
+            }
+            if(extraspace >0)
+            {
+                temp+=" "; 
+                extraspace--;
+            }
+            i++;
+        }
+
+        return temp;
+    }
+
+    int maxWidth;
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        
+        this->maxWidth=maxWidth;
+        vector<string>ans;
+        for(int i=0;i<words.size();i++)
+        {
+            int wordlength=words[i].length();
+            int j=i+1;
+            int noofwords=1;
+            while( j < words.size() && (wordlength + words[j].length() + noofwords ) <=  maxWidth )
+            {   
+                wordlength+=words[j].length();
+                noofwords++;
+                j++;
+            }
+
+            int remspace= maxWidth - wordlength;
+
+            if(j==words.size())
+            {
+                string temp="";
+                while(i<j)
+                {
+                    temp+=words[i];
+                    if(temp.size()<maxWidth)
+                    {
+                        temp+=" ";
+                    }
+                    i++;
+                }
+                while(temp.size()< maxWidth)
+                {
+                    temp+=" ";
+                }
+            ans.push_back(temp);
+            return ans;
+            }
+            if(noofwords ==1 )
+            {
+                ans.push_back(createLine(i,j,remspace,0,words));
+                continue;
+            }
+
+            int gadde=noofwords-1;
+            int eachgaddaspace=remspace/gadde;
+            int extragaddespace=remspace%gadde;
+            ans.push_back(createLine(i,j,eachgaddaspace,extragaddespace,words));
+            i=j-1;
+        }
+
+
+        return ans;
+
+
+
+
+
+
+
+
+
+    }
+};
