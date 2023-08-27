@@ -1,0 +1,91 @@
+//https://leetcode.com/problems/frog-jump/
+
+// we can further improve this question by using binary search .
+class Solution {
+public:
+
+    int findNextPossibleIdx(vector<int>& stones , int idx, int ele)
+    {   
+        int low=idx;
+        int high=stones.size()-1;
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            if(stones[mid]==ele)
+            {
+                return mid;
+            }
+            else if(stones[mid]>ele)
+            {
+                high=mid-1;
+            }
+            else {
+                low=mid+1;
+            }
+        }
+
+        return -1;
+    }
+    bool helper(vector<int>& stones, int idx,int lastjump ,
+    unordered_map<string,bool> & umap)
+    {
+        if(idx==stones.size()-1)
+        {
+            return true;
+        }
+
+        string temp=to_string(idx)+to_string(lastjump);
+
+        if(umap.find(temp)!=umap.end())
+        {
+            return umap[temp];
+        }
+        
+        int possibleJumps[]={lastjump , lastjump+1 , lastjump-1};
+
+        for(auto it:possibleJumps)
+        {
+            int nextPossibleEle=stones[idx]+it;
+            int nextIdx=findNextPossibleIdx(stones,idx+1,nextPossibleEle);
+            if(nextIdx!=-1)
+            {
+                if(helper(stones,nextIdx,it,umap))
+                {
+                     return umap[temp]=true;
+                }
+            }
+        }
+
+
+        // for(int i=idx+1;i<stones.size();i++)
+        // {
+        //     int jumpsrequired=stones[i]-stones[idx];
+        //     if(jumpsrequired== possibleJumps[0] || 
+        //     jumpsrequired== possibleJumps[1] || 
+        //     jumpsrequired== possibleJumps[2] )
+        //     {
+        //         if(helper(stones,i,jumpsrequired,umap))
+        //         {
+        //              return umap[temp]=true;
+        //         }
+        //     }
+        // }
+        
+
+
+        return umap[temp]=false;
+    }
+
+    bool canCross(vector<int>& stones) {
+
+        if(stones[1]>1)
+        {
+            return false;
+        }
+
+        unordered_map<string,bool>umap;
+        return helper(stones,1,1,umap);
+
+
+    }
+};
