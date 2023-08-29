@@ -1,0 +1,66 @@
+//https://leetcode.com/problems/minimum-penalty-for-a-shop/description/
+
+class Solution {
+public:
+    int bestClosingTime(string cust) {
+
+
+        vector<pair<int,int>>left(cust.size());
+        vector<pair<int,int>>right(cust.size());
+
+        int ycnt=0;
+        int ncnt=0;
+        for(int i=0;i<cust.size();i++)
+        {
+            if(cust[i]=='Y')
+            {
+                ycnt++;
+            }
+            else
+            {
+                ncnt++;
+            }
+            left[i]={ycnt,ncnt};
+        }
+
+        ycnt=0;
+        ncnt=0;
+        for(int i=cust.size()-1;i>=0;i--)
+        {
+            if(cust[i]=='Y')
+            {
+                ycnt++;
+            }
+            else
+            {
+                ncnt++;
+            }
+            right[i]={ycnt,ncnt};
+        }
+
+
+        int ans=right[0].first;
+        int hour=0;
+
+        for(int i=0;i<cust.size();i++)
+        {
+            int penalty;
+            if(cust[i]=='Y')
+            {
+                penalty=right[i].first-1 ;
+            }
+            else
+            {
+                penalty=right[i].first;
+            }
+            penalty+=left[i].second;
+            if(ans>penalty)
+            {
+                ans=penalty;
+                hour=i+1;
+            }
+        }
+        return hour;
+
+    }
+};
