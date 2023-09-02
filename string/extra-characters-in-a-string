@@ -1,0 +1,54 @@
+//https://leetcode.com/problems/extra-characters-in-a-string/description
+//this question can be easily solved by using dp , we only increase value when we not take that character
+
+class Solution {
+public:
+
+
+
+    int helper(string &s, unordered_set<string>& dict , int idx ,
+    vector<int>&dp)
+    {
+        if(idx==s.size())
+        {
+            return 0;
+        }
+
+        if(dp[idx]!=-1)
+        {
+            return dp[idx];
+        }
+
+
+
+
+        string temp="";
+        int take=INT_MAX;
+        for(int i=idx;i<s.size();i++)
+        {
+            temp+=s[i];
+            if(dict.find(temp)!=dict.end())
+            {
+                take=min(take,helper(s,dict,i+1,dp));
+            }
+        }
+
+        int nottake=helper(s,dict,idx+1,dp)+1;
+
+
+        return dp[idx]=min(take,nottake);
+
+    }
+    int minExtraChar(string s, vector<string>& dict) {
+
+        unordered_set<string>set;
+        for(auto it:dict)
+        {
+            set.insert(it);
+        }
+        vector<int>dp(s.size(),-1);
+        return helper(s,set,0,dp);
+
+
+    }
+};
