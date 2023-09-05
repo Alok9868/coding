@@ -1,0 +1,38 @@
+https://practice.geeksforgeeks.org/problems/distance-from-the-source-bellman-ford-algorithm
+
+
+    vector<int> bellman_ford(int V, vector<vector<int>>& edges, int S) {
+        
+        vector<int>weight(V,1e8);
+        weight[S]=0;
+        for(int i=0;i<V;i++)
+        {
+            for(auto &edge:edges)
+            {
+                int u=edge[0];
+                int v=edge[1];
+                int wt=edge[2];
+                if(weight[u]!=1e8 && weight[u]+wt <weight[v] )
+                {
+                    weight[v]=weight[u]+wt;
+                }
+            }
+        }
+        
+        
+            for(auto &edge:edges)
+            {
+                int u=edge[0];
+                int v=edge[1];
+                int wt=edge[2];
+                if(weight[u]!=1e8 && weight[u]+wt <weight[v] )
+                {
+                    return {-1};
+                }
+            }
+            
+            return weight;
+     
+     
+    }
+};
