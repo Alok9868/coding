@@ -1,0 +1,64 @@
+//https://practice.geeksforgeeks.org/problems/implementing-floyd-warshall2042/1
+
+
+class Solution {
+  public:
+  
+  
+    int getDist(int dist)
+    {
+        if(dist!=-1)
+        {
+            return dist;
+        }
+        return 1e5;
+    }
+	void shortest_distance(vector<vector<int>>&matrix){
+	    
+	       
+	   int n=matrix.size();
+	    for(int i=0;i<n;i++)
+	    {
+	        for(int j=0;j<n;j++)
+	        {
+	            if(matrix[i][j]==-1)
+	            {
+	                matrix[i][j]=1e5;
+	            }
+	        }
+	    }
+	    
+	    for(int via=0;via<n;via++)
+	    {
+	        for(int i=0;i<n;i++)
+    	    {
+    	        for(int j=0;j<n;j++)
+    	        {
+    	           int dist1=matrix[i][via];
+    	           //getDist(matrix[via][i]);
+    	           int dist2=matrix[via][j];
+    	           //getDist(matrix[via][j]);
+    	           int dist=dist1+dist2;
+    	           matrix[i][j]=min(matrix[i][j],dist);
+    	        }
+    	    }
+	    }
+	    
+	    for(int i=0;i<n;i++)
+	    {
+	        for(int j=0;j<n;j++)
+	        {
+	            if(matrix[i][j]==1e5)
+	            {
+	                matrix[i][j]=-1;
+	            }
+	        }
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	}
+};
