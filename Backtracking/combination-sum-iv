@@ -1,0 +1,50 @@
+//https://leetcode.com/problems/combination-sum-iv/description
+
+// this question can be easily solved by backtracking and dp . 
+//https://www.youtube.com/watch?v=YyuwTwXzSxY&ab_channel=codestorywithMIK see this soln for further reference .
+
+class Solution {
+public:
+
+    int helper(vector<int>& nums, int target , int idx ,
+    vector<vector<int>>&dp)
+    {
+        if(target<0)
+        {
+            return 0;
+        }
+        if(target==0)
+        {
+            return 1;
+        }
+
+        if(idx==nums.size())
+        {
+            return 0;
+        }
+
+        if(dp[target][idx]!=-1)
+        {
+            return dp[target][idx];
+        }
+
+
+       
+       int take=helper(nums,target-nums[idx],0 ,dp);
+       int nottake=helper(nums,target,idx+1 , dp);
+        
+        return dp[target][idx] = take + nottake; 
+
+
+    }
+
+    int combinationSum4(vector<int>& nums, int target) {
+    
+        
+        vector<vector<int>>dp(target+1,vector<int>(nums.size(),-1));
+
+        return helper(nums,target,0,dp);
+
+
+    }
+};
