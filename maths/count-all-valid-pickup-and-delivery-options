@@ -1,26 +1,24 @@
 https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/description
 
+//https://www.youtube.com/watch?v=JlBSoswl87c&ab_channel=codestorywithMIK 
+soln for further explaination 
+
 class Solution {
 public:
     int countOrders(int n) {
         
-          if(n==0)
-        {
-            return 0;
-        }
-        
         int mod=1000000007;
         
-        long res=1;
+        long result=1;
         for(int i=1;i<=n;i++)
         {
-            res=(res*i)%mod;
-            res=(res* ( 2*i-1))%mod;
-            
+           int spaces=(i-1)*2+1;
+           int curr_possibility=(spaces*(spaces+1))/2;
+           result=(result*curr_possibility)%mod;            
         }
         
         
-        return res;
+        return result;
         
     }
 };
