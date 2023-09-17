@@ -1,0 +1,65 @@
+https://leetcode.com/problems/minimum-genetic-mutation/description/
+
+class Solution {
+public:
+
+
+    bool isPossibleMutation(string temp,string target)
+    {
+        int i=0;
+        int cnt=0;
+        while(i <temp.size())
+        {
+            if(temp[i]!=target[i])
+            {
+                cnt++;
+            }
+            i++;
+        }
+        return cnt==1;
+    }
+
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+
+        queue<string>q;
+        unordered_map<string ,int>umap;
+        for(auto it:bank)
+        {
+            umap[it]=1;
+        }
+        q.push(startGene);
+        int steps=0;
+        while(!q.empty())
+        {
+            int size=q.size();
+            while(size--)
+            {
+                string temp=q.front();
+                q.pop();
+                if(temp==endGene)
+                {
+                    return steps;
+                }
+
+                for(auto it:umap)
+                {
+                    if(it.second==0)
+                    {
+                        continue;
+                    }
+                    if(isPossibleMutation(temp,it.first))
+                    {
+                        umap[it.first]=0;
+                        q.push(it.first);
+                    }
+                }
+            }
+            steps++;
+        }
+
+
+        return -1;
+
+
+    }
+};
