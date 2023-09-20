@@ -1,0 +1,60 @@
+https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero
+
+https://www.youtube.com/watch?v=w7u9sMlx7zc&ab_channel=codestorywithMIK
+
+It is a very good question which involves various concepts 
+
+class Solution {
+public:
+
+    int longestSubarraySum(vector<int>&nums , int target)
+    {  
+        if(target ==0 )
+        {
+            return 0;
+        }
+        long sum=0;
+        int ans=-1;
+
+
+        unordered_map<long,int>umap;
+        umap[0]=-1;
+        for(int i=0;i<nums.size();i++)
+        {
+            sum+=nums[i];
+            if(umap.count(sum-target)) {
+                ans = max(ans, i-umap[sum-target]  );
+            }
+            umap[sum]=i;
+        }
+
+        return ans;
+
+    }
+
+    
+    long target_sum;
+
+    int minOperations(vector<int>& nums, int x) {
+        
+        long sum=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            sum+=nums[i]; 
+        }
+
+        // sum = 11 
+
+        target_sum=sum-x; // 6 
+        cout<<target_sum<<endl;
+
+        int size = longestSubarraySum(nums ,target_sum);
+        if(size==-1)
+        {
+            return -1;
+        }
+        int ans=nums.size()-size;
+        return ans;
+
+    }
+};
