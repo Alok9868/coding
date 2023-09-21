@@ -1,0 +1,96 @@
+https://leetcode.com/problems/median-of-two-sorted-arrays
+
+first approach class Solution {
+public:
+
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+
+        int k=0;
+        int i=0;
+        int j=0;
+        int size = (nums1.size() + nums2.size());
+        int firstIdx=size/2;
+        int secondIdx=-1;
+        if(size%2 ==0 )
+        {
+            secondIdx = firstIdx-1;
+        }
+
+        int median=0;
+        while(i<nums1.size() && j<nums2.size())
+        {
+            int curr;
+            if(nums1[i]<nums2[j])
+            {
+                curr=nums1[i];
+                i++;
+            }
+            else
+            {   
+                curr=nums2[j];
+                j++;
+            }
+
+            if(k==secondIdx)
+            {
+                median=curr;
+            }
+            if(k==firstIdx)
+            {
+                median+=curr;
+                if(size%2 ==0 )
+                {
+                    return (median/2.0);
+                }
+                return median;
+            }
+            k++;
+        }
+
+        while(i<nums1.size())
+        {
+            int curr=nums1[i];
+            i++;
+            if(k==secondIdx)
+            {
+                median=curr;
+            }
+            if(k==firstIdx)
+            {
+                median+=curr;
+                if(size%2==0 )
+                {
+                    return (median/2.0);
+                }
+                return median ;
+            }
+            k++;
+        }
+        while(j<nums2.size())
+        {
+            int curr=nums2[j];
+            j++;
+            if(k==secondIdx)
+            {
+                median=curr;
+            }
+            if(k==firstIdx)
+            {
+                median+=curr;
+                if(size%2==0 )
+                {
+                    return (median/2.0);
+                }
+                return median ;
+            }
+            k++;
+        }
+
+
+        return 0;
+
+
+
+    }
+};
+
