@@ -1,0 +1,55 @@
+https://leetcode.com/problems/find-the-difference/?envType=daily-question&envId=2023-09-25
+
+// APPROACH - 1
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+
+
+        vector<int>dict(26,0);
+        for(int i=0;i<s.size();i++)
+        {
+            dict[s[i]-'a']+=1;
+            dict[t[i]-'a']-=1;
+        }
+
+
+        dict[t[t.size()-1]-'a']-=1;
+
+        for(int i=0;i<26;i++){
+            if(dict[i]!=0)
+            {
+                return i+'a';
+            }
+        }
+
+        return '0';
+
+
+
+    }
+};
+
+
+// APPROACH -2 
+class Solution {
+public:
+    char findTheDifference(string s, string t) 
+    {
+      for(int i=0;i<s.size();i++)
+		t[i+1]+=t[i]-s[i]; //Passing the diff: (t[i]-s[i]) to t[i+1]
+      return t[t.size()-1]; //The diff will be carried over to the last element eventually
+    }
+};
+
+
+//APPROACH - 3
+
+    s+=t; int c=0;
+    for(auto x: s)
+    {
+        c^=x;
+    }
+    return c;
+}
+
