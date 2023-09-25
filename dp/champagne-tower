@@ -1,0 +1,28 @@
+https://leetcode.com/problems/champagne-tower/?envType=daily-question&envId=2023-09-24
+
+// Approach - 1 using Memoization 
+class Solution {
+public:
+    double champagneTower(int poured, int query_row, int query_glass) {
+
+
+        vector<double>curr(101 , 0.0);
+        curr[0]=poured;
+        for(int i=0;i<query_row;i++)
+        {
+            vector<double>next(101 , 0.0);
+            for(int j=0;j<=i;j++)
+            {
+                double excess = (curr[j]-1.0)/2.0;
+                if(excess > 0)
+                {
+                    next[j]+=excess;
+                    next[j+1]+=excess;
+                }
+            }
+            curr=next;
+        }
+
+        return min(1.0 , curr[query_glass]);
+}
+};
