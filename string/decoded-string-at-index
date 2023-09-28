@@ -1,0 +1,49 @@
+https://leetcode.com/problems/decoded-string-at-index/?envType=daily-question&envId=2023-09-27
+
+
+class Solution {
+public:
+    string decodeAtIndex(string s, int k) {
+        
+
+        int n=s.size();
+        long long decoded_len= 0;
+        for(char &ch :s){
+            if(isdigit(ch))
+            {
+                decoded_len=decoded_len*(ch-'0');
+            }
+            else
+            {
+                decoded_len++;
+            }
+        }
+
+        for(int i=n-1;i>=0;i--)
+        {
+            if(isdigit(s[i]))
+            {
+                decoded_len /= (s[i] - '0');
+                k = k % decoded_len;
+            }
+            else
+            {
+                if( k%decoded_len ==0 )
+                {
+                    string temp="";
+                    temp+=s[i];
+                    return temp;
+                }
+                else
+                {
+                    decoded_len--;
+                }
+            }
+        }
+
+
+        return "";
+
+
+    }
+};
