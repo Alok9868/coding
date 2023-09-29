@@ -1,0 +1,71 @@
+
+https://leetcode.com/problems/monotonic-array/?envType=daily-question&envId=2023-09-29
+
+class Solution {
+public:
+
+
+
+    bool checkForMonotonicity(vector<int>& nums ,std::function<bool(int &, int&)> comp )
+    {
+
+      for(int i=0;i<nums.size()-1;i++)
+        { 
+          if(  ! comp( nums[i]  , nums[i+1]))
+          {
+            return false;
+          }
+        }
+        return true;
+
+
+      return false;
+    }
+    bool checkForMonotonicIncreasing(vector<int>& nums)
+    {
+        for(int i=0;i<nums.size()-1;i++)
+        {
+          if(nums[i] > nums[i+1])
+          {
+            return false;
+          }
+        }
+        return true;
+    }
+
+
+    bool checkForMonotonicDecreasing(vector<int>& nums  )
+    {
+
+      for(int i=0;i<nums.size()-1;i++)
+        {
+          if( nums[i] < nums[i+1] )
+          {
+            return false;
+          }
+        }
+        return true;
+    }
+
+    bool isMonotonic(vector<int>& nums) {
+        
+        if(nums.size()==1)
+        {
+          return true;
+        }
+
+
+        if(checkForMonotonicity(nums , [](int & a, int &b)-> bool 
+        {
+            return a >= b;
+        }) 
+        ||     checkForMonotonicity(nums , [] (int & a, int &b ) ->bool {
+          return a<=b;
+        }))
+        {
+          return true;
+        }
+
+        return false;
+    }
+};
