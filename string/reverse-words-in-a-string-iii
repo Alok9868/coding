@@ -1,0 +1,73 @@
+https://leetcode.com/problems/reverse-words-in-a-string-iii/?envType=daily-question&envId=2023-10-01
+
+
+APPROACH - 1
+class Solution {
+public:
+
+  void reverseWord(string &s , int st , int end)
+  {
+      while(st<end)
+      {
+        char temp=s[st];
+        s[st]=s[end];
+        s[end]=temp;
+        st++;
+        end--;  
+      }
+  }
+
+
+    string reverseWords(string s) {
+
+        int wordStartIdx=0;
+        int i=0;
+        for( i=0;i<s.size();i++)
+        {
+          if(s[i]==' ')
+          {
+            int wordLastIdx=i-1;
+            reverseWord(s, wordStartIdx ,wordLastIdx);
+            wordStartIdx=i+1;
+          }
+          
+        }
+
+
+        reverseWord(s, wordStartIdx ,i-1);
+
+        return s;
+
+
+    }
+};
+
+APPROACH -2
+
+Using stringstream
+
+
+class Solution {
+public:
+    string reverseWords(string s) {
+        
+        stringstream ss(s);
+        string token ="";
+        string result="";
+        while(ss >>token)
+        {   
+            reverse(token.begin() , token.end());
+            if(result!="")
+            {
+                result+=" "+ token;
+            }
+            else
+            {
+                result=token;
+            }
+           
+        }
+
+        return result;
+    }
+};
