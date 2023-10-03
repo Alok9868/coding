@@ -1,0 +1,57 @@
+https://leetcode.com/problems/number-of-good-pairs/description
+
+// there are many approaches to solve this problem , all are mention in same code only .
+
+
+class Solution {
+public:
+
+    long long findFactorial(int cnt)
+    {
+        long long prod=1;
+        for(int i=1;i<=cnt;i++)
+        {
+            prod*=i;
+        }
+        return prod;
+    }
+    int findPairs(int cnt)
+    {
+        long long first=findFactorial(cnt);
+        long long second=findFactorial(2);
+        long long third=findFactorial(cnt-2);
+        first=first / second;
+        long long ans=first/third;
+        return ans; 
+    }
+    int numIdenticalPairs(vector<int>& nums) {
+        
+        unordered_map<int,int>umap;
+        int ans=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            ans+=umap[nums[i]];
+            umap[nums[i]]++;
+        }
+
+
+        return ans;
+       
+
+
+        // for(int i=0;i<nums.size();i++)
+        // {
+        //     for(int j=i+1;j<nums.size();j++)
+        //     {
+        //         if(nums[i]==nums[j])
+        //         {
+        //             good_pairs++;
+        //         }
+        //     }
+        // }
+
+        // return good_pairs;
+
+
+    }
+};
