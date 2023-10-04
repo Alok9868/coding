@@ -1,0 +1,64 @@
+https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/description/
+
+
+class Solution {
+public:
+
+    int helper(vector<vector<char>>& maze,int i,int j)
+    {
+
+
+        queue<pair<int,int>>pq;
+        int row=maze.size()-1;
+        int col=maze[0].size()-1;
+        int steps=1;
+        vector<vector<bool>>vis(row+1,vector<bool>(col+1,false));
+        pq.push({i,j});
+        vis[i][j]=true;
+        
+        while(!pq.empty())
+        {
+            int size=pq.size();
+            while(size--)
+            {
+                int x=pq.front().first;
+                int y=pq.front().second;
+                pq.pop();
+                
+                int dx[]={0,-1,1,0};
+                int dy[]={-1,0,0,1};
+                for(int i=0;i<4;i++)
+                {
+                    int x1=dx[i]+x;
+                    int y1=dy[i]+y;
+                    if(x1<0 || x1>row || y1<0 || y1>col)
+                    {
+                        continue;
+                    }
+                    if(maze[x1][y1]=='+' || vis[x1][y1])
+                    {
+                        continue;
+                    }
+                    if(x1==0 || y1==0 || x1==row || y1==col)
+                    {
+                        return steps;
+                    }
+                    pq.push(make_pair(x1,y1)); 
+                    vis[x1][y1]=true;
+                }
+            }
+            steps++;
+        }
+
+        return -1;
+
+
+    }
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+
+
+        return helper(maze,entrance[0],entrance[1]);
+
+        
+    }
+};
