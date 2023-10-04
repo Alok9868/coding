@@ -1,0 +1,73 @@
+https://leetcode.com/problems/design-hashmap/?envType=daily-question&envId=2023-10-04
+
+
+class MyHashMap {
+public:
+   const static int size = 19997;
+    const static int mult = 12582917;
+    vector<list<pair<int,int>>>umap;
+    MyHashMap()
+    {
+        umap.resize(size);
+    }
+    
+    int hash(int key) {
+        return (int)((long)key * mult % size);
+    }
+    
+    void put(int key, int val) {
+    
+        int i=hash(key);
+        
+        for(auto it=umap[i].begin() ;it!=umap[i].end();it++)
+        {
+            if(it->first==key)
+            {
+                it->second=val;
+                return;
+            }
+        }
+        
+        pair<int,int>p=make_pair(key,val);
+        umap[i].push_back(p);        
+        
+        
+    }    
+    int get(int key) {
+        
+        int hashindex=hash(key);
+        for(auto itr=umap[hashindex].begin();itr!=umap[hashindex].end();itr++)
+         {
+             if(itr->first==key)
+             {
+                 return itr->second;
+             }
+         }
+        
+        return -1;
+       
+    }    
+    void remove(int key) {
+         int hashindex=hash(key);
+         for(auto itr=umap[hashindex].begin();itr!=umap[hashindex].end();itr++)
+         {
+             if(itr->first==key)
+             {
+                 umap[hashindex].erase(itr);
+                 return;
+             }
+         }
+        
+        
+    
+    }
+       
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */
