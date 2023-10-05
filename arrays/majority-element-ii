@@ -1,0 +1,94 @@
+https://leetcode.com/problems/majority-element-ii/?envType=daily-question&envId=2023-10-05
+
+
+
+//There are two approaches to solve this problem
+// approach -1
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        
+        int cnt1=0;
+        int cnt2=0;
+        int maxi1=0;
+        int maxi2=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(cnt1==0 && nums[i] != maxi2)
+            {
+                cnt1++;
+                maxi1=nums[i];
+            }
+            else if(cnt2==0 && nums[i]!=maxi1)
+            {
+                cnt2++;
+                maxi2=nums[i];
+            }
+            else if(maxi1==nums[i])
+            {
+                cnt1++;
+            }
+            else if(maxi2==nums[i])
+            {
+                cnt2++;
+            }
+            else
+            {
+                cnt1--;
+                cnt2--;
+            }
+        }
+
+        int threshold = nums.size() /3;
+        cnt1=0;
+        cnt2=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]==maxi1)
+            {
+                cnt1++;
+            }
+            else if(nums[i]==maxi2)
+            {
+                cnt2++;
+            }
+        }
+
+        vector<int>result;
+        if(cnt1>threshold)
+        {
+            result.push_back(maxi1);
+        }
+        if(cnt2>threshold)
+        {
+            result.push_back(maxi2);
+        }
+        return result;
+    }
+};
+
+
+
+// approach -2 using hashmap
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        
+        unordered_map<int,int>umap;
+        for(int i=0;i<nums.size();i++)
+        {
+            umap[nums[i]]++;
+        }   
+        int maxi=nums.size()/3;
+        vector<int>result;
+        for(auto it:umap)
+        {
+            if(it.second > maxi)
+            {
+                result.push_back(it.first);
+            }
+        }
+
+        return result;
+    }
+};
