@@ -1,0 +1,93 @@
+https://leetcode.com/problems/validate-binary-tree-nodes/?envType=daily-question&envId=2023-10-17
+
+// this question can also be solved using dsu
+class Solution {
+public:
+
+    bool helper(int i , vector<bool> & vis 
+    ,  vector<int>& leftChild, vector<int>& rightChild)
+    {
+        if(i==-1)
+        {
+            return true;
+        }
+
+        if(vis[i])
+        {
+            return false;
+        }
+
+        vis[i]=true;
+
+        return helper(leftChild[i] , vis , leftChild , rightChild) && 
+        helper(rightChild[i], vis , leftChild , rightChild);
+
+
+
+
+    }
+
+
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+
+
+
+        int root=-1;
+        vector<bool>child(n,false);
+        for(int i=0;i<leftChild.size();i++)
+        {
+            if(leftChild[i]==-1)
+            {
+                continue;
+            }
+            if(child[leftChild[i]])
+            {
+                return false;
+            }
+            child[leftChild[i]]=true;
+        }
+
+        for(int j=0;j<rightChild.size();j++)
+        {
+
+            if(rightChild[j]==-1)
+            {
+                continue;
+            }
+             if(child[rightChild[j]])
+            {
+                return false;
+            }
+            child[rightChild[j]]=true;
+        }
+
+
+        for(int i=0;i<n;i++)
+        {
+            if(child[i]==false)
+            {
+                root=i;
+            }
+        }
+
+        if(root==-1)
+        {
+            return false;
+        }
+
+        vector<bool>visited(n,false);
+        if(!helper(root,visited ,leftChild ,rightChild ))
+        {
+            return false;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(!visited[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
