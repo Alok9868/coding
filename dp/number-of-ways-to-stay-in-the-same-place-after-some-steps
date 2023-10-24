@@ -1,0 +1,106 @@
+//https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/?envType=daily-question&envId=2023-10-15
+//https://www.youtube.com/watch?v=NqhmQQlVhTE&t=1s&ab_channel=codestorywithMIK
+
+// This question has been solved by both , dp and memoization approach .
+class Solution {
+public:
+
+    int mod;
+    long helper(int steps, int idx , int &len ,
+    unordered_map<string,int> &dp)
+    {
+        if(idx==-1 || idx==len)
+        {
+            return 0;
+        }
+
+        if(steps==0)
+        {
+            if(idx==0)
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        string temp=to_string(idx)+"$"+to_string(steps);
+        if(dp.find(temp)!=dp.end())
+        {
+            return dp[temp];
+        }
+
+        long result=0;
+        result=(helper(steps-1,idx,len,dp)+result)%mod;
+        result=(helper(steps-1,idx-1,len,dp)+result)%mod;
+        result=(helper(steps-1,idx+1,len,dp)+result)%mod;
+        
+        return dp[temp]=(result%mod); 
+
+
+    }
+    int numWays(int steps, int arrLen) {
+        
+        mod=1e9+7;
+        // unordered_map<string,int>dp;
+        // vector<vector<int>>dp(arrLen+1,vector<int>(steps+1,0));
+        // return helper(steps,0,arrLen,dp);
+            
+            // vector<int>prev(steps+1,0);
+            // vector<int>next(steps+1,0);
+            // vector<int>curr(steps+1,0);      
+
+            
+            arrLen=min(arrLen,(steps/2)+1); 
+            vector<int>prev(arrLen,0);
+            for(int step=0;step<=steps;step++)
+            {
+                vector<int>curr(arrLen,0);
+                 for(int idx=0;idx<arrLen;idx++)
+                {
+                    if(step==0)
+                    {
+                        if(idx==0)
+                        {
+                            curr[idx]=1;
+                            // dp[idx][step]=1;
+                        }
+                        else
+                        {
+                            curr[idx]=0;
+                            // dp[idx][step]=0;
+                        }
+                        continue;
+                    }
+
+                    long result=0;
+
+                    // result=(dp[idx][step-1]+result)%mod;
+                    result=(prev[idx]+result)%mod;
+                    if(idx!=0)
+                    {
+                        // result=(dp[idx-1][step-1]+result)%mod;
+                        result=(prev[idx-1]+result)%mod;
+                    }
+                    if(idx!=arrLen-1)
+                    {
+                        // result=(dp[idx+1][step-1]+result)%mod;
+                        result=(prev[idx+1]+result)%mod;
+                    }
+                    // dp[idx][step]=(result%mod);
+                    curr[idx]=(result%mod);
+                }
+                prev=curr;
+        }
+
+        return prev[0];
+        // long result=0;
+        // for(int i=0;i<arrLen;i++)
+        // {
+        //     result=(result+dp[i][steps])%mod;
+        // }
+
+        // return result;
+
+
+    }
+};
