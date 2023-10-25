@@ -1,0 +1,40 @@
+https://leetcode.com/problems/painting-the-walls/description/?envType=daily-question&envId=2023-10-14
+//https://www.youtube.com/watch?v=FkJ2_hr6DRo&ab_channel=codestorywithMIK
+class Solution {
+public:
+
+    long helper(vector<int>&cost,vector<int>&time , int idx, int rem_walls ,vector<vector<long>>&dp)
+    {
+        if(rem_walls <=0)
+        {
+            return 0;
+        }
+
+        if(idx==cost.size())
+        {
+            return INT_MAX;
+        }
+
+        if(dp[idx][rem_walls]!=-1)
+        {
+            return dp[idx][rem_walls];
+        }
+
+        long paint=helper(cost,time,idx+1,rem_walls-1-time[idx],dp)+cost[idx];
+        long not_paint=helper(cost,time,idx+1,rem_walls,dp);
+
+         return dp[idx][rem_walls]=min(paint,not_paint);
+
+
+
+    }
+
+    int paintWalls(vector<int>& cost, vector<int>& time) {
+        
+        int n=cost.size();
+        vector<vector<long>>dp(n,vector<long>(n+1,-1));
+
+        return helper(cost,time,0, n ,dp);
+        
+    }
+};
