@@ -1,5 +1,6 @@
 https://leetcode.com/problems/painting-the-walls/description/?envType=daily-question&envId=2023-10-14
 //https://www.youtube.com/watch?v=FkJ2_hr6DRo&ab_channel=codestorywithMIK
+// DP APPROACH 
 class Solution {
 public:
 
@@ -38,3 +39,29 @@ public:
         
     }
 };
+
+
+// BOTTOM UP APPROACH
+
+int paintWalls(vector<int>& cost, vector<int>& time) {
+        
+        int n=cost.size();
+        // vector<vector<long>>dp(n+1,vector<long>(n+1,INT_MAX));
+        vector<long>next(n+1,INT_MAX);
+        next[0]=0;
+        for(int idx=n-1;idx>=0;idx--)
+        {
+            vector<long>curr(n+1);
+            for(int rem_walls=n;rem_walls>=0;rem_walls--)
+            {
+                long paint=next[max(rem_walls-1-time[idx] ,0)]
+                +cost[idx];
+                long not_paint=next[rem_walls];
+                curr[rem_walls]=(min(paint,not_paint));
+            }
+            next=curr;
+        }
+
+        return next[n];
+        
+    }
