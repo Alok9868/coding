@@ -1,0 +1,98 @@
+//https://leetcode.com/problems/binary-trees-with-factors/?envType=daily-question&envId=2023-10-26
+class Solution {
+public:
+
+
+    int search(vector<int>&arr,int num)
+    {
+        int low=0;
+        int high=arr.size()-1;
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            if(arr[mid]==num)
+            {
+                return mid;
+            }
+            else if(arr[mid]>num)
+            {
+                high=mid-1;
+            }
+            else
+            {
+                low=mid+1;
+            }
+        }
+
+        return -1;
+
+
+    }
+
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        
+        sort(arr.begin(),arr.end());
+        vector<long>dp(arr.size()+1,1);
+        int mod=1e9+7;
+        int size=1e9;
+        long long result=0;
+        for(int i=0;i<arr.size();i++)
+        {
+            long num=arr[i];
+            long long product=(num*num);
+            if(product <= size)
+            {
+                int idx= search(arr,product);
+                if(idx!=-1)
+                {
+                    dp[idx]=(dp[idx]+(dp[i]*dp[i])%mod)%mod;
+                }
+            }
+           
+            for(int j=i+1;j<arr.size();j++)
+            {   
+                product=num*arr[j];
+                if(product <= size)
+                {
+                     int idx= search(arr,product);
+                     if(idx!=-1)
+                    {
+                        dp[idx]= (dp[idx]+ ((( dp[i] * dp[j] ) %mod) *2)%mod)%mod;
+                    }
+                }
+                
+            }
+            result=(result+dp[i])%mod;
+        }
+
+
+        return result;
+    }
+};
+
+
+// SECOND APPROACH 
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+         sort(arr.begin(), arr.end());
+        unordered_map<int, long> dp;
+        int mod = 1e9 + 7;
+        long long result = 0;
+        
+        for (int i = 0; i < arr.size(); i++) {
+            dp[arr[i]] = 1;
+            for (int j = 0; j < i; j++) {
+                if (arr[i] % arr[j] == 0) {
+                    int div = arr[i] / arr[j];
+                    if (dp.find(div) != dp.end()) {
+                        dp[arr[i]] = (dp[arr[i]] + dp[arr[j]] * dp[div]) % mod;
+                    }
+                }
+            }
+            result = (result + dp[arr[i]]) % mod;
+        }
+        
+        return (int)result;
+    }
+};
