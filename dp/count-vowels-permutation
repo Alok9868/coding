@@ -1,0 +1,80 @@
+https://leetcode.com/problems/count-vowels-permutation/?envType=daily-question&envId=2023-10-28
+
+class Solution {
+public:
+    int mod;
+
+    void modResult(long long &result,int ans)
+    {
+        
+        result=(ans+result)%mod;
+    }
+
+    int helper(char prev, int len ,   vector<vector<int>>&dp)
+    {
+        if(len==0)
+        {
+            return 1;
+        }
+
+        if(dp[len][prev-'a']!=-1)
+        {
+            return dp[len][prev-'a'];
+        }
+
+
+
+        long long result=0;
+            if(prev=='a')
+            {
+                modResult(result,helper('e',len-1,dp));
+            }
+            else if(prev=='e')
+            {
+                modResult(result,helper('a',len-1,dp));
+                modResult(result,helper('i',len-1,dp));
+            }
+            else if(prev=='i')
+            {
+                modResult(result,helper('a',len-1,dp));
+                modResult(result,helper('e',len-1,dp));
+                modResult(result,helper('o',len-1,dp));
+                modResult(result,helper('u',len-1,dp));
+            }
+            else if(prev=='o')
+            {
+               modResult(result,helper('i',len-1,dp));
+                modResult(result,helper('u',len-1,dp));
+            }
+            else
+            {
+                modResult(result,helper('a',len-1,dp));
+            }
+
+
+        return dp[len][prev-'a']=(result)%mod;
+
+    }
+
+    int countVowelPermutation(int n) {
+        
+        vector<char>dict(5);
+        mod=1e9+7;
+        dict[0]='a';
+        dict[1]='e';
+        dict[2]='i';
+        dict[3]='o';
+        dict[4]='u';
+
+        long long result=0;
+        vector<vector<int>>dp(n+1,vector<int>(26,-1));
+        for(int i=0;i<5;i++)
+        {   
+            modResult(result,helper(dict[i],n-1,dp));
+        }
+
+        return result;
+
+
+    }
+};
