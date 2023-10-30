@@ -1,0 +1,110 @@
+https://leetcode.com/problems/find-in-mountain-array/?envType=daily-question&envId=2023-10-12
+
+
+/**
+ * // This is the MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class MountainArray {
+ *   public:
+ *     int get(int index);
+ *     int length();
+ * };
+ */
+
+class Solution {
+public:
+
+    int binarySearchAsc(  int &target  , MountainArray &arr,int low,int high 
+    )
+    {
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            int num =arr.get(mid);
+            if(num==target)
+            {
+                return mid;
+            }
+            else if(num >target)
+            {
+                high=mid-1;
+            }
+            else
+            {
+                low=mid+1;
+            }
+        }
+        return -1;
+    }
+
+    int binarySearchDesc(  int &target, MountainArray&arr,int low,int high  )
+    {
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            int num =arr.get(mid);
+            if(num==target)
+            {
+                return mid;
+            }
+            else if(num < target)
+            {
+                high=mid-1;
+            }
+            else
+            {
+                low=mid+1;
+            }
+        }
+        return -1;
+   
+    }
+
+    int findInMountainArray(int target, MountainArray &arr) {
+            
+        int n=arr.length();
+        int low=0;
+        int high=n-1;
+
+
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            // check for peak 
+            if(mid-1>=0 && mid+1 < n)
+            {
+                // we get the peak , we can apply binary search on left and right part
+                int left=arr.get(mid-1);
+                int middle=arr.get(mid);
+                int right=arr.get(mid+1);
+                if(left < middle && middle > right)
+                {
+                    int left=binarySearchAsc(target,arr,0,mid);
+                    if(left!=-1)
+                    {
+                        return left;
+                    }
+                    int right=binarySearchDesc(target,arr,mid+1,n-1);
+                    return right;
+                }
+
+                if(middle > right)
+                {
+                    high=mid;
+                }
+                else
+                {
+                    low=mid+1;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+
+        return -1;
+
+    }
+};
