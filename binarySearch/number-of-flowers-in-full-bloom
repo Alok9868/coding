@@ -1,0 +1,62 @@
+https://leetcode.com/problems/number-of-flowers-in-full-bloom/description/?envType=daily-question&envId=2023-10-11
+
+
+class Solution {
+public:
+
+
+    int binarySearch( vector<int>&arr,int target)
+    {
+        int low=0;
+        int high=arr.size()-1;
+        int ans=-1;
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            if(arr[mid] == target || arr[mid]<target)
+            {
+                ans=mid;
+                low=mid+1;
+            }
+            else
+            {
+                high=mid-1;
+            }
+        }
+
+        return ans;
+    }
+
+    vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) {
+        
+        
+        vector<int>bloom;
+        vector<int>fade;
+
+
+        for(int i=0;i<flowers.size();i++)
+        {
+            bloom.push_back(flowers[i][0]);
+            fade.push_back(flowers[i][1]);
+        }   
+
+        sort(bloom.begin(),bloom.end());
+        sort(fade.begin(),fade.end());
+
+        vector<int>ans;
+
+        for(int i=0;i<people.size();i++)
+        {
+            int time=people[i];
+            int flower_bloom=binarySearch(bloom,time)+1;
+            int flower_fade=binarySearch(fade,time-1)+1;
+            int result=flower_bloom-flower_fade;
+            ans.push_back(result);
+        }
+
+        return ans;
+
+
+
+    }
+};
