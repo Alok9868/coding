@@ -1,0 +1,42 @@
+https://leetcode.com/problems/integer-break/?envType=daily-question&envId=2023-10-06
+
+class Solution {
+public:
+
+
+    int helper(int num , vector<int>&dp)
+    {
+        if(num==2 || num==1)
+        {
+            return 1;
+        }
+
+
+        if(dp[num]!=-1)
+        {
+            return dp[num];
+        }
+
+        
+
+        int result=0;
+        for(int i=1;i<=(num/2);i++)
+        {
+            int first= i*helper(num-i,dp);
+            int second= (num-i)*i;
+            int curr_ans =max(first,second);
+            result=max(result,curr_ans);
+        }
+
+
+        return dp[num]=result;
+    }
+
+    int integerBreak(int n) {
+        
+        vector<int>dp(n+1,-1);
+        return helper(n,dp);
+
+
+    }
+};
