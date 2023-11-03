@@ -1,0 +1,36 @@
+https://leetcode.com/problems/build-an-array-with-stack-operations/?envType=daily-question&envId=2023-11-03
+
+class Solution {
+public:
+    vector<string> buildArray(vector<int>& target, int n) {
+        
+        vector<string>res;
+        int cnt=0;
+        int idx=0;
+        for(int i=1;i<=n;i++)
+        {
+            if(target[idx]==i)
+            {
+                while(cnt>0)
+                {
+                    cnt--;
+                    res.push_back("Pop");
+                }
+                res.push_back("Push");
+                idx++;
+            }
+            else
+            {
+                    res.push_back("Push");
+                    cnt++;
+            }
+            if(idx==target.size())
+            {
+                return res;
+            }
+        }
+
+
+        return res;
+    }
+};
