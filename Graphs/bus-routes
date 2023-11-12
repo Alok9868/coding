@@ -1,0 +1,60 @@
+https://leetcode.com/problems/bus-routes/description/?envType=daily-question&envId=2023-11-12
+
+
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int source, int target) {
+        
+
+        unordered_map<int,vector<int>>umap;
+        for(int i=0;i<routes.size();i++)
+        {
+            for(int j=0;j<routes[i].size();j++)
+            {
+                umap[routes[i][j]].push_back(i);
+            }
+        }
+
+
+        queue<pair<int,int>>q;
+        unordered_map<int,bool>visBus,visBusStop;
+        q.push({source,0});
+        visBus[source]=true;
+        while(!q.empty())
+        {
+            int size=q.size();
+            while(size--)
+            {   
+                pair<int,int>front=q.front();
+                q.pop();
+                int busNo=front.first;
+                int busTravelled=front.second;
+                if(busNo==target)
+                {
+                    return busTravelled;
+                }
+
+                for(auto busStop:umap[busNo])
+                {
+                    if(visBusStop[busStop])
+                    {
+                        continue;
+                    }
+                    for(auto bus:routes[busStop])
+                    {
+                        if(visBus[bus])
+                        {
+                            continue;
+                        }
+                        q.push({bus,busTravelled+1});
+                        visBus[bus]=true;
+                        visBusStop[busStop]=true;
+                    }
+                }
+            }
+        }
+
+        return -1;
+    }
+
+};
