@@ -38,8 +38,64 @@ public:
 
         return s;
 
+    }
+};
 
 
+// Second approach 
+class Solution {
+public:
+
+
+    bool isVowel(char &x) 
+    { 
+        if (x == 'a' || x == 'e' || x == 'i' ||  
+            x == 'o' || x == 'u' || x == 'A' ||  
+            x == 'E' || x == 'I' || x == 'O' || x == 'U') 
+            return true;
+        else
+            return false;
+    } 
+
+    string sortVowels(string s) {
+        
+
+        unordered_map<int,int>umap;
+        
+        
+        
+        for(int i=0;i<s.size();i++)
+        {
+            if(isVowel(s[i]))
+            {
+                umap[s[i]]++;
+            }
+        }
+
+
+
+        int ascii[]={65,69,73,79,85,97,101,105,111,117};
+        int j=0;
+
+        // l E e t c O d e
+        // l _ _ t c _ d _
+
+
+
+        for(int i=0;i<s.size();i++)
+        {
+            if(isVowel(s[i]))
+            {
+                while(umap[ascii[j]]==0)
+                {
+                    j++;
+                }
+                umap[ascii[j]]--;
+                s[i]=ascii[j];
+            }
+        }
+
+        return s;
 
 
     }
