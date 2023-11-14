@@ -1,0 +1,46 @@
+https://leetcode.com/problems/unique-length-3-palindromic-subsequences/?envType=daily-question&envId=2023-11-14
+
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        
+        vector<int>first(26,-1);
+        vector<int>last(26,-1);
+
+        for(int i=0;i<s.size();i++)
+        {
+            int idx=s[i]-'a';
+            if(first[idx]==-1)
+            {
+                first[idx]=i;
+            }
+            else
+            {
+                last[idx]=i;
+            }
+        }
+
+        int result=0;
+
+        for(int i=0;i<26;i++)
+        {
+            int first_pos=first[i];
+            int last_pos=last[i];
+            if(last_pos==-1)
+            {
+                continue;
+            }
+            unordered_set<char>set;
+            for(int j=first_pos+1;j<last_pos;j++)
+            {
+                set.insert(s[j]);
+            }
+            result+=set.size();
+        }
+
+        return result;
+
+
+
+    }
+};
