@@ -1,0 +1,60 @@
+https://leetcode.com/problems/frequency-of-the-most-frequent-element/?envType=daily-question&envId=2023-11-18
+// Brute force approach
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+
+        
+        sort(nums.begin(),nums.end());
+        int n=nums.size();
+        int maxi_freq=1;
+        for(int i=n-1;i>=0;i--)
+        {
+            int k_curr=k;
+            int num=nums[i];
+            int curr_freq=1;
+            for(int j=i-1;j>=0 && k_curr>=0 ;j--)
+            {
+                if(nums[i]-nums[j] <= k_curr)
+                {
+                    curr_freq++;
+                    k_curr-=nums[i]-nums[j];
+                }
+                else
+                {
+                    break;
+                }
+            }
+            maxi_freq=max(maxi_freq,curr_freq);
+        }
+
+
+        return maxi_freq;
+    }
+};
+
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        
+         sort(nums.begin(),nums.end());
+         long curr_sum=0;
+         int max_freq=1;
+         for(int left=0,right=0;right<nums.size();right++)
+         {
+            curr_sum+=nums[right];
+            while(curr_sum+ k < ((long)nums[right]*(right-left+1)))
+            {
+                curr_sum-=nums[left];
+                left++;
+            }
+            max_freq=max(max_freq, (right-left+1));
+         }
+
+
+         return max_freq;
+
+
+    }
+};
+
