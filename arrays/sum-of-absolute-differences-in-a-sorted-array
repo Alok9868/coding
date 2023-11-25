@@ -1,0 +1,55 @@
+https://leetcode.com/problems/sum-of-absolute-differences-in-a-sorted-array/description/?envType=daily-question&envId=2023-11-25
+
+class Solution {
+public:
+    vector<int> getSumAbsoluteDifferences(vector<int>& nums) {
+        
+
+        // 2 5 10
+        // 0 + 10 - 3*(2) =4 
+
+        // 3*(1) - 2   + 10 - 2 -3*(2) = 1 + 8 - 6 = 3 
+        // 5*(2) - 5 + 0 = 5  
+        int n=nums.size();
+        vector<int>prefixSum(nums.size(),0);
+        prefixSum[0]=nums[0];
+        for(int i=1;i<n;i++)
+        {
+            prefixSum[i]=prefixSum[i-1]+nums[i];
+        }
+
+        // 2 5 10 
+
+        //2 
+        // 10 - 2 = 8 
+
+        // 2 *1 - 2 =0 
+        // 10 - 2 =8 
+        // 8 - (3-1)*2 = 4 
+
+        vector<int>result;
+        for(int i=0;i<n;i++)
+        {
+            int left_sum=prefixSum[i];
+            int right_sum=prefixSum[n-1]-prefixSum[i];
+
+            int left_abs_sum= (i+1)*nums[i] - left_sum;
+            int right_abs_sum=right_sum - (n-i-1)*nums[i];
+
+            // left_sum  - (i+1)*2 = 2 -2 =0
+            // 10 - 8   -  right_sum - nums[i]* (n-i-1) = 8 - 2*(2)= 4 
+
+            // 4 3 
+
+            // 2 - 
+            //  (2)*3 - 5  = 1;
+            // 5 - 3*(3-1-1) =2  
+            // (3)*5 -  10 = 5 
+           
+            result.push_back(left_abs_sum + right_abs_sum);
+        }
+
+
+        return result;
+    }
+};
