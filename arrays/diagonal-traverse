@@ -1,0 +1,61 @@
+https://leetcode.com/problems/diagonal-traverse/
+
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
+        
+
+        // 0 0 
+        // 01 10 
+        // 20 11 02
+        // 12 21
+        // 22
+
+        int n=mat.size();
+        int m =mat[0].size();
+        map<int,vector<int>>umap;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                umap[i+j].push_back(mat[i][j]);
+            }
+        }
+
+        // 0 - 1 
+        // 1 - 2 , 4
+        // 2 - 3 , 5 , 7 
+        // 3 - 6 , 8 
+        // 4 - 9 
+        
+        vector<int>ans;
+        for(auto it:umap)
+        {
+            if(((it.first)&1) ==0)
+            {
+                int size=it.second.size();
+                for(int i=size-1;i>=0;i--)
+                {
+                    ans.push_back(it.second[i]);
+                }
+            }
+            else
+            {
+                for(auto ele:it.second)
+                {
+                    ans.push_back(ele);
+                }
+            }
+            
+        }
+
+        return ans;
+
+
+
+
+
+
+
+    }
+};
