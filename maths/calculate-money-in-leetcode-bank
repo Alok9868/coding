@@ -1,0 +1,27 @@
+https://leetcode.com/problems/calculate-money-in-leetcode-bank/?envType=daily-question&envId=2023-12-06
+
+class Solution {
+public:
+    int totalMoney(int n) {
+
+
+        int no_of_weeks_full=n/7;
+        int rem_days=n%7;
+
+        int a0=28; // 1 
+        int an=28+(no_of_weeks_full-1)*7; // 1+ 7 = 8 
+        int sum_of_full_weeks=((no_of_weeks_full))*((a0+an))/2; 
+
+
+        int monday_money=no_of_weeks_full; // 4 
+        int rem_days_money=0;
+        for(int day=1;day<=rem_days;day++)
+        {
+            rem_days_money+=monday_money+day;
+        }
+
+
+        int money=rem_days_money+ sum_of_full_weeks;
+        return money;
+    }
+};
