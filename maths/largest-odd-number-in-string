@@ -1,0 +1,57 @@
+https://leetcode.com/problems/largest-odd-number-in-string/description/?envType=daily-question&envId=2023-12-07
+
+
+class Solution {
+public:
+    string largestOddNumber(string num) {
+        
+
+        // 5 2 
+
+
+        // int largest=0;
+        // bool odd_start=false;
+        // string large="";
+        // string even_large="";
+
+    
+        // 5 
+        // 52 
+        // 523 
+
+
+        // for(int i=0;i<num.size();i++)
+        // {
+        //     int num= num[i]-'0';
+        //     if(num&1)
+        //     {
+        //         large+=even_large+num[i];
+        //         even_large="";
+        //     }
+        //     else
+        //     {
+        //         even_large+=num[i];
+        //     }
+        // }
+
+
+        // return large;
+
+        int n=num.size();
+        for(int i=n-1;i>=0;i--)
+        {
+            int no=num[i]-'0';
+            if(no&1)
+            {
+                return num.substr(0,i+1);  
+            }
+        }
+
+
+        return "";
+
+
+
+
+    }
+};
