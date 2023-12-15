@@ -1,0 +1,29 @@
+https://leetcode.com/problems/destination-city/?envType=daily-question&envId=2023-12-15
+
+class Solution {
+public:
+    string destCity(vector<vector<string>>& paths) {
+        
+        unordered_map<string,int>umap;
+        for(int i=0;i<paths.size();i++)
+        {
+            string temp=paths[i][0];
+            umap[temp]++;
+        }
+
+
+
+
+        for(int i=0;i<paths.size();i++)
+        {
+            string dest_candidate=paths[i][1];
+            if(umap.find(dest_candidate)==umap.end())
+            {
+                return dest_candidate;
+            }
+        }
+
+
+        return "";
+    }
+};
