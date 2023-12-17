@@ -1,0 +1,51 @@
+https://leetcode.com/problems/license-key-formatting/
+
+class Solution {
+public:
+
+    bool isDash(char ch)
+    {   
+        {
+            return true;
+
+        }
+        return false;
+    }
+
+    string licenseKeyFormatting(string s, int k) {
+
+
+
+        int curr_group_size=0;
+        string result="";
+        //5F3Z-2E9W
+        // 1 
+        for(int i=s.size()-1;i>=0;i--)
+        {
+            if(isDash(s[i]))
+            {
+                continue;
+            }
+            else
+            {
+                if(curr_group_size == k )
+                {
+                    result+="-";
+                    curr_group_size=0;
+                }
+                char temp=toupper(s[i]);
+                result+=temp;
+                curr_group_size++;
+            }
+        }
+
+        reverse(result.begin(),result.end());
+        return result;
+
+
+
+
+
+
+    }
+};
