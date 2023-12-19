@@ -1,0 +1,78 @@
+https://leetcode.com/problems/image-smoother/?envType=daily-question&envId=2023-12-19
+class Solution {
+public:
+
+    bool checkIfValidDir(int &x,int &y , int &r , int &c)
+    {
+        if(x>=0 && x<r && y>=0 && y<c)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    vector<vector<int>> imageSmoother(vector<vector<int>>& img) {
+        
+        int r=img.size();
+        int c=img[0].size();
+
+        int xdir[]={0,1,1,1,0,0,-1,-1,-1};
+        int ydir[]={0,1,0,-1,1,-1,0,1,-1};
+
+        vector<int>prevRow(c,0);
+
+
+        // 16
+        //4 - 4 
+        for(int i=0;i<r;i++)
+        {
+            vector<int>currRow(c,0);
+            // currRow=img[i];
+            for(int j=0;j<c;j++)
+            {
+                int neighbours=0;
+                int sum=0;
+                currRow[j]=img[i][j];
+                for(int k=0;k<9;k++)
+                {
+                    int x_curr=xdir[k]+i;
+                    int y_curr=ydir[k]+j;
+                    if(checkIfValidDir(x_curr,y_curr,r,c))
+                    {  
+                        int temp;
+                        if(x_curr==i)
+                        {   
+                            if(y_curr<j)
+                            {
+                                temp=currRow[y_curr];
+                            }
+                            else
+                            {
+                                temp=img[x_curr][y_curr];
+                            }
+                        }
+                        else if(x_curr==i-1)
+                        {
+                            temp=prevRow[y_curr];
+                        }
+                        else
+                        {
+                            temp=img[x_curr][y_curr];
+                        }
+                        sum+=temp;
+                        neighbours++;
+                    }
+                }
+                int avg=sum/neighbours;
+                img[i][j]=avg;
+            }
+            prevRow=currRow;
+        }
+
+        return img;
+
+
+
+    }
+};
