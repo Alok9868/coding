@@ -1,0 +1,33 @@
+https://leetcode.com/problems/buy-two-chocolates/description/?envType=daily-question&envId=2023-12-20
+
+class Solution {
+public:
+    int buyChoco(vector<int>& prices, int money) {
+        
+
+        int first_mini=INT_MAX;
+        int second_mini=INT_MAX;
+        for(int i=0;i<prices.size();i++)
+        {
+            if(prices[i]<first_mini)
+            {
+                second_mini=first_mini;
+                first_mini=prices[i];
+            }
+            else if(second_mini > prices[i])
+            {
+                second_mini=prices[i];
+            }
+        }
+
+
+        int sum=first_mini+second_mini;
+        if(sum<=money)
+        {
+            return money-sum;
+        }
+
+        return money;
+
+    }
+};
