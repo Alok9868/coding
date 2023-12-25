@@ -1,0 +1,58 @@
+https://leetcode.com/problems/minimum-changes-to-make-alternating-binary-string/description/?envType=daily-question&envId=2023-12-24
+class Solution {
+public:
+    int minOperations(string s) {
+        
+        int st_with_1=0;
+        int st_with_0=0;
+        // 0100 
+        // 1010 - 1 + 1 + 1  - 3steps
+        //10
+
+        for(int i=0;i<s.size();i++)
+        {
+            if(i&1)
+            {
+                //odd index
+                if(s[i]=='1')
+                {
+                    st_with_1++;
+                }
+            }
+            else
+            {
+                //even index
+                if(s[i]=='0')
+                {
+                    st_with_1++;
+                }
+            }
+        }
+
+          // 0100
+          // 0101 -  
+        for(int i=0;i<s.size();i++)
+        {
+            if(i&1)
+            {
+                //odd index
+                if(s[i]=='0')
+                {
+                    st_with_0++;
+                }
+            }
+            else
+            {
+                //even index
+                if(s[i]=='1')
+                {
+                    st_with_0++;
+                }
+            }
+        }
+        cout<<st_with_1<<" "<<st_with_0<<endl;
+        return min(st_with_0,st_with_1);
+
+
+    }
+};
