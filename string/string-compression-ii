@@ -1,0 +1,71 @@
+https://leetcode.com/problems/string-compression-ii/?envType=daily-question&envId=2023-12-28
+
+
+// tle code
+class Solution {
+public:
+
+    int mini;
+    int calc(string &s)
+    {
+        if(s.size()==0)
+        {
+            return 0;
+        }
+        int len=1;
+        string temp="";
+        temp+=s[0];
+        //a3bc3d
+        for(int i=1;i<s.size();i++)
+        {
+            if(s[i-1]==s[i])
+            {
+                len++;
+            }
+            else
+            {
+                if(len!=1)
+                {
+                    temp+=to_string(len);
+                }
+                temp+=s[i];
+                len=1;
+            }
+        }
+        if(len!=1)
+        {
+            temp+=to_string(len);
+        }
+        return temp.length();
+    }
+    void helper(string &s, int k, string temp , int idx)
+    {
+        if(k==0)
+        {
+            temp+=s.substr(idx,s.size());
+            mini=min(mini,calc(temp));
+            return ;
+        }
+        if(idx==s.size())
+        {
+            mini=min(mini,calc(temp));
+            return ;
+        }
+        helper(s,k,temp+s[idx],idx+1);
+        helper(s,k-1,temp,idx+1);
+    }
+
+    int getLengthOfOptimalCompression(string s, int k) {
+        
+        mini=INT_MAX;
+        helper(s,k,"",0);
+        unordered_map<string,int>umap;
+        return mini;
+
+    }
+};
+
+//optimized code 
+
+
+
