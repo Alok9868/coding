@@ -1,0 +1,37 @@
+https://leetcode.com/problems/convert-an-array-into-a-2d-array-with-conditions/description/?envType=daily-question&envId=2024-01-02
+class Solution {
+public:
+    vector<vector<int>> findMatrix(vector<int>& nums) {
+        
+
+
+        vector<int>temp(201,0);
+        for(int i=0;i<nums.size();i++)
+        {
+            temp[nums[i]]++;
+        }
+
+        int size=0;
+        int n=nums.size();
+        vector<vector<int>>ans;
+        while(size<n)
+        {
+            vector<int>row;
+            for(int i=1;i<=200;i++)
+            {
+                if(temp[i] > 0)
+                {
+                    temp[i]--;
+                    row.push_back(i);
+                    size++;
+                }
+            }
+            ans.push_back(row);
+        }
+
+
+        return ans;
+
+
+    }
+};
