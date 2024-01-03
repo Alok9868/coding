@@ -1,0 +1,64 @@
+https://leetcode.com/problems/minimum-difficulty-of-a-job-schedule/description/?envType=daily-question&envId=2023-12-29
+
+class Solution {
+public:
+
+    int n;
+    long helper(vector<int>& jobDifficulty, int d , int idx , 
+    vector<vector<int>> &dp)
+    {   
+
+        if(idx==jobDifficulty.size())
+        {
+            if(d==0)
+            {
+                return 0; 
+            }
+            return INT_MAX;
+        }
+
+        if(d==0)
+        {
+            return INT_MAX;
+        }
+
+        if(dp[idx][d]!=-1)
+        {
+            return dp[idx][d];
+        }
+
+
+        int currDifficulty=0;
+        long ans=INT_MAX;
+        for(int i=idx;i<n;i++)
+        {
+            currDifficulty=max(currDifficulty,jobDifficulty[i]);
+            long curr_ans=helper(jobDifficulty,d-1 , i+1 ,dp) + currDifficulty;
+            ans=min(ans,curr_ans);
+        }
+
+        return dp[idx][d] = ans;
+
+    //    long pickInSameDay= helper(jobDifficulty,d,idx+1,max(prev,jobDifficulty[idx]));
+    //    long notPickInSameDay = helper(jobDifficulty , d-1 , idx+1 , jobDifficulty[idx]) + prev;
+
+    //    return min(pickInSameDay ,notPickInSameDay);
+
+
+    }   
+
+    int minDifficulty(vector<int>& jobDifficulty, int d) {
+        
+        n=jobDifficulty.size();
+
+        vector<vector<int>>dp(n,vector<int>(d+1,-1));
+        long ans=helper(jobDifficulty , d , 0 ,dp);
+        if(ans==INT_MAX)
+        {
+            return -1;
+        }
+        return ans;
+
+
+    }
+};
