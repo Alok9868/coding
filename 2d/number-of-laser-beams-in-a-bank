@@ -1,0 +1,59 @@
+https://leetcode.com/problems/number-of-laser-beams-in-a-bank/?envType=daily-question&envId=2024-01-03
+
+class Solution {
+public:
+
+    pair<int,int> findNextLaserDeviceRow(vector<string>& bank , int idx)
+    {
+        int n=bank.size();
+        bool flag=false;
+        pair<int,int>p;
+        p.first=-1;
+        p.second=0;
+        for(int i=idx;i<n;i++)
+        {
+            int cnt=0;
+            for(auto &ch:bank[i])
+            {
+                if(ch=='1')
+                {
+                    flag=true;
+                    cnt++;
+                }
+            }
+            if(flag)
+            {
+                p.first=i;
+                p.second=cnt;
+                return p;
+            }
+        }
+        
+        return p;
+    }
+
+    int numberOfBeams(vector<string>& bank) {
+
+        int n=bank.size();
+        int ans=0;
+        pair<int,int>last=findNextLaserDeviceRow(bank,0);
+        int i=last.first;
+        if(i==-1)
+        {
+            return ans;
+        }
+        while(i+1<n)
+        {
+            pair<int,int>curr=findNextLaserDeviceRow(bank,i+1);
+            if(curr.first==-1)
+            {
+                return ans;
+            }
+            ans+=(curr.second * last.second);
+            i=curr.first;
+            last=curr;
+        }
+
+        return ans;
+    }
+};
