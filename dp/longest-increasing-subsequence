@@ -1,0 +1,38 @@
+https://leetcode.com/problems/longest-increasing-subsequence/description/?envType=daily-question&envId=2024-01-05
+
+class Solution {
+public:
+
+    int helper(vector<int>& nums , int idx , int prev , 
+       vector<vector<int>>&dp )
+    {
+        if(idx==nums.size())
+        {
+            return 0;
+        }
+
+        if(dp[idx][prev+1]!=-1)
+        {
+            return dp[idx][prev+1];
+        }
+
+        int pick=0,notpick;
+        if(prev==-1 || nums[prev]<nums[idx])
+        {
+           pick= helper(nums,idx+1,idx ,dp)+1;
+        }
+        notpick=helper(nums,idx+1,prev , dp);
+        return dp[idx][prev+1]=max(pick,notpick);
+
+    }
+
+
+    int lengthOfLIS(vector<int>& nums) {
+        
+        int n=nums.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        return helper(nums,0 ,-1 , dp);
+
+
+    }
+};
