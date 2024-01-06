@@ -1,0 +1,84 @@
+https://leetcode.com/problems/maximum-profit-in-job-scheduling/description/?envType=daily-question&envId=2024-01-06
+
+class Solution {
+public:
+
+    int getNextJobIndex(vector<vector<int>> &time , int idx)
+    {
+        int low=idx+1;
+        int high=n-1;
+        int result=n;
+        while(low<=high)
+        {
+            int mid=(high-low)/2+low;
+            if(time[mid][0]>=time[idx][1])
+            {
+                high=mid-1;
+                result=mid;
+            }
+            else
+            {
+                low=mid+1;
+            }
+        }
+
+        return result;
+    }
+    int helper( vector<vector<int>> &time, int idx,vector<int>&dp)
+    {
+        if(idx==n)
+        {
+            return 0;
+        }
+
+        if(dp[idx]!=-1)
+        {
+            return dp[idx];
+        }
+
+        int nextidx=getNextJobIndex(time,idx);
+        int pick =helper(time,nextidx,dp)+time[idx][2];
+        int notpick=helper(time,idx+1,dp);
+        return dp[idx]=max(pick,notpick);
+    }
+
+    int n;
+    static bool comp(vector<int>&a , vector<int>&b)
+    {
+        if(a[0]<b[0])
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+
+        n=profit.size();
+        vector<vector<int>>time;
+        vector<int>dp(n+1,0);
+        for(int i=0;i<n;i++)
+        {
+            int st=startTime[i];
+            int endt=endTime[i];
+            int p=profit[i];
+            time.push_back({st,endt,p});
+        }
+        sort(time.begin(),time.end(),comp);
+
+
+        for(int idx=n-1;idx>=0;idx--)
+        {
+            int nextidx=getNextJobIndex(time,idx);
+            int pick = dp[nextidx] +time[idx][2];
+            int notpick= dp[idx+1];
+            dp[idx]=max(pick,notpick);
+        }
+
+
+
+        return dp[0];
+        
+    }
+};
