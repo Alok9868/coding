@@ -1,0 +1,74 @@
+https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/description/?envType=daily-question&envId=2024-01-10
+class Solution {
+public:
+
+    void dfs(TreeNode* root , unordered_map<int,vector<int>> &umap ,
+    int parent)
+    {
+        if(!root)
+        {
+            return ;
+        }
+
+        umap[root->val].push_back(parent);
+        if(root->left)
+        {
+            umap[root->val].push_back(root->left->val);
+        }
+        if(root->right)
+        {
+            umap[root->val].push_back(root->right->val);
+        }
+
+        dfs(root->left,umap,root->val);
+        dfs(root->right,umap,root->val);
+        
+
+
+    }
+
+    int amountOfTime(TreeNode* root, int start) {
+        unordered_map<int,vector<int>>umap;
+        dfs(root,umap,0);
+        int n=umap.size();
+        unordered_map<int,int>vis;
+        queue<int>q;
+        q.push(start);
+        int time=0;
+        vis[start]=1;
+        while(!q.empty())
+        {
+            int size=q.size();
+            int infected=0;
+            while(size--)
+            {
+                int u=q.front();
+                q.pop();
+                for(auto it:umap[u])
+                {
+                    if(it!=0 && !vis[it])
+                    {
+                        vis[it]=1;
+                        q.push(it);
+                        infected++;
+                    }
+                }
+            }
+            if(infected>0)
+            {
+                 time++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return time;
+
+
+
+    }
+
+
+};
