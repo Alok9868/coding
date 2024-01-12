@@ -1,0 +1,33 @@
+https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/description/?envType=daily-question&envId=2024-01-11
+class Solution {
+public:
+
+    int res;
+    void helper(TreeNode*root , int mini,int maxi)
+    {
+        if(!root)
+        {
+            return ;
+        }
+
+        if(maxi<root->val)
+        {
+            maxi=root->val;
+        }
+        if(mini>root->val)
+        {
+            mini=root->val;
+        }
+        res=max(res,maxi-mini);
+        helper(root->left,mini,maxi);
+        helper(root->right,mini,maxi);
+
+    }
+
+    int maxAncestorDiff(TreeNode* root) {
+        
+        res=0;
+        helper(root,INT_MAX,INT_MIN);
+        return res;
+    }
+};
