@@ -1,0 +1,59 @@
+https://leetcode.com/problems/determine-if-two-strings-are-close/description/?envType=daily-question&envId=2024-01-14
+
+class Solution {
+public:
+    bool closeStrings(string word1, string word2) {
+        
+
+        if(word1.size()!=word2.size())
+        {
+            return false;
+        }
+
+
+        // a - 3 
+        // b- 2 
+        // c-2 
+        // d- 3 
+
+
+
+        // e -2 
+        // a- 8 
+
+        vector<int>dict1(26,0);
+        vector<int>dict2(26,0);
+        int n =word1.size();
+        for(int i=0;i<n;i++)
+        {
+            dict1[word1[i]-'a']++;
+            dict2[word2[i]-'a']++;
+        }
+
+
+       
+
+        //a-2 , b-3 , c-1.  1 2 3 
+        // a - 1 , b-2 , c-3. 1 2 3 
+
+           for (int i = 0; i < 26; i++) {
+            if ((dict1[i] == 0 && dict2[i] != 0) || (dict1[i] != 0 && dict2[i] == 0)) {
+                return false;
+            }
+        }
+
+        sort(dict1.begin(),dict1.end());
+        sort(dict2.begin(),dict2.end());
+
+       for(int i=0;i<26;i++)
+        {
+            if(dict1[i]!=dict2[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+};
