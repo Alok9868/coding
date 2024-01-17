@@ -1,0 +1,64 @@
+https://leetcode.com/problems/splitting-a-string-into-descending-consecutive-values/description/
+
+
+class Solution {
+public:
+
+    bool isInDescendingOrder( unsigned long long  new_prev_num, unsigned long long  prevnum)
+    {   
+        return (new_prev_num+1==prevnum);
+    }
+
+    unsigned long long  getNoFromString(string &temp)
+    {
+        int n=temp.size();
+        unsigned long long  num=0;
+        for(int i=0;i<n;i++)
+        {   
+            int no=temp[i]-'0';  
+            num = num*10 + no; 
+        }
+        return num;
+    }   
+
+
+
+    bool helper(string &s , long prevnum , int idx , bool flag)
+    {
+        if(idx>=s.size())
+        {
+            return flag;
+        }
+
+        string temp="";
+        for(int i=idx;i<s.size();i++)
+        {
+            temp+=s[i];
+            unsigned long long  new_prev_num=getNoFromString(temp); 
+
+            if(prevnum==-1 || isInDescendingOrder(new_prev_num,prevnum))
+            {
+                bool flag=true;
+                if(prevnum==-1 )
+                {
+                  flag =false;
+                }
+                if( helper(s,new_prev_num,i+1 , flag))
+                {
+                    return true;
+                }   
+            
+            }
+        }
+
+
+        return false;
+
+    }
+
+    bool splitString(string s) {
+       return helper(s,-1,0,false);
+
+        
+    }
+};
