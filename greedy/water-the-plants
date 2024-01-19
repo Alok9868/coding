@@ -1,0 +1,72 @@
+https://www.geeksforgeeks.org/problems/water-the-plants--170646/1
+class Solution
+{
+    int min_sprinklers(int gallery[], int n)
+    {
+        
+        List<List<Integer>> rangeslist = new ArrayList<>();
+        for(int i=0;i<n;i++)
+        {
+            int r=gallery[i];
+            if(r!=-1)
+            {
+                Integer leftrange=Math.max(0,i-r);  // 
+                Integer rightrange=Math.min(n-1,r+i);
+                List<Integer> range=new ArrayList<>();
+                range.add(leftrange);
+                range.add(rightrange);
+                rangeslist.add(range);
+            }
+        }
+        
+        
+        Collections.sort(rangeslist, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> list1, List<Integer> list2) {
+                // Compare based on the first element of each list
+                return Integer.compare(list1.get(0), list2.get(0));
+            }
+        });
+        
+        // {0,3} {0,4} {4,4} {5,5}
+        
+        // {0,2} {0,4} {0,5} {2,6} {5,5} {6,6} {8,8}
+        
+        // target - 7
+        // maxrightend= 6
+        
+        // 2
+        
+        int i=0;
+        int tap=0;
+        int target=0;
+        int size=rangeslist.size();
+        while(target<n)
+        {
+            int maxRightEnd=-1;
+            while(i<size)
+            {
+                if(rangeslist.get(i).get(0)<=target)
+                {
+                    maxRightEnd=Math.max(maxRightEnd,rangeslist.get(i).get(1));
+                    i++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if(maxRightEnd<target)
+            {
+                return -1;   
+            }
+            
+            tap+=1;
+            target=1+maxRightEnd;
+        }
+        
+        
+       
+       return tap; 
+    }
+}
