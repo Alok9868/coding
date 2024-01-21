@@ -1,0 +1,50 @@
+https://leetcode.com/problems/house-robber/description/?envType=daily-question&envId=2024-01-21
+class Solution {
+public:
+
+    int helper(vector<int>&nums,int idx , vector<int> &dp)
+    {
+        if(idx>=nums.size())
+        {
+            return 0;
+        }
+
+
+        if(dp[idx]!=-1)
+        {
+            return dp[idx];
+        }
+
+        int rob_curr_house=helper(nums,idx+2 , dp) + nums[idx]; 
+        int leave_curr_house=helper(nums,idx+1 , dp ); 
+
+        return dp[idx]=max(rob_curr_house,leave_curr_house);
+
+
+    }
+
+
+    int rob(vector<int>& nums) {
+
+        int n=nums.size();
+        if(n==1)
+        {
+            return nums[0];
+        }
+
+        vector<int>dp(n+2,0);
+        for(int i=n-1;i>=0;i--)
+        {
+            int rob_curr_house=dp[i+2]+ nums[i]; 
+            int leave_curr_house=dp[i+1];
+            dp[i]=max(rob_curr_house,leave_curr_house);
+        }
+        
+
+
+        return dp[0];
+
+
+        
+    }
+};
