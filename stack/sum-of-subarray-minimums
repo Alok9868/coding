@@ -1,0 +1,98 @@
+https://leetcode.com/problems/sum-of-subarray-minimums/description/?envType=daily-question&envId=2024-01-20
+class Solution {
+public:
+
+
+    typedef unsigned long long ll;
+
+    void addSum(ll num,ll sum)
+    {
+        int mod=1e9+7;
+        sum=(sum+num)%mod;
+        return ;
+    }
+
+    int sumSubarrayMins(vector<int>& arr) {
+        
+        int n=arr.size();
+        ll sum=0;
+
+        //left se mini
+        // 3 1 2 4 
+        //right mini 
+        // 1  1  2  4
+
+        // 3 + (n-i-1)*rightmini= 3 + 3 = 6
+        // 1 + (n-i-1)*rightmini= 1 + 2*1 = 3 
+        // 2 + (n-i-1)*rightmini= 2 + 2*1 = 4
+        // 4 + (n-i-1)*rightmini= 4 + 0 = 4 
+        vector<int>leftmini(n,0);
+        vector<int>rightmini(n,0);
+        // for(int i=n-2;i>=0;i--)
+        // {
+        //     rightmini[i]=min(arr[i],rightmini[i+1]);   
+        // }
+        
+        stack<int>st;
+
+
+    
+        for(int i=0;i<n;i++)
+        {
+            while(!st.empty() && arr[st.top()]>= arr[i])
+            {
+                st.pop();
+            }
+
+            if(st.empty())
+            {
+                leftmini[i]=-1;
+            }
+            else
+            {
+                leftmini[i]=st.top();
+            }
+            st.push(i);
+           
+        }
+
+        while(!st.empty())
+        {
+            st.pop();
+        }
+
+        for(int i=n-1;i>=0;i--)
+        {
+            while(!st.empty() && arr[st.top()]> arr[i])
+            {
+                st.pop();
+            }
+            if(st.empty())
+            {
+                rightmini[i]=n;
+            }
+            else
+            {
+                rightmini[i]=st.top();
+            }
+            st.push(i);
+        }
+
+        // -1
+        // 1 
+
+        int mod=1e9+7;
+        for (int i = 0; i < n; i++) {
+            
+            ll d1 = i - leftmini[i]; //distance to nearest smaller to left
+            ll d2 = rightmini[i] - i; //distance to nearest smaller to right 
+            ll total_ways_for_i_min = d1*d2;
+            ll sum_i_in_total_ways  = arr[i] * (total_ways_for_i_min);
+            sum  = (sum + sum_i_in_total_ways)%mod;
+        }
+        return sum;
+
+
+
+    }
+};
