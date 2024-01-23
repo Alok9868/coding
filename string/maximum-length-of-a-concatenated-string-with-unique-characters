@@ -1,5 +1,57 @@
 https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/?envType=daily-question&envId=2024-01-23
 
+
+// O(n*n) O(n) approach
+class Solution {
+public:
+    
+    int ans;
+    void helper(vector<string>& arr , vector<int>dict , int idx , int len)
+    {
+        if(idx==arr.size())
+        {
+            ans=max(ans,len);
+            return ;
+        }
+
+        helper(arr,dict,idx+1 , len);
+        int size=arr[idx].size();
+        bool flag=true;
+        for(int i=0;i<size;i++)
+        {
+            int index=arr[idx][i]-'a';
+            if(dict[index]==0)
+            {   
+                dict[index]=1;
+            }
+            else
+            {
+                flag=false;
+                break;
+            }
+        }
+
+        if(flag)
+        {
+            helper(arr,dict,idx+1,len+size);
+        }
+
+    }
+
+    int maxLength(vector<string>& arr) {
+
+        ans=0;
+        vector<int>dict(26,0);
+        helper(arr,dict,0,0);
+        return ans;
+
+
+        
+    }
+};
+
+
+// O (n*n) O(1)space approach
 class Solution {
 public:
     
