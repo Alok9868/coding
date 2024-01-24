@@ -1,0 +1,77 @@
+https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/description/?envType=daily-question&envId=2024-01-24
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+
+    // 1-2
+    //1122 - 1221
+
+
+    //11222 12221
+    //11222333.  12233321.  2 odd rem - even.  123312321
+    // 2233 - all -even - palindrome
+    //111222333 -    122333211 - 123 2  1  3  321.  // odd - odd rem-even
+    // even - always make palindrome
+    // odd - 1    12233321
+
+    int checkIfCanBePalindrome(vector<int>&dict)
+    {
+        int oddcnt=0;
+        for(int i=1;i<10;i++)
+        {
+            if((dict[i]&1)==1 )
+            {
+                oddcnt++;
+            }
+             if(oddcnt>1)
+            {
+                return 0;
+            }
+        }
+
+        return 1;
+    }
+
+
+    int helper(TreeNode*root,vector<int>dict)
+    {
+        if(!root)
+        {
+            return 0;
+        }
+
+        dict[root->val]++;
+        if((!root->left) && (!root->right))
+        {
+            return checkIfCanBePalindrome(dict);
+        }
+        int left=helper(root->left,dict);
+        int right=helper(root->right,dict);
+        return left+right;
+
+    }
+
+
+
+    int pseudoPalindromicPaths (TreeNode* root) {
+
+        vector<int>dict(10,0);
+        return helper(root,dict);
+
+
+
+
+    }
+};
