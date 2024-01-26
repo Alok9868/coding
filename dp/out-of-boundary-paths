@@ -1,0 +1,51 @@
+https://leetcode.com/problems/out-of-boundary-paths/description/?envType=daily-question&envId=2024-01-26
+
+class Solution {
+
+    public:
+    int dx[4]={0,0,-1,1};
+    int dy[4]={1,-1,0,0};
+    int row,col;
+    int mod;
+    long  helper(int maxMove, int i, int j ,
+       vector<vector<vector<int>>>&dp)
+    {
+        if(i<0 || i>=row || j<0 || j>=col )
+        {
+            return 1;
+        }
+
+        if(maxMove==0)
+        {
+            return 0;
+        }
+
+        if(dp[i][j][maxMove]!=-1)
+        {
+            return dp[i][j][maxMove];
+        }
+        
+        long ans=0;
+        for(int k=0;k<4;k++)
+        {
+            int x_curr=i+dx[k];
+            int y_curr=j+dy[k];
+            ans=(ans+ (long)helper(maxMove-1,x_curr,y_curr,dp))%mod;
+        }
+
+        // return ans;
+        return dp[i][j][maxMove]=ans;
+    }
+
+
+
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+
+        row=m;
+        col=n;
+        mod=1e9+7;
+        vector<vector<vector<int>>>dp(m,vector<vector<int>>(n,vector<int>(maxMove+1,-1)));
+        return helper(maxMove,startRow,startColumn,dp);
+        
+    }
+};
