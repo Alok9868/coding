@@ -1,0 +1,77 @@
+https://leetcode.com/problems/k-inverse-pairs-array/description/?envType=daily-question&envId=2024-01-27
+
+class Solution {
+public:
+
+    int mod;
+    long helper(int n , int k ,  vector<vector<int>> &dp)
+    {
+        if(n==0)
+        {
+            return 0;
+        }
+
+        if(k==0)
+        {
+            return 1;
+        }
+
+
+        if(dp[n][k]!=-1)
+        {
+            return dp[n][k];
+        }
+
+
+        long solve=0;
+        for(int inv=0;inv<=min(n-1,k);inv++)
+        {
+            solve=(solve+ helper(n-1,k-inv,dp))%mod;
+        }
+
+        return dp[n][k]=solve;
+
+    }
+
+    int kInversePairs(int n, int K) {
+
+        mod=1e9+7;
+        
+        vector<int>prev(K+1,0);
+        
+        // 0 0
+        // 1 0
+        // 
+        //
+
+
+        for(int i=0;i<=n;i++)
+        {
+            vector<int>curr(K+1,0);
+            for(int k=0;k<=K;k++)
+            {
+                 if(i==0)
+                {
+                    curr[k]=0;
+                    continue;
+                }
+                if(k==0)
+                {
+                    curr[k]=1;
+                    continue;
+                }
+                long solve=0;
+                for(int inv=0;inv<=min(i-1,k);inv++)
+                {
+                    solve=(solve+prev[k-inv])%mod;
+                }
+                curr[k]=solve;
+            }
+            prev=curr;
+        }
+
+
+        return prev[K];
+        
+    }
+};
