@@ -1,0 +1,70 @@
+https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/description/?envType=daily-question&envId=2024-01-28
+
+class Solution {
+public:
+
+    int helper(vector<vector<int>>& matrix, int &target)
+    {
+        int m=matrix.size();
+        int n=matrix[0].size();
+        int ans=0;
+        for(int rowStart=0;rowStart<m;rowStart++)
+        {
+            for(int colStart=1;colStart<n;colStart++)
+            {
+                matrix[rowStart][colStart]+=matrix[rowStart][colStart-1];
+            }
+        }
+
+
+        //0 1 1
+        //1 2 3 
+        //0 1 1 
+        //2 
+
+        for(int colStart=0;colStart<n;colStart++)
+        {
+            for(int j=colStart;j<n;j++)
+            {
+                unordered_map<int,int>umap;
+                umap[0]=1;
+                int sum=0;
+                for(int rowStart=0;rowStart<m;rowStart++)
+                {
+                    sum+=matrix[rowStart][j];
+                    if(colStart!=0)
+                    {
+                        sum-=matrix[rowStart][colStart-1];
+                    }
+                    if(umap.find(sum-target)!=umap.end())
+                    {
+                        ans+=umap[sum-target];
+                    }
+                    umap[sum]++;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    int calcSumOfSubMatrix(vector<vector<int>>& matrix,int rStart, int rSize , int cStart , int cSize)
+    {
+        long sum=0;
+        for(int i=rStart;i<rStart+rSize;i++)
+        {
+            for(int j=cStart;j<cStart+cSize;j++)
+            {
+                sum+=matrix[i][j];
+            }
+        }
+        return sum;
+    }
+
+
+    int numSubmatrixSumTarget(vector<vector<int>>& matrix, int target) {
+        
+
+        return helper(matrix,target);
+    }
+};
