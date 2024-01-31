@@ -27,3 +27,47 @@ public:
 
     }
 };
+
+
+
+
+//optimized appraoch o(n) o(1)space
+
+
+
+
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temp) {
+        
+        int n=temp.size();
+        vector<int>ans(n,0);
+        int hottest=temp[n-1];
+        for(int i=n-2;i>=0;i--)
+        {
+            if(hottest<=temp[i])
+            {
+                hottest=temp[i];
+                ans[i]=0;
+                continue;
+            }
+            int idx=i+1;
+            while(idx <n && temp[idx]<=temp[i])
+            {
+                idx=ans[idx]+idx;
+            }   
+            if(idx==n)
+            {
+                ans[i]=0;
+            }
+            else
+            {
+                ans[i]=idx-i;
+            }
+        }
+
+        return ans;
+
+    }
+};
