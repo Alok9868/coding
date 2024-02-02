@@ -1,0 +1,77 @@
+https://leetcode.com/problems/sequential-digits/description/?envType=daily-question&envId=2024-02-02
+
+class Solution {
+public:
+
+    int findNextNum(int digits,int stDigit)
+    {
+        //3 
+        //1
+
+        long long num=0;
+        while(digits--)
+        {
+            num=(num*10+(stDigit++));
+        }
+        return num;
+
+    }
+
+    vector<int> findNextSequentialNo(int low, int high)
+    {
+
+        vector<int>ans;
+        int no=low;
+        int lowDigits=0;
+        int highDigits=0;
+        while(no>0)
+        {
+            no=no/10;
+            lowDigits++;
+        }
+        no=high;
+        while(no>0)
+        {
+            no=no/10;
+            highDigits++;
+        }
+
+
+        //lowdigit=4
+        //highdigit=5
+
+        //1234 2345 3456 4567 5678 6789 
+        //12345 23456
+        for(int digits=lowDigits;digits<=highDigits;digits++)
+        {
+            // stdigit - 6
+            // digits - 5 
+            for(int stDigit=1;stDigit+digits<=10;stDigit++)
+            {
+                long num=findNextNum(digits,stDigit);
+                if(num>high)
+                {
+                    return ans;
+                }
+                if(num>=low && num<=high)
+                {
+                    ans.push_back(num);
+                }
+            }
+        }
+    
+        return ans;
+
+    }
+
+    vector<int> sequentialDigits(int low, int high) {
+        
+        // 9 
+        // 1 -6 
+
+        return findNextSequentialNo(low,high);
+
+
+
+    }
+};
