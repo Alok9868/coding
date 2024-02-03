@@ -1,0 +1,60 @@
+https://leetcode.com/problems/partition-array-for-maximum-sum/description/?envType=daily-question&envId=2024-02-03
+
+class Solution {
+public:
+
+
+    int helper(vector<int>& arr, int k , int idx,vector<int>&dp)
+    {
+        if(idx==arr.size())
+        {
+            return 0;
+        }
+
+
+        if(dp[idx]!=-1)
+        {
+            return dp[idx];
+        }
+        int maxi=0;
+        int ans=0;
+        for(int i=idx;i<(k+idx) && i<arr.size() ; i++){
+            
+            if(maxi<arr[i])
+            {
+                maxi=arr[i];
+            }
+
+            int curr_partition_sum=helper(arr,k,i+1,dp)+((maxi)*(i-idx+1));
+            ans=max(curr_partition_sum,ans);
+        }
+
+        return dp[idx]=ans;
+
+
+    }
+
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+
+        int n=arr.size();
+        vector<int>dp(n+1,0);
+        for(int idx=n-1;idx>=0;idx--)
+        {
+            int ans=0;
+            int maxi=0;
+            for(int i=idx;i<(k+idx) && i<n ; i++)
+            {
+                if(maxi<arr[i])
+                {
+                    maxi=arr[i];
+                }
+
+                int curr_partition_sum=dp[i+1]+((maxi)*(i-idx+1));
+                ans=max(curr_partition_sum,ans);
+            }
+            dp[idx]=ans;
+        }
+
+        return dp[0];
+    }
+};
