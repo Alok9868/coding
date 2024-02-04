@@ -1,0 +1,88 @@
+https://leetcode.com/problems/minimum-window-substring/description/?envType=daily-question&envId=2024-02-04
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+
+        int m=s.length();
+        int n=t.length();
+        unordered_map<int,int>freq;
+        for(int i=0;i<n;i++)
+        {
+            freq[t[i]-'a']++;
+        }
+
+        unordered_map<int,int>currFreq;
+        int count=0;
+        int j=0;
+        int minlength=1e6;
+        int idx=1e6;
+
+        //minlength=1e6
+        //index=1e6
+        //a-1
+        //b-1
+        //c-1 
+
+        //a-1
+        //b-1
+        //c-1
+
+        for(int i=0;i<m;i++)
+        {
+            int index=s[i]-'a';
+            if(freq.find(index)!=freq.end())
+            {
+                if(freq[index]>currFreq[index])
+                {   
+                    count++;    
+                }
+                currFreq[index]++;
+                if(count==n)
+                {
+                    //i=10
+                    //j=5
+                    //curr_len=6
+                    //index=-1
+                    //minlength=6
+                    int curr_len=i-j+1; 
+                    while(j<i)
+                    {
+                        int curr_index=s[j]-'a';
+                        if(freq.find(curr_index)!=freq.end() )
+                        {
+                            if(currFreq[curr_index]>freq[curr_index])
+                            {
+                                currFreq[curr_index]--;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        j++;
+                        curr_len--;
+                    }
+
+                    if(minlength>curr_len)
+                    {
+                        idx=j;
+                        minlength=curr_len;
+                    }
+                }   
+            }
+        }
+
+        if(idx==1e6)
+        {
+            return "";
+        }
+
+        // cout<<idx<<" "<<minlength<<endl;
+        // return "";
+        return s.substr(idx,minlength);
+
+
+
+    }
+};
