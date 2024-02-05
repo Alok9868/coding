@@ -1,5 +1,7 @@
 https://leetcode.com/problems/maximum-good-subarray-sum/description/
 
+
+//o(n) , o(1)
 class Solution {
 public:
     long long maximumSubarraySum(vector<int>& nums, int k) {
@@ -63,3 +65,65 @@ public:
 
     }
 };
+
+
+//optimized approach   - o(n) , o(n)
+
+
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& nums, int k) {
+        
+        int n=nums.size();
+        vector<long long >prefixSum(n+1,0);
+        prefixSum[0]=nums[0];
+        for(int i=1;i<n;i++)
+        {
+            prefixSum[i]=prefixSum[i-1]+nums[i];
+        }
+
+        unordered_map<int,long long>umap;
+        long long ans=-1e15;
+        long long sum=0;
+        umap[nums[0]]=0;
+
+
+        for(int i=1;i<n;i++)
+        {
+            sum+=nums[i];
+            int exp1=nums[i]-k;
+            int exp2=nums[i]+k;
+            if(umap.find(exp1)!=umap.end())
+            {
+                long long curr_ans=prefixSum[i]-umap[exp1];
+                ans=max(ans,curr_ans);
+            }
+            if(umap.find(exp2)!=umap.end())
+            {
+                long long curr_ans=prefixSum[i]-umap[exp2];
+                ans=max(ans,curr_ans);
+            }
+
+            if(umap.find(nums[i])!=umap.end())
+            {
+                umap[nums[i]]=min(umap[nums[i]],prefixSum[i-1]);
+            }
+            else
+            {
+                umap[nums[i]]=prefixSum[i-1];
+            }
+        }
+
+        if(ans==-1e15)
+        {
+            return 0;
+        }
+        return ans;
+
+
+
+
+    }
+};
+
+
