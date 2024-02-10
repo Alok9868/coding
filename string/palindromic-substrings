@@ -33,6 +33,65 @@ public:
             }
         }
 
+        return ans;
+        
+    }
+};
+
+
+//Optimized approach
+
+
+class Solution {
+public:
+
+    int evenLength(string &s , int i)
+    {
+        int j=i;
+        int k=i-1;
+        int n=s.size();
+        int cnt=0;
+        while(k>=0 && j<n)
+        {
+            if(s[j]!=s[k])
+            {
+                break;
+            }
+            k--;
+            j++;
+            cnt++;
+        }
+
+        return cnt;
+    }
+    int oddLength(string &s , int i)
+    {
+        int j=i+1;
+        int k=i-1;
+        int n=s.size();
+        int cnt=1;
+        while(k>=0 && j<n)
+        {
+            if(s[j]!=s[k])
+            {
+                break;
+            }
+            k--;
+            j++;
+            cnt++;
+        }
+        return cnt;
+    }
+    int countSubstrings(string s) {
+
+
+        int ans=0;
+        int n=s.size();
+        for(int i=0;i<n;i++)
+        {
+            ans+=evenLength(s,i);
+            ans+=oddLength(s,i);
+        }
 
         return ans;
         
