@@ -1,0 +1,40 @@
+
+https://leetcode.com/problems/palindromic-substrings/description/?envType=daily-question&envId=2024-02-10
+class Solution {
+public:
+
+
+    bool isPalindrome(string &temp , int i, int j)
+    {
+        while(i<j)
+        {
+            if(temp[i]!=temp[j])
+            {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    int countSubstrings(string s) {
+
+        int n=s.size();
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int len=1;len<=n-i;len++)
+            {
+                if(isPalindrome(s,i,i+len-1))
+                {
+                    ans++;
+                }
+            }
+        }
+
+
+        return ans;
+        
+    }
+};
