@@ -1,0 +1,43 @@
+https://leetcode.com/problems/palindromic-substrings/description/?envType=daily-question&envId=2024-02-10
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+
+        int n=s.size();
+        int ans=0;
+        vector<vector<bool>>t(n,vector<bool>(n,false));
+        for(int l=1;l<=n;l++)
+        {
+            for(int i=0;i+l-1<n;i++)
+            {
+                int j=i+l-1;
+                if(i==j)
+                {
+                    t[i][j]=true;
+                }
+                else if(i+1==j)
+                {
+                    if(s[i]==s[j])
+                    {
+                        t[i][j]=true;
+                    }
+                }
+                else
+                {
+                    if(s[i]==s[j] && t[i+1][j-1])
+                    {
+                        t[i][j]=true;
+                    }
+                }
+                if(t[i][j])
+                {
+                    ans++;
+                }
+            }
+        }
+
+        return ans;
+        
+    }
+};
