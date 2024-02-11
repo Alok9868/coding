@@ -1,0 +1,76 @@
+https://leetcode.com/contest/weekly-contest-384/problems/number-of-subarrays-that-match-a-pattern-ii/
+
+class Solution {
+public:
+    
+    //2 , 3 
+    //i=2
+    //j=3
+    bool checkIfPatternMatching(int i , int size , vector<int>&nums , vector<int>&pattern)
+    {
+        int k=0;
+        int j=i+1;
+        bool flag=false;
+        while(j<=size && k<pattern.size())
+        {
+            if(nums[i]<nums[j] && pattern[k]==1 || nums[i]==nums[j]&&pattern[k]==0 ||nums[i]>nums[j] && pattern[k]==-1 )
+            {
+                i++;
+                j++;
+                k++;
+                flag=true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        return flag;
+    }
+    int countMatchingSubarrays(vector<int>& nums, vector<int>& pattern) {
+        
+        int n=nums.size();
+        int m=pattern.size();
+        int ans=0;
+        // [1,2,3,4,5,6]
+        // [1,1]
+        //i=0;
+        // 1 1 1 1 1
+        vector<int>prePattern(n-1);
+        for(int i=1;i<n-1;i++)
+        {
+            if(nums[i-1]<nums[i])
+            {
+                prePattern[i-1]=1;
+            }
+            else if(nums[i]==nums[i-1])
+            {
+                  prePattern[i-1]=0;
+            }
+            else
+            {
+                  prePattern[i-1]=-1;
+            }
+        }
+        
+        for(int i=0;i<n;i++)
+        {
+            int j=i+m;
+            if(j>=n)
+            {
+                break;
+            }
+            if(checkIfPatternMatching(i,j,nums,pattern))
+            {
+                ans++;
+            }
+        }
+        
+        return ans;
+            
+            
+        
+        
+    }
+};
