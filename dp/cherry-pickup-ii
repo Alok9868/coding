@@ -1,0 +1,66 @@
+https://leetcode.com/problems/cherry-pickup-ii/description/?envType=daily-question&envId=2024-02-11
+
+class Solution {
+public:
+    int row,col;
+
+    bool isValid(int x, int y)
+    {
+        if(x<0 || x>=row || y<0 || y>=col)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    int ydir[3]={0,-1,1};
+    int helper(vector<vector<int>>& grid , int rob1x, int rob1y, int rob2x,
+    int rob2y , unordered_map<string,int>&umap)
+    {
+        if(!isValid(rob1x,rob1y) || !isValid(rob2x,rob2y))
+        {
+            return 0;
+        }
+
+        string curr_str=to_string(rob1x)+"$"+to_string(rob1y)+"$"+
+        to_string(rob2x)+"$"+to_string(rob2y);
+        if(umap.find(curr_str)!=umap.end())
+        {
+            return umap[curr_str];
+        }
+
+        int ans=0;
+        if(rob1x==rob2x && rob1y==rob2y)
+        {
+            ans+=grid[rob1x][rob1y];
+        }
+        else
+        {
+            ans+=grid[rob1x][rob1y];
+            ans+=grid[rob2x][rob2y];
+        }
+        int curr=0;
+        for(int i=0;i<3;i++)
+        {
+            int new_x1=rob1x+1;
+            int new_y1=rob1y+ydir[i];
+            for(int k=0;k<3;k++)
+            {
+                int new_x2=rob2x+1;
+                int new_y2=rob2y+ydir[k];
+                curr=max(curr,helper(grid,new_x1,new_y1,new_x2,new_y2,umap));
+            }
+        }
+
+        ans+=curr;
+        return umap[curr_str]=ans;
+
+    }
+    int cherryPickup(vector<vector<int>>& grid) {
+        
+        row=grid.size();
+        col=grid[0].size();
+        unordered_map<string,int>umap;
+        return helper(grid,0,0,0,col-1,umap);
+    }
+};
