@@ -64,3 +64,112 @@ public:
         return helper(grid,0,0,0,col-1,umap);
     }
 };
+
+//Optimized solution
+class Solution {
+public:
+    int row,col;
+
+    bool isValid(int x, int y)
+    {
+        if(x<0 || x>row || y<0 || y>col)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    int ydir[3]={0,-1,1};
+    int helper(vector<vector<int>>& grid , int xcord, int rob1y,
+    int rob2y ,vector<vector<vector<int>>>&dp )
+    {
+        if(!isValid(xcord,rob1y) || !isValid(xcord,rob2y))
+        {
+            return 0;
+        }
+
+        
+        if(dp[xcord][rob1y][rob2y]!=-1)
+        {
+            return dp[xcord][rob1y][rob2y];
+        }
+
+        int ans=0;
+        if(rob1y==rob2y)
+        {
+            ans+=grid[xcord][rob1y];
+        }
+        else
+        {
+            ans+=grid[xcord][rob1y];
+            ans+=grid[xcord][rob2y];
+        }
+        int curr=0;
+        for(int i=0;i<3;i++)
+        {
+            int new_x1=xcord+1;
+            int new_y1=rob1y+ydir[i];
+            for(int k=0;k<3;k++)
+            {
+                int new_y2=rob2y+ydir[k];
+                curr=max(curr,helper(grid,new_x1,new_y1,new_y2,dp));
+            }
+        }
+
+        ans+=curr;
+        return dp[xcord][rob1y][rob2y]=ans;
+
+    }
+    int cherryPickup(vector<vector<int>>& grid) {
+        
+        row=grid.size();
+        col=grid[0].size();
+        vector<vector<vector<int>>>dp(row+1,vector<vector<int>>(col+1,vector<int>(col+1,0)));
+        
+        for(int xcord=row-1;xcord>=0;xcord--)
+        {
+            for(int rob1y=0;rob1y<col;rob1y++)
+            {
+                for(int rob2y=0;rob2y<col;rob2y++)
+                {
+                    int ans=0;
+                    if(rob1y==rob2y)
+                    {
+                        ans+=grid[xcord][rob1y];
+                    }
+                    else
+                    {
+                        ans+=grid[xcord][rob1y];
+                        ans+=grid[xcord][rob2y];
+                    }
+                    int curr=0;
+                    for(int i=0;i<3;i++)
+                    {
+                        int new_x1=xcord+1;
+                        int new_y1=rob1y+ydir[i];
+                        for(int k=0;k<3;k++)
+                        {
+                            int new_y2=rob2y+ydir[k];
+                            if(isValid(new_x1,new_y1) && isValid(new_x1,new_y2))
+                            {
+                                curr=max(curr,dp[new_x1][new_y1][new_y2]);
+                            }
+                            
+                        }
+                    }
+                    ans+=curr;
+                    dp[xcord][rob1y][rob2y]=ans;
+                }
+               
+            }
+            
+        }
+
+        return dp[0][0][col-1];
+
+
+
+    }
+};
+
+
