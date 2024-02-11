@@ -74,3 +74,79 @@ public:
         
     }
 };
+
+
+// optimized soln 
+t.c -O(n+m)
+s.c -O(m+n)
+class Solution {
+public:
+    
+    vector<int>kmp(string s)
+    {
+        vector<int>lps(s.size(),0);
+        for(int i=1;i<lps.size();i++)
+        {
+            int prev_idx=lps[i-1];
+            while(prev_idx>0 && s[i]!=s[prev_idx])
+            {
+                prev_idx=lps[prev_idx-1];
+            }
+            lps[i]=prev_idx+(s[i]==s[prev_idx]?1:0);
+        }
+        return lps;
+    }
+    
+    
+    int countMatchingSubarrays(vector<int>& nums, vector<int>& pattern) {
+        
+        int n=nums.size();
+        int m=pattern.size();
+        string sPattern="", numsPattern="";
+        for(int i=0;i<m;i++)
+        {
+            if(pattern[i]==1)
+            {
+                sPattern+='a';
+            }
+            else if(pattern[i]==0)
+            {
+                sPattern+='s';
+            }
+            else
+            {
+                sPattern+='d';
+            }
+        }
+        
+        for(int i=0;i<n-1;i++)
+        {
+            if(nums[i+1]>nums[i])
+            {
+                numsPattern+='a';
+            }
+            else if(nums[i+1]==nums[i])
+            {
+                numsPattern+='s';
+            }
+            else
+            {
+                numsPattern+='d';
+            }    
+        }
+        
+        string s=sPattern+"#"+numsPattern;
+        vector<int>kmpVector=kmp(s);
+        int ans=0;
+        for(int i=m;i<kmpVector.size();i++)
+        {
+            if(kmpVector[i]==m)
+            {
+                ans++;
+            }
+        }
+        
+        return ans;
+        
+    }
+};
