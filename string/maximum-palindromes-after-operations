@@ -1,0 +1,84 @@
+https://leetcode.com/contest/weekly-contest-384/problems/maximum-palindromes-after-operations/
+
+class Solution {
+public:
+    int maxPalindromesAfterOperations(vector<string>& words) {
+        
+        int n=words.size();
+        vector<int>dict(26,0);
+        vector<int>temp;
+        for(int i=0;i<n;i++)
+        {
+            
+            for(int j=0;j<words[i].size();j++)
+            {   
+                int index=words[i][j]-'a';
+                dict[index]++;
+            }
+            temp.push_back(words[i].size());
+        }
+        
+        sort(temp.begin(),temp.end());
+        int pairs=0;
+        int singles=0;
+        //calc pairs and single chars
+        for(int i=0;i<26;i++)
+        {
+            if(dict[i]&1)
+            {
+                singles++;
+            }
+            pairs+=((dict[i]/2));
+        }
+            
+        
+        int ans=0;
+        for(int i=0;i<temp.size();i++)
+        {
+            int size=temp[i];
+            int req_pairs=size/2;
+            //odd case 
+            if(size&1)
+            {
+                // check if singles is present and also no of pairs are present 
+                if(singles>0)
+                {
+                    singles--;
+                    if(pairs-req_pairs >=0)
+                    {
+                        pairs-=req_pairs;
+                        ans++;
+                    }
+                }
+                else
+                {
+                    //4 req_pair
+                    //5 pairs
+                    // we have to convert one pair to two singles , to achieve palindrome 
+                    if(pairs-(req_pairs+1) >=0)
+                    {
+                        pairs-=(req_pairs+1);
+                        ans++;
+                        singles=1;
+                    }
+                    
+                }
+            }
+            else // even case 
+            {
+                if(pairs-req_pairs >=0)
+                {
+                    pairs-=req_pairs;
+                    ans++;
+                }
+            }
+            
+            
+        }
+        
+        
+        
+        
+        return ans;
+    }
+};
