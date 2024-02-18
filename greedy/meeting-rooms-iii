@@ -1,0 +1,97 @@
+https://leetcode.com/problems/meeting-rooms-iii/description/?envType=daily-question&envId=2024-02-18
+
+
+class Solution {
+public:
+
+    bool static comp(vector<int>&a,vector<int>&b)
+    {
+        if(a[0]<b[0])
+        {
+            return true;
+        }
+        return false;
+    }
+
+    class compare
+    {
+        public:
+        bool operator()(pair<int,int>&a,pair<int,int>&b)
+        {
+               if (a.first != b.first) {
+                    return a.first > b.first;
+                }
+                // If the first elements are equal, compare based on the second element
+                return a.second > b.second;
+        }
+    };
+    
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+        
+        sort(meetings.begin(),meetings.end());
+
+
+        vector<int>ans(n,0);
+        vector<long long> time(n,0);
+       
+        
+        for(int i=0;i<meetings.size();i++)
+        {   
+            int st_time=meetings[i][0];
+            int end_time=meetings[i][1];
+
+            long long min_end_time=1e18;
+
+            bool flag=false;
+            int min_ind_room=-1;
+
+            for(int room=0;room<n;room++)
+            {
+                    long long curr_room_end_time=time[room];
+                    if(curr_room_end_time<min_end_time)
+                    {
+                        min_end_time=curr_room_end_time;
+                        min_ind_room=room;
+                    }
+
+                    if(curr_room_end_time<=st_time)
+                    {
+                        flag=true;
+                        min_ind_room=room;
+                        ans[min_ind_room]++;
+                        time[min_ind_room]=end_time;
+                        // if we found a room with min end_time , we fill that only
+                        break;
+                    }
+            }
+            if(!flag)
+                {
+                    ans[min_ind_room]++;
+                    time[min_ind_room]+=(1ll*(end_time-st_time));
+                }
+
+        }
+        
+        int max_room_no=-1;
+        int max_room_allocated=-1;
+
+        for(int i=0;i<n;i++)
+        {
+            int curr_room=i;
+            if(ans[curr_room]>max_room_allocated)
+            {
+                max_room_allocated=ans[curr_room];
+                max_room_no=curr_room;
+            }
+        }
+
+
+        return max_room_no;
+
+        
+
+
+
+
+    }
+};
