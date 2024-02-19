@@ -1,0 +1,20 @@
+https://leetcode.com/problems/power-of-two/description/?envType=daily-question&envId=2024-02-19
+
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        
+
+        if(n==0)
+        {
+            return false;
+        }
+
+        // just make the lsb 0 so that , we can check that other bits are also 0 or not ,
+if it power of 2 then other bits will be one , and we can return our ans .
+
+        long long num=n;
+        num=num&num-1;
+        return num==0;
+    }
+};
