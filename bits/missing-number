@@ -1,0 +1,20 @@
+https://leetcode.com/problems/missing-number/?envType=daily-question&envId=2024-02-20
+
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+
+
+        int n =nums.size();
+        int xor_num=nums[0]^0;
+        for(int i=1;i<n;i++)
+        {
+            xor_num=xor_num^nums[i]^i;
+        }
+
+        xor_num=xor_num^n;
+        return xor_num;
+
+        
+    }
+};
