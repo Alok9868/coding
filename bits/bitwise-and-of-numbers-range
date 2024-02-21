@@ -1,0 +1,12 @@
+https://leetcode.com/problems/bitwise-and-of-numbers-range/description/?envType=daily-question&envId=2024-02-21
+
+
+class Solution {
+public:
+    int rangeBitwiseAnd(int left, int right) {
+          while(right>left){
+            right&=(right-1);
+        }
+        return right;
+    }
+};
