@@ -1,0 +1,32 @@
+https://leetcode.com/problems/same-tree/description/?envType=daily-question&envId=2024-02-26
+class Solution {
+public:
+
+    bool helper(TreeNode* p, TreeNode* q)
+    {
+        if(!p || !q)
+        {
+            if(p||q)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        if(p->val!=q->val)
+        {
+            return false;
+        }
+
+        return helper(p->left,q->left) && helper(p->right,q->right);
+
+
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        
+        
+        return helper(p,q);
+
+
+    }
+};
