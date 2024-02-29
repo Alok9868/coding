@@ -1,0 +1,55 @@
+
+
+https://leetcode.com/problems/even-odd-tree/description/?envType=daily-question&envId=2024-02-29
+class Solution {
+public:
+    bool isEvenOddTree(TreeNode* root) {
+
+        queue<TreeNode*>pendingnodes;
+        pendingnodes.push(root);
+        int level=0;
+        while(!pendingnodes.empty())
+        {   
+            int size=pendingnodes.size();
+            int maxi=INT_MIN;
+            int mini=INT_MAX;
+            while(size--)
+            {
+                TreeNode*front=pendingnodes.front();
+                pendingnodes.pop();
+                if((level&1)==0) // even case 
+                {
+                    if(!(front->val&1) || (maxi>=front->val))
+                    {
+                        
+                        return false;
+                    }
+                    maxi=front->val;
+                }
+                else // odd case 
+                {
+                    if((front->val&1) || (mini<=front->val))
+                    {
+            
+                        return false;
+                    }
+                    mini=front->val;
+                }
+
+                if(front->left)
+                {
+                    pendingnodes.push(front->left);
+                }
+                if(front->right)
+                {
+                    pendingnodes.push(front->right);
+                }
+            }
+            level++;
+        }
+
+
+        return true;
+        
+    }
+};
