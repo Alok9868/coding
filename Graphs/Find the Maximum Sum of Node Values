@@ -1,0 +1,39 @@
+https://leetcode.com/contest/biweekly-contest-125/problems/find-the-maximum-sum-of-node-values/
+class Solution {
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        
+        long long sum=0;
+        int n=nums.size();
+        long long mini=INT_MAX;
+        int cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            long long ele=nums[i];
+            long long curr_xor=(ele^k);
+            if(curr_xor>ele)
+            {
+                sum+=curr_xor;
+                mini=min(curr_xor-ele,mini);
+                cnt++;
+            }
+            else
+            {
+                sum+=ele;
+                mini=min(ele-curr_xor,mini);
+            }
+        }
+        
+        if(cnt%2==0)
+        {
+            return sum;
+        }
+        
+        return sum-mini;
+        
+        
+        
+            
+        
+    }
+};
