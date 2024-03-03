@@ -1,0 +1,66 @@
+https://leetcode.com/contest/biweekly-contest-125/problems/count-pairs-of-connectable-servers-in-a-weighted-tree-network/
+
+class Solution {
+public:
+    
+    int ss,n;
+    unordered_map<int,vector<pair<int,int>>>adj;
+    void dfs(int node ,int parent, int dist , int &cnt)
+    {
+        if(dist%ss==0)
+        {
+            cnt++;
+        }
+        for(auto [ch,d]:adj[node])
+        {
+            int curr_node=ch;
+            if(curr_node==parent)
+            {
+                continue;
+            }
+            int curr_dist=d+dist;
+            dfs(curr_node,node,curr_dist,cnt);
+        }
+    }
+    
+    
+    vector<int> countPairsOfConnectableServers(vector<vector<int>>& edges, int ss) {
+        
+        n=edges.size()+1;
+        this->ss=ss;
+        for(int i=0;i<edges.size();i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            int w=edges[i][2];
+            adj[u].push_back({v,w});
+            adj[v].push_back({u,w});
+        }
+        
+        
+        vector<int>fans(n,0);
+
+        
+        for(int par=0;par<n;par++)
+        {
+            int ans=0,sum=0;
+            vector<int>temp;
+            for(auto it:adj[par])
+            {
+                int v=it.first;
+                int dist=it.second;
+                int cnt=0;
+                dfs(v,par,dist,cnt);
+                temp.push_back(cnt);
+                sum+=cnt;
+            }
+            for(auto el:temp)
+            {
+                ans+=(sum-el)*el;
+            }
+            fans[par]=(ans/2);
+        }
+        
+        return fans;
+    }
+};
