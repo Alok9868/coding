@@ -1,0 +1,37 @@
+https://leetcode.com/problems/bag-of-tokens/description/?envType=daily-question&envId=2024-03-04
+
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& tokens, int power) {
+        int n=tokens.size();
+        int i=0;
+        int j=n-1;
+        sort(tokens.begin(),tokens.end());
+        int curr_score=0;
+        int max_score=0;
+        while(i<=j)
+        {
+            if(power-tokens[i]>=0)
+            {
+                power-=tokens[i];
+                curr_score++;
+                i++;
+            }
+            else if(curr_score>0)
+            {
+                curr_score--;
+                power+=tokens[j];
+                j--;
+            }
+            else
+            {
+                break;
+            }
+            max_score=max(max_score,curr_score);
+        }
+
+        return max_score;
+
+        
+    }
+};
