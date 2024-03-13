@@ -1,0 +1,124 @@
+https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/description/
+
+
+class TrieNode
+{
+    public:
+    int bit;
+    TrieNode*left;
+    TrieNode*right;
+    
+
+    TrieNode(int bit)
+    {
+        left=NULL;
+        right=NULL;
+        this->bit=bit;
+    }
+};
+
+
+
+class Trie {
+public:
+
+    TrieNode*root;
+    Trie() {
+
+        root=new TrieNode('\0');
+    }
+    
+    void insert(int no) {
+        TrieNode*temp=root;
+        for(int i=31;i>=0;i--)
+        {
+           int i_bit=((no>>i)&1);
+           if(i_bit==1)
+           {
+                if(temp->right==NULL)
+                {
+                    temp->right=new TrieNode(1);
+                }
+                temp=temp->right;
+           }
+           else
+           {
+                if(temp->left==NULL)
+                {
+                    temp->left=new TrieNode(0);
+                }
+                temp=temp->left;
+           }
+        }
+        
+    }
+
+
+    int findMaxXOR(int no)
+    {
+        TrieNode*temp=root;
+        int max_xor=0;
+        for(int i=31;i>=0;i--)
+        {
+           int i_bit=((no>>i)&1);
+           if(i_bit==1)
+           {
+                if(temp->left==NULL)
+                {
+                    temp=temp->right;
+                    continue;
+                }
+                temp=temp->left;
+                max_xor+=pow(2,i);
+           }
+           else
+           {
+                if(temp->right==NULL)
+                {
+                    temp=temp->left;
+                   continue;
+                }
+                temp=temp->right;
+                max_xor+=pow(2,i);
+           }
+        }
+
+        return max_xor;
+    }
+
+
+    
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
+
+
+class Solution {
+public:
+    int findMaximumXOR(vector<int>& nums) {
+
+        Trie t;
+        for(auto &it:nums)
+        {
+            t.insert(it);
+        }
+
+        int ans=0;
+        for(auto &it:nums)
+        {
+            int curr_ans=t.findMaxXOR(it);
+            ans=max(ans,curr_ans);
+        }
+
+        return ans;
+
+
+        
+    }
+};
