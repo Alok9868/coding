@@ -1,0 +1,56 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+
+https://leetcode.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list/description/
+class Solution {
+public:
+    ListNode* removeZeroSumSublists(ListNode* head) {
+        
+
+        unordered_map<int,ListNode*>umap;
+        
+        ListNode*dummy=new ListNode(0);
+        ListNode*temp=head;
+        dummy->next=head;
+        int sum=0;
+        umap[0]=dummy;
+        while(temp)
+        {
+            sum+=temp->val;
+            if(umap.find(sum)!=umap.end())
+            {
+                int curr_sum=sum;
+                //delete the node and further nodes till current node 
+                ListNode*curr_node=umap[sum];
+                ListNode*prevNode=curr_node;
+                prevNode=prevNode->next;
+                while(prevNode!=temp)
+                {
+                    curr_sum+=prevNode->val;
+                    prevNode=prevNode->next;
+                    umap.erase(curr_sum);
+                }
+                curr_node->next=temp->next;
+            }
+            else
+            {
+                umap[sum]=temp;
+            }
+            temp=temp->next;
+        }
+
+
+        return dummy->next;
+
+    
+    }
+};
