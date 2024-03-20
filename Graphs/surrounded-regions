@@ -1,0 +1,124 @@
+https://leetcode.com/problems/surrounded-regions/description/
+
+class Solution {
+public:
+
+    bool  isValid(int x, int y)
+    {
+        if(x>=0 && x<n && y>=0 && y<m)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    void bfs(vector<vector<char>>& board , int i ,int j)
+    {
+        queue<pair<int,int>>q;
+        q.push({i,j});
+        board[i][j]='X';
+        int x_dir[]={-1,1,0,0};
+        int y_dir[]={0,0,1,-1};
+        while(!q.empty())
+        {
+            int x_curr=q.front().first;
+            int y_curr=q.front().second;
+            q.pop();
+            for(int i=0;i<4;i++)
+            {
+                int x_new=x_curr+x_dir[i];
+                int y_new=y_curr+y_dir[i];
+                if(isValid(x_new,y_new) && board[x_new][y_new]=='O')
+                {
+                    q.push({x_new,y_new});
+                    board[x_new][y_new]='X';
+                }
+            }
+        }
+
+    }
+
+    int n,m;
+    void solve(vector<vector<char>>& board) {
+        
+        n=board.size();
+        m=board[0].size();
+        queue<pair<int,int>>q;
+        for(int i=0;i<n;i++)
+        {
+            if(i==0 || i==n-1)
+            {
+                //explore all cols
+                for(int j=0;j<m;j++)
+                {
+                    if(board[i][j]=='O')
+                    {
+                        q.push({i,j});
+                        board[i][j]='$';
+                    }
+                }
+            }
+            else
+            {
+                //explore only 1st nd last col
+                if(board[i][0]=='O')
+                {
+                    q.push({i,0});
+                    board[i][0]='$';
+                }
+                if(board[i][m-1]=='O')
+                {
+                    q.push({i,m-1});
+                    board[i][m-1]='$';
+                }
+            }
+            
+        }
+
+
+        int x_dir[]={-1,1,0,0};
+        int y_dir[]={0,0,1,-1};
+        while(!q.empty())
+        {
+            int x_curr=q.front().first;
+            int y_curr=q.front().second;
+            q.pop();
+            for(int i=0;i<4;i++)
+            {
+                int x_new=x_curr+x_dir[i];
+                int y_new=y_curr+y_dir[i];
+                if(isValid(x_new,y_new) && board[x_new][y_new]=='O')
+                {
+                    q.push({x_new,y_new});
+                    board[x_new][y_new]='$';
+                }
+            }
+        }
+
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(board[i][j]=='O')
+                {
+                     bfs(board,i,j);
+                }
+            }
+        }
+
+         for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(board[i][j]=='$')
+                {
+                    board[i][j]='O';
+                }
+            }
+        }
+
+
+    }
+};
