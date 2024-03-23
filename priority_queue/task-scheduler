@@ -1,0 +1,90 @@
+https://leetcode.com/problems/task-scheduler/description/?envType=daily-question&envId=2024-03-19
+
+class Solution {
+public:
+
+
+    typedef pair<int,int>p;
+    int leastInterval(vector<char>& tasks, int n) {
+
+       // a - 3 
+       // b -  3
+       // a - 3
+        // b- 2
+        // b -3
+
+        // cool down = 2 
+
+        // time = 1 + 1 + 2 +  1 + 
+
+       //  time =1 + 1 + 1 + 1 + 1 + 1
+       priority_queue<p,vector<p>,greater<p>>pq;
+       vector<int>dict(26,-1);
+       for(int i=0;i<tasks.size();i++)
+       {
+            int task=tasks[i]-'A';
+            if(dict[task]==-1)
+            {
+                 pq.push({0,task});
+                 dict[task]=0;
+            }
+            else
+            {
+                int start_time=dict[task]+n+1;
+                dict[task]=start_time;
+                pq.push({start_time,task});
+            }
+       }
+
+       // curr_time = 8 + 1 = 9  + 1 = 10 
+
+
+        // a - 0
+        // b -0 
+        // a - 4
+        // b - 4
+        // a - 8
+        // b -8
+
+        // curr_time =
+
+
+
+       // curr_time= 5 
+
+       // a  b  a
+
+
+        int curr_time=0;
+
+       while(!pq.empty())
+       {
+            int time=pq.top().first;
+            int task=pq.top().second;
+            pq.pop();
+            if(curr_time < time )
+            {
+                curr_time = time +1;
+            }
+            else
+            {
+                curr_time +=1;
+            }
+
+            // 1 
+            // 2 
+            // 5 
+            // 6 
+            // 9 
+            // 10
+            
+       }
+
+       return curr_time;
+
+
+
+
+
+    }
+};
