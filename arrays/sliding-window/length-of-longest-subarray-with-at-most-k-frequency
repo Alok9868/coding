@@ -1,0 +1,25 @@
+https://leetcode.com/problems/length-of-longest-subarray-with-at-most-k-frequency/description/?envType=daily-question&envId=2024-03-28
+
+class Solution {
+public:
+    int maxSubarrayLength(vector<int>& nums, int k) {
+
+        int n=nums.size();
+        unordered_map<int,int>umap;
+        int left=0;
+        int cnt=0;
+        for(int right=0;right<n;right++)
+        {
+            umap[nums[right]]++;
+            while(umap[nums[right]]>k)
+            {
+                umap[nums[left++]]--;
+            }
+            cnt=max(cnt,right-left+1);
+        }
+
+
+        return cnt;
+        
+    }
+};
