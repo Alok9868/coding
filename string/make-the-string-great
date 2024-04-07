@@ -1,0 +1,52 @@
+https://leetcode.com/problems/make-the-string-great/description/?envType=daily-question&envId=2024-04-05
+
+
+class Solution {
+public:
+
+    bool checkIfSame(int a,  int b)
+    {
+        if(a+32 == b || b+32 == a)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    string makeGood(string s) {
+
+        stack<char>st;
+        int n=s.size();
+        for(int i=0;i<n;i++)
+        {
+            if(!st.empty())
+            {
+                if(checkIfSame(s[i],st.top()))
+                {
+                    // if curr is lowercase and st top is upper case
+                     // if curr is upper case and st top is lower case 
+                    st.pop();
+                   
+                }
+                else
+                {
+                    st.push(s[i]);
+                }
+            }
+            else
+            {
+                st.push(s[i]);
+            }
+        }
+
+        string ans="";
+        while(!st.empty())
+        {
+            ans=st.top()+ans;
+            st.pop();
+        }
+
+        return ans;
+        
+    }
+};
