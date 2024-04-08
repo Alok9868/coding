@@ -1,0 +1,61 @@
+https://leetcode.com/problems/valid-parenthesis-string/description/?envType=daily-question&envId=2024-04-07
+
+class Solution {
+public:
+
+    bool helper(string &s , int idx , int open ,  vector<vector<int>>&dp)
+    {
+        if(idx==s.size())
+        {
+            return open==0;
+        }
+
+        if(dp[idx][open]!=-1)
+        {
+            return dp[idx][open];
+        }
+
+
+        if(s[idx]=='(')
+        {
+            return dp[idx][open]=helper(s,idx+1,open+1,dp);
+            
+
+        }
+        else if(s[idx]==')')
+        {
+            if(open==0)
+            {
+                return false;
+            }
+            return dp[idx][open]=helper(s,idx+1,open-1,dp);
+        }
+        else 
+        {
+            // 3 cases 
+            // convert the * to open , close and empty
+            bool open_case=helper(s,idx+1,open+1,dp);
+            
+            bool empty_case=helper(s,idx+1,open,dp);
+            
+            bool close_case=false;
+            if(open>0)
+            {
+                close_case =helper(s,idx+1,open-1,dp);
+            }
+            return dp[idx][open]=close_case ||open_case || empty_case ;
+        }
+        return false;
+
+
+    }
+
+
+    bool checkValidString(string s) {
+        
+        int n=s.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        return helper(s,0,0,dp);
+        
+    }
+};
