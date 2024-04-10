@@ -1,0 +1,82 @@
+https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/description/?envType=daily-question&envId=2024-04-08
+class Solution {
+public:
+    int countStudents(vector<int>& students, vector<int>& sandwiches) {
+
+        
+        queue<int>q;
+        int n=students.size();
+
+        int req_sq=0;
+        int req_circle=0;
+        int sq_cnt=0;
+        int circle_cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            q.push(students[i]);
+            if(students[i]==0)
+            {
+                req_circle++;
+            }
+            else
+            {
+                req_sq++;
+            }
+        }
+
+        int k=0;
+
+        // req_circle = 1
+        //req_sq=2
+
+        
+        while(!q.empty())
+        {
+            if(sandwiches[k]==0)
+            {
+                // circle case
+                if(q.front()==sandwiches[k])
+                {
+                    q.pop();
+                    k++;
+                    req_circle--;
+                }
+                else if(req_circle==0)
+                {
+                    return q.size();
+                }
+                else
+                {
+                    q.push(q.front());
+                    q.pop();
+                }
+            }   
+            else
+            {
+                //square case
+                if(q.front()==sandwiches[k])
+                {
+                    q.pop();
+                    k++;
+                    req_sq--;
+                }
+                else if(req_sq==0)
+                {
+                    return q.size();
+                }
+                else
+                {
+                    q.push(q.front());
+                    q.pop();
+                } 
+            }
+
+        }
+
+        return 0;
+
+
+
+        
+    }
+};
