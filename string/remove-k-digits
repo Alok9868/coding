@@ -1,0 +1,63 @@
+https://leetcode.com/problems/remove-k-digits/description/?envType=daily-question&envId=2024-04-11
+
+class Solution {
+public:
+
+
+    pair<long long , string> convertStringToInt(string &temp)
+    {
+        long long no=0;
+        int n=temp.size();
+        string res;
+        for(int i=0;i<n;i++)
+        {
+            no=no*10+(temp[i]-'0');
+            if(no > 0)
+            {
+                res+=temp[i];
+            }
+        }
+        pair<long long , string>p;
+        p.first=no;
+        p.second=res;
+        return p;
+    }
+
+
+    string ans;
+    long long mini;
+    void helper(string &num, string temp, int k , int idx)
+    {
+        if(idx==num.size())
+        {
+            pair<long long ,string>p=convertStringToInt(temp);
+            if(mini>p.first)
+            {
+                mini=p.first;
+                ans=p.second;
+            }
+            return ;
+        }
+
+
+        //pick 
+        helper(num,temp+num[idx],k,idx+1);
+        // not pick
+        if(k>0)
+        {   
+            helper(num,temp,k-1,idx+1);
+        }
+
+    }
+
+    string removeKdigits(string num, int k) {
+        
+        mini=INT_MAX;
+        helper(num,"",k,0);
+        if(ans.size()==0)
+        {
+            return "0";
+        }
+        return ans;
+    }
+};
