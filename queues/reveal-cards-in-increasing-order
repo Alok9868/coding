@@ -1,0 +1,34 @@
+https://leetcode.com/problems/reveal-cards-in-increasing-order/description/?envType=daily-question&envId=2024-04-10
+
+class Solution {
+public:
+    vector<int> deckRevealedIncreasing(vector<int>& deck) {
+        
+
+        sort(deck.begin(),deck.end());
+        queue<int>q;
+        
+        int n=deck.size();
+        vector<int>result(n);
+        for(int i=0;i<n;i++)
+        {
+            q.push(i);
+        }
+
+        int i=0;
+        while(!q.empty())
+        {
+            int front=q.front();
+            q.pop();
+            result[front]=deck[i++];
+            if(q.empty())
+            {
+                return result;
+            }
+            q.push(q.front());
+            q.pop();
+        }
+
+        return result;
+    }
+};
