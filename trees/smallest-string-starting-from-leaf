@@ -1,0 +1,78 @@
+https://leetcode.com/problems/smallest-string-starting-from-leaf/description/?envType=daily-question&envId=2024-04-16
+class Solution {
+public:
+
+    void checkForSmallLexographical(string &ans, stack<int>st)
+    {
+        string temp="";
+        while(!st.empty())
+        {
+            temp+=(char)(st.top() + 'a');
+            st.pop();
+        }
+
+
+
+        if(ans.size()==0)
+        {
+            ans=temp;
+            return ;
+        }
+
+        // compare the two strings lexicographically 
+        int i=0;
+        int j=0;
+        int n=ans.size();
+        int m=temp.size();
+        while(i<n && j<m)
+        {
+            if(ans[i]>temp[j])
+            {
+                ans=temp;
+                return ;
+            }
+            else if(ans[i]<temp[j])
+            {
+                break;
+            }
+            i++;
+            j++;
+        }
+        if(j==m)
+        {
+            ans=temp;
+        }
+        return ;
+    }
+
+
+    void helper(TreeNode*root , stack<int>&st,string &ans)
+    {
+        if(!root)
+        {
+            return ;
+        }
+
+        if(!root->left && !root->right)
+        {
+            // compare the string with ans 
+            st.push(root->val);
+            checkForSmallLexographical(ans,st);
+            st.pop();
+            return ;
+        }
+
+        st.push(root->val);
+        helper(root->left,st,ans);
+        helper(root->right,st,ans);
+        st.pop();
+    }
+
+    string smallestFromLeaf(TreeNode* root) {
+
+        stack<int>st;
+        string ans="";
+        helper(root,st,ans);
+        return ans;
+    }
+};
