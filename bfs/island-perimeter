@@ -1,0 +1,80 @@
+https://leetcode.com/problems/island-perimeter/description/?envType=daily-question&envId=2024-04-16
+
+class Solution {
+public:
+
+
+    bool checkIfValid(int i , int j)
+    {
+        if(i>=0 && i<n && j>=0 && j<m)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    int bfs(vector<vector<int>>& grid , int i , int j)
+    {
+        queue<pair<int,int>>q;
+        q.push({i,j});
+
+        int xdir[4]={-1,1,0,0};
+        int ydir[4]={0,0,-1,1};
+        int ans=0;
+        grid[i][j]=-1;
+        while(!q.empty())
+        {
+            int curr_x=q.front().first;
+            int curr_y=q.front().second;
+            q.pop();
+            for(int k=0;k<4;k++)
+            {
+                int x_new=curr_x+xdir[k];
+                int y_new=curr_y+ydir[k];
+                if(!checkIfValid(x_new, y_new) || grid[x_new][y_new]==0)
+                {
+                    ans++;
+                }
+                else if(grid[x_new][y_new]!=-1)
+                {
+                    grid[x_new][y_new]=-1;
+                    q.push({x_new,y_new});
+                }
+            }
+
+        }   
+
+
+        return ans;
+
+
+
+    }
+
+    int n,m;
+    int islandPerimeter(vector<vector<int>>& grid) {
+        
+        n=grid.size();
+        m=grid[0].size();
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    // we get the first land , now do bfs 
+                    return bfs(grid,i,j);
+                }
+            }
+        }
+
+
+        return 0;
+
+
+
+        
+    }
+};
