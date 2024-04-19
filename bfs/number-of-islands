@@ -1,0 +1,60 @@
+https://leetcode.com/problems/number-of-islands/?envType=daily-question&envId=2024-04-19
+class Solution {
+public:
+
+    int xdir[4]={1,-1,0,0};
+    int ydir[4]={0,0,-1,1};
+    bool isValid(int i, int j)
+    {
+        if(i>=0 && i<row && j>=0 && j<col)
+        {
+            return true;
+        }
+        return false;
+    }
+    void bfs(vector<vector<char>>& grid , int i , int j)
+    {
+        queue<pair<int,int>>q;
+        q.push({i,j});
+        
+        while(!q.empty())
+        {
+            int x_curr=q.front().first;
+            int y_curr=q.front().second;
+            q.pop();
+            for(int k=0;k<4;k++)
+            {   
+                int x_new=x_curr+xdir[k];
+                int y_new=y_curr+ydir[k];
+                if(isValid(x_new,y_new) && grid[x_new][y_new]=='1')
+                {
+                    grid[x_new][y_new]='0';
+                    q.push({x_new,y_new});
+                }
+            }
+        }
+
+
+    }
+    int row,col;
+    int numIslands(vector<vector<char>>& grid) {
+
+        row=grid.size();
+        col=grid[0].size();
+        int ans=0;
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                if(grid[i][j]=='1')
+                {
+                    bfs(grid,i,j);
+                    ans++;
+                }
+            }
+        }
+
+        return ans;
+        
+    }
+};
