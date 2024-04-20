@@ -1,0 +1,72 @@
+https://leetcode.com/problems/find-all-groups-of-farmland/description/?envType=daily-question&envId=2024-04-20
+class Solution {
+public:
+    int xdir[4]={1,-1,0,0};
+    int ydir[4]={0,0,-1,1};
+
+    bool isValid(int x, int y)
+    {
+        if(x>=0 && x<row && y>=0 && y<col)
+        {
+            return true;
+        }
+        return false;
+    }
+    vector<int> bfs(vector<vector<int>>& land, int i , int j)
+    {
+        queue<pair<int,int>>q;
+        q.push({i,j});
+        land[i][j]=0;
+        int r1=i;
+        int c1=j;
+        int r2=i,c2=j;
+        int sum=i+j;
+        while(!q.empty())
+        {
+            int x_curr=q.front().first;
+            int y_curr=q.front().second;
+            q.pop();
+            for(int k=0;k<4;k++)
+            {
+                int x_new=x_curr+xdir[k];
+                int y_new=y_curr+ydir[k];
+                if(isValid(x_new,y_new) && land[x_new][y_new]==1)
+                {
+                    q.push({x_new,y_new});
+                    land[x_new][y_new]=0;
+                    int temp_sum=x_new+y_new;
+                    if(temp_sum>sum)
+                    {
+                        sum=temp_sum;
+                        r2=x_new;
+                        c2=y_new;
+                    }
+                }
+            }
+        }
+
+        vector<int>ans ={r1,c1,r2,c2};
+        return ans;
+    }
+
+    int row,col;
+    vector<vector<int>> findFarmland(vector<vector<int>>& land) {
+        
+        row=land.size();
+        col=land[0].size();
+        vector<vector<int>>ans;
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                if(land[i][j]==1)
+                {
+                    ans.push_back(bfs(land,i,j));
+                }
+            }   
+        }
+        return ans;
+
+
+    }
+};
