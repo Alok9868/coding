@@ -1,0 +1,100 @@
+https://leetcode.com/problems/open-the-lock/description/?envType=daily-question&envId=2024-04-22
+
+
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+
+        unordered_set<int>set;
+        int size=deadends.size();
+        for(int i=0;i<size;i++)
+        {
+            set.insert(stoi(deadends[i]));
+        }
+
+        if(set.find(0)!=set.end())
+        {
+            return -1;
+        }
+        int tar=stoi(target);
+        vector<int>vis(10000,0);
+        queue<pair<int,string>>q;
+        q.push({0,"0000"});
+
+
+        vis[0]=1;
+        int steps=0;
+        while(!q.empty())
+        {
+            int size=q.size();
+            while(size--)
+            {
+                string front=q.front().second;
+                int front_int=q.front().first;
+                q.pop();
+                if(front_int==tar)
+                {
+                    return steps;
+                }
+                // check for all possible combinations 
+                for(int idx=0;idx<4;idx++)
+                {
+                    char prev=front[idx];
+                    // next
+                    // if prev == 9 , then we have to make it to 0 
+                    if(prev=='9')
+                    {
+                        front[idx]='1';
+                    } 
+                    else
+                    {
+                        front[idx]=prev+1;    
+                    }
+                    int next_num=stoi(front);
+                    if(set.find(next_num)==set.end() && ! vis[next_num] )
+                        {
+                            vis[next_num]=true;
+                            q.push({next_num,front});
+                        }
+                    //prev
+                    // if prev is 0 , then we have to make it to 9 
+                    if(prev=='0')
+                    {
+                        front[idx]='9';
+                    }
+                    else
+                    {
+                        front[idx]=prev-1;
+                    }
+                   
+                    int prev_num=stoi(front);
+                     if(set.find(prev_num)==set.end() && ! vis[prev_num] )
+                        {
+                            vis[prev_num]=true;
+                            q.push({prev_num,front});
+                        }
+
+                    // set back the front idx to prev
+                    front[idx]=prev;
+                    // for(int i=0;i<=9;i++)
+                    // {
+                    //     char prev=front[idx];
+                    //     front[idx]='0'+i;
+                    //     int num=stoi(front);
+                    //     if(set.find(num)==set.end() && ! vis[num] )
+                    //     {
+                    //         vis[num]=true;
+                    //         q.push({num,front});
+                    //     }
+                    //     front[idx]=prev;
+                    // }
+                }
+
+            }
+            steps++;
+        }
+        
+        return -1;
+        
+    }
+};
