@@ -1,0 +1,67 @@
+https://leetcode.com/problems/minimum-height-trees/?envType=daily-question&envId=2024-04-23
+class Solution {
+public:
+
+
+    int bfs(vector<int>adj[], int root)
+    {
+        queue<pair<int,int>>q;
+        q.push({root,-1});
+        int height=0;
+        while(!q.empty())
+        {
+            int size=q.size();
+            while(size--)
+            {   
+                int front=q.front().first;
+                int parent=q.front().second;
+                q.pop();
+                // for(int i=0;i<adj[front].size();i++)
+                // {
+
+                // }
+                for(int it:adj[front])
+                {
+                    if(it!=parent)
+                    {
+                        q.push({it,front});
+                    }
+                }
+            }
+            height++;
+        }
+        return height-1;
+    }
+
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+
+        vector<int>ans;
+        vector<int>adj[n];
+        for(int i=0;i<edges.size();i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }   
+        int min_height=INT_MAX;
+        for(int i=0;i<n;i++)
+        {
+            int height=bfs(adj,i);
+            if(height<min_height)
+            {
+                min_height=height;
+                ans={};
+                ans.push_back(i);
+            }
+            else if(height==min_height)
+            {
+                ans.push_back(i);
+            }
+        }
+
+        return ans;
+
+        
+    }
+};
