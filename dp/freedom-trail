@@ -1,0 +1,84 @@
+https://leetcode.com/problems/freedom-trail/?envType=daily-question&envId=2024-04-27
+
+
+class Solution {
+public:
+    int n;
+
+    string convertDequeToString(deque<char>&dq , int idx)
+    {
+        string temp="";
+        for(auto ch:dq)
+        {
+            temp+=ch;
+        }   
+        temp+=to_string(idx);
+        return temp;
+    }
+
+    int helper(string &key , int idx , deque<char>&dq, unordered_map<string,int>&umap)
+    {
+
+        if(idx==key.size())
+        {
+            return 0;
+        }
+        
+        string temp = convertDequeToString(dq,idx);
+        if(umap.find(temp)!=umap.end())
+        {
+            return umap[temp];
+        }
+
+        int clockwise_ans=0;
+        int anticlockwise_ans=0;
+        deque<char>clockwiseq=dq;
+        deque<char>anticlockwiseq=dq;
+        // first check clockwise 
+        int cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            if(clockwiseq.front()==key[idx])
+            {
+                // convert the deque to string 
+                clockwise_ans+=helper(key,idx+1,clockwiseq,umap);
+                break;
+            }
+            clockwise_ans++;
+            clockwiseq.push_back(clockwiseq.front());
+            clockwiseq.pop_front();
+        }
+
+        // check anticlockwise
+        for(int i=0;i<n;i++)
+        {
+            if(anticlockwiseq.front()==key[idx])
+            {
+                anticlockwise_ans+=helper(key,idx+1,anticlockwiseq,umap);
+                break;
+            }
+            anticlockwise_ans++;
+            anticlockwiseq.push_front(anticlockwiseq.back());
+            anticlockwiseq.pop_back();
+        }
+
+        return umap[temp]=min(anticlockwise_ans,clockwise_ans)+1;
+
+        
+
+    }
+
+    int findRotateSteps(string ring, string key) {
+
+        
+        deque<char>dq;
+        n=ring.size();
+        for(char &ch:ring)
+        {
+            dq.push_back(ch);
+        }
+        unordered_map<string,int>umap;
+        return helper(key , 0,dq,umap);
+        
+    }
+};
