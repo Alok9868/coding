@@ -1,0 +1,87 @@
+https://leetcode.com/problems/sum-of-distances-in-tree/?envType=daily-question&envId=2024-04-28
+
+class Solution {
+public:
+
+    int bfs(vector<int>adj[],int root)
+    {
+        queue<pair<int,pair<int,int>>>q;
+        q.push({0,{root,-1}});
+        int ans=0;
+        while(!q.empty())
+        {
+            int size=q.size();
+            while(size--)
+            {
+                int front=q.front().second.first;
+                int parent=q.front().second.second;
+                int dist=q.front().first;
+                ans+=dist;
+                q.pop();
+                for(auto it:adj[front])
+                {
+                    if(it!=parent)
+                    {
+                        q.push({dist+1,{it,front}});
+                    }
+                }
+            }   
+        }
+
+        return ans;
+
+    }
+
+
+    int dfs(int u , int parent , vector<int>adj[],  vector<int>&child_cnt)
+    {
+        int ans=0;
+        for(auto it:adj[u])
+        {
+            if(it!=parent)
+            {   
+                child_cnt[u]+=dfs(it,u,adj,child_cnt);
+            }
+        }
+
+        return child_cnt[u];
+    }
+
+    int n;
+    void dfsToCalcAns(int u , int parent , vector<int>adj[],  vector<int>&child_cnt , 
+    vector<int>&ans)
+    {   
+        if(parent!=-1)
+        {
+            ans[u]=ans[parent]-child_cnt[u]+(n-child_cnt[u]);
+        }
+        for(auto it:adj[u])
+        {
+            if(it!=parent)
+            {
+                dfsToCalcAns(it,u,adj,child_cnt,ans);
+            }
+        }
+        
+    }
+
+
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        vector<int>adj[n];
+        this->n=n;
+        for(int i=0;i<edges.size();i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        vector<int>ans(n,0);
+        vector<int>child_cnt(n,1);
+        dfs(0,-1,adj,child_cnt);
+        ans[0]=bfs(adj,0);
+        dfsToCalcAns(0,-1,adj,child_cnt , ans);
+        return ans;
+    }
+};
