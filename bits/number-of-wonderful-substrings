@@ -1,0 +1,72 @@
+https://leetcode.com/problems/number-of-wonderful-substrings/description/?envType=daily-question&envId=2024-04-30
+
+class Solution {
+public:
+    
+    int checkWonderfulString(vector<int>&dict)
+    {
+
+        int odd_cnt=0;
+        for(int i=0;i<dict.size();i++)
+        {
+            if(dict[i]&1)
+            {
+                odd_cnt++;
+            }
+        }
+        if(odd_cnt<=1)
+        {
+            return 1;
+        }
+        return 0;
+    }
+
+
+    long long helper(string &word , int idx , vector<int>&dict)
+    {
+        if(idx==word.size())
+        {
+            return checkWonderfulString(dict);
+        }
+
+        long long ans=0;
+        // nottake case
+        ans+=helper(word,idx+1,dict);
+        int index=word[idx]-'a';
+        dict[index]++;
+        ans+=helper(word,idx+1,dict);
+        dict[index]--;
+        return ans;
+    }
+
+
+
+
+
+    typedef long long ll;
+    long long wonderfulSubstrings(string word) {
+
+        // vector<int>temp(10,0);
+        // return helper(word,0,temp);
+
+        unordered_map<ll,ll>umap;
+        umap[0]=1;
+        ll curr_xor=0;
+        ll result=0;
+        for(char &ch:word)
+        {
+            int binary_char=1<<(ch-'a');
+            curr_xor^=binary_char;
+            result+=umap[curr_xor];
+            for(char ch1='a';ch1<='j';ch1++)
+            {
+                int binary_char1=1<<(ch1-'a');
+                ll temp_xor=curr_xor^binary_char1;
+                result+=umap[temp_xor];
+            }
+            umap[curr_xor]++;
+        }
+        return result;
+
+    }
+};
