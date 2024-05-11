@@ -1,0 +1,40 @@
+https://leetcode.com/problems/relative-ranks/description/?envType=daily-question&envId=2024-05-03
+
+class Solution {
+    public String[] findRelativeRanks(int[] score) {
+        int size = score.length;
+        String[] arr = new String[size];
+        int[][] score_with_idx = new int[size][2];
+        for (int i = 0; i < size; i++) {
+            int[] array = new int[2];
+            array[0] = score[i];
+            array[1] = i;
+            score_with_idx[i] = array;
+        }
+        Arrays.sort(score_with_idx, (a,b)->{return Integer.compare(b[0],a[0]); });
+
+        for (int i=0;i<size;i++)
+        {   
+            int index=score_with_idx[i][1];
+            if(i==0)
+            {
+                arr[index]="Gold Medal";
+            }
+            else if(i==1)
+            {
+                arr[index]="Silver Medal";
+            }
+            else  if(i==2)
+            {
+                arr[index]="Bronze Medal";
+            }
+            else
+            {
+                arr[index]=String.valueOf(i+1);
+            }
+         
+        }
+        return arr;
+        
+    }
+}
