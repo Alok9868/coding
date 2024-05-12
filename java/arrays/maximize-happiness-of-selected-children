@@ -1,0 +1,37 @@
+https://leetcode.com/problems/maximize-happiness-of-selected-children/description/?envType=daily-question&envId=2024-05-09
+
+class Solution {
+    public long maximumHappinessSum(int[] happiness, int k) {
+
+        // Convert int[] to Integer[]
+        Integer[] integerHappiness = new Integer[happiness.length];
+        for (int i = 0; i < happiness.length; i++) {
+            integerHappiness[i] = happiness[i];
+        }
+
+        Arrays.sort(integerHappiness,new Comparator<Integer>() {
+            @Override
+            public int compare(Integer a, Integer b) {
+                return b.compareTo(a);
+            }
+        });
+
+        int cnt=0;
+        int size=happiness.length;
+        long ans=0;
+        for (int i=0;i<size && k>0;i++,k--)
+        {
+            if (integerHappiness[i]>cnt)
+            {
+                ans = ans + integerHappiness[i]-cnt;
+            }
+            else {
+                break;
+            }
+            cnt++;
+        }
+
+        return ans;
+        
+    }
+}
