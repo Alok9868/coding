@@ -1,0 +1,44 @@
+https://leetcode.com/problems/minimum-cost-to-hire-k-workers/description/?envType=daily-question&envId=2024-05-11
+
+class Solution {
+public:
+    double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) {
+
+        int n=quality.size();
+        vector<pair<double,double>>ratio; // O(n) - S.C
+        // O(n) - T.C
+        for(int i=0;i<n;i++)
+        {
+            double worker_ratio=((double)wage[i]/quality[i]);
+            ratio.push_back({worker_ratio,quality[i]});
+        }
+
+        sort(ratio.begin(),ratio.end()); //(O(NlogN))
+        priority_queue<double>pq;
+        double quality_sum=0;
+        for(int i=0;i<k;i++) // O(KlogK)
+        {
+            pq.push(ratio[i].second);
+            quality_sum+=ratio[i].second;
+        }
+
+        double result=(quality_sum*ratio[k-1].first);
+        for(int i=k;i<n;i++) // O(NlogK)
+        {
+            quality_sum+=ratio[i].second;
+            pq.push(ratio[i].second);
+            if(pq.size()>k)
+            {
+                quality_sum-=pq.top();
+                pq.pop();
+            }
+            double curr_result=(quality_sum*ratio[i].first);
+            result=min(result,curr_result);
+        }
+
+        return result;
+    
+        
+        
+    }
+};
