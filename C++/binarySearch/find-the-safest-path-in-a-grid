@@ -1,0 +1,123 @@
+https://leetcode.com/problems/find-the-safest-path-in-a-grid/description/?envType=daily-question&envId=2024-05-15
+
+class Solution {
+public:
+
+    
+    int xdir[4]={0,0,-1,1};
+    int ydir[4]={1,-1,0,0};
+
+    bool isValid(int x, int y)
+    {
+        if(x>=0 && x<rows && y>=0 && y<rows)
+        {
+            return true;
+        }
+        return false;
+    }
+    bool isSafenessFactorAchievable(int factor,vector<vector<int>>& grid , vector<vector<int>>&safeness_factor)
+    {
+        queue<pair<int,int>>q;
+        if(safeness_factor[0][0]<factor)
+        {
+            return false;
+        }
+        q.push({0,0});
+        vector<vector<bool>>vis(rows,vector<bool>(cols,false));
+        vis[0][0]=true;
+        while(!q.empty())
+        {
+            int x=q.front().first;
+            int y=q.front().second;
+            q.pop();
+            if(x==rows-1 && y==cols-1)
+            {
+                return true;
+            }
+            for(int k=0;k<4;k++)
+            {
+                int x_new=x+xdir[k];
+                int y_new=y+ydir[k];
+                if(isValid(x_new,y_new) && !vis[x_new][y_new] && safeness_factor[x_new][y_new]>=factor)
+                {
+                    q.push({x_new,y_new});
+                    vis[x_new][y_new]=true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    int rows,cols;
+
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        
+        rows=grid.size();
+        cols=grid[0].size();
+        vector<vector<bool>>vis(rows,vector<bool>(cols,false));
+        vector<vector<int>>safeness_factor(rows,vector<int>(cols,0));
+        queue<pair<int,int>>q;
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<cols;j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    vis[i][j]=1;
+                    q.push({i,j});
+                }
+            }
+        }
+
+        int level=0;
+        while(!q.empty())
+        {
+            int size=q.size();
+            while(size--)
+            {
+                int x=q.front().first;
+                int y=q.front().second;
+                safeness_factor[x][y]=level;
+                q.pop();
+                for(int k=0;k<4;k++)
+                {
+                    int x_new=xdir[k]+x;
+                    int y_new=ydir[k]+y;
+                    if(isValid(x_new,y_new) && !vis[x_new][y_new] )
+                    {
+                        vis[x_new][y_new]=true;
+                        q.push({x_new,y_new});
+                    }
+                }
+            }
+            level++;
+        }
+
+
+
+        int l=0;
+        int r=level-1;
+        int ans=0;
+        while(l<=r)
+        {
+            int mid=(r-l)/2 + l;
+            if(isSafenessFactorAchievable(mid,grid,safeness_factor))
+            {
+                ans=mid;
+                l=mid+1;
+            }
+            else
+            {
+                r=mid-1;
+            }
+        }
+
+        return ans;
+
+
+
+
+    }
+};
