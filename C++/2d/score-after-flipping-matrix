@@ -1,0 +1,85 @@
+https://leetcode.com/problems/score-after-flipping-matrix/?envType=daily-question&envId=2024-05-13
+
+
+class Solution {
+public:
+
+    void flipRow(vector<vector<int>>& grid,int row)
+    {
+        for(int i=0;i<m;i++)
+        {
+            if(grid[row][i]==0)
+            {
+                grid[row][i]=1;
+            }
+            else
+            {
+                grid[row][i]=0;
+            }
+        }
+    }
+
+    
+    void flipCol(vector<vector<int>>& grid,int col)
+    {
+        for(int i=0;i<n;i++)
+        {
+            if(grid[i][col]==0)
+            {
+                grid[i][col]=1;
+            }
+            else
+            {
+                grid[i][col]=0;
+            }
+        }
+    }
+
+    int  calculateSum(vector<vector<int>>& grid)
+    {
+        int total_sum=0;
+        for(int i=0;i<n;i++)
+        {
+            int curr_row_sum=0;
+            for(int j=m-1;j>=0;j--)
+            {
+                curr_row_sum+=(grid[i][j]&1)<<((m-1)-j);
+            }
+            total_sum+=curr_row_sum;
+        }
+        return total_sum;
+    }
+
+    int n,m;
+    int matrixScore(vector<vector<int>>& grid) {
+
+        n=grid.size();
+        m=grid[0].size();
+        for(int i=0;i<n;i++)
+        {
+            if(grid[i][0]==0)
+            {
+                flipRow(grid,i);
+            } 
+        }
+
+
+        for(int i=0;i<m;i++)
+        {
+            int ones=0;
+            for(int j=0;j<n;j++)
+            {
+                ones+=(grid[j][i]&1);
+            }
+            int zeroes=n-ones;
+            if(ones<zeroes)
+            {
+                flipCol(grid,i);
+            }
+        }
+
+
+        return calculateSum(grid);
+        
+    }
+};
