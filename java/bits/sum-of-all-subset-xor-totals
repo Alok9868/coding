@@ -1,0 +1,28 @@
+https://leetcode.com/problems/sum-of-all-subset-xor-totals/?envType=daily-question&envId=2024-05-20
+
+
+class Solution {
+
+	int ans,n;
+	private  void helper(int []nums , int idx,int xor)
+	{
+		if (idx==n)
+		{
+			ans+=xor;
+			return ;
+		}
+		
+		//take 
+		helper(nums,idx+1,xor^nums[idx]);
+		// not take
+		helper(nums,idx+1,xor);
+		
+	}
+	public int subsetXORSum(int[] nums) {
+		ans=0;
+		n=nums.length;
+		helper(nums,0,0);
+		return ans;
+
+	}
+}
