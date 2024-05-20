@@ -1,0 +1,54 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+
+https://leetcode.com/problems/double-a-number-represented-as-a-linked-list/description/?envType=daily-question&envId=2024-05-20
+class Solution {
+
+    private ListNode reverseLinkedList(ListNode head)
+    {
+        ListNode prev=null;
+        ListNode temp=head;
+        while(temp!=null)
+        {
+            ListNode next=temp.next;
+            temp.next=prev;
+            prev=temp;
+            temp=next;
+        }
+        return prev;
+    }
+
+
+    public ListNode doubleIt(ListNode head) {
+
+    
+        ListNode newhead=reverseLinkedList(head);
+        ListNode temp=newhead;
+        int rem=0;
+        while(temp!=null)
+        {
+            int multiply_res=(temp.val*2)+rem;
+            temp.val=(multiply_res%10);
+            rem=multiply_res/10;
+            temp=temp.next;
+        }
+
+        if(rem>0)
+        {
+            ListNode newnode=new ListNode(rem);
+            head.next=newnode;
+        }
+
+        return reverseLinkedList(newhead);
+        
+    }
+}
