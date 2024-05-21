@@ -1,0 +1,29 @@
+https://leetcode.com/problems/subsets/description/?envType=daily-question&envId=2024-05-21
+
+
+class Solution {
+
+	void helper(int[] nums , List<List<Integer>>result ,List<Integer>temp, int idx)
+	{
+		if(idx==nums.length)
+		{
+			result.add(new ArrayList<>(temp));
+			return;
+		}
+
+		// not take 
+		helper(nums,result,temp,idx+1);
+		// take
+		temp.add(nums[idx]);
+		helper(nums,result,temp,idx+1);
+        temp.remove(temp.size() - 1); 
+	}
+
+	public List<List<Integer>> subsets(int[] nums) {
+		List<List<Integer>>result=new ArrayList<>();
+		List<Integer>temp=new ArrayList<>();
+		helper(nums,result,temp,0);
+		return result;
+	}
+    
+}
