@@ -1,0 +1,54 @@
+https://leetcode.com/problems/palindrome-partitioning/description/?envType=daily-question&envId=2024-05-22
+
+class Solution {
+public:
+
+    bool isPalindrome(string &s , int l, int h)
+    {
+        while(l<h)
+        {
+            if(s[l]==s[h])
+            {
+                l++;
+                h--;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // e 
+    // e 
+    vector<vector<string>> ans;   
+    void helper(string &s , int idx, vector<string>&res)
+    {
+        if(idx==n)
+        {
+            ans.push_back(res);
+            return ;
+        }
+
+        for(int i=idx;i<n;i++)
+        {
+            if(isPalindrome(s,idx,i))
+            {
+                string temp=s.substr(idx,i-idx+1);
+                res.push_back(temp);
+                helper(s,i+1,res);
+                res.pop_back();
+            }
+        }
+
+    }
+    int n;
+    vector<vector<string>> partition(string s) {
+        n=s.size();
+        vector<string>temp;
+        helper(s,0,temp);
+        return ans;
+        
+    }
+};
