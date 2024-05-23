@@ -34,3 +34,38 @@ public:
         
     }
 };
+
+
+// more optimized using hashmap ,as we don't have to remove and add new object everytime in map
+class Solution {
+public:
+
+    void helper(vector<int>&nums , int &k , int idx,unordered_map<int,int>&umap,int &ans)
+    {
+        if(idx==nums.size())
+        {
+            ans+=1;
+            return ;
+        }
+
+        helper(nums,k,idx+1,umap,ans);
+        int num=nums[idx]-k;
+        if(umap[num]==0)
+        {
+            umap[nums[idx]]++;
+            helper(nums,k,idx+1,umap,ans);
+            umap[nums[idx]]--;
+        }
+
+    }
+
+    int beautifulSubsets(vector<int>& nums, int k) {
+        int ans=0;
+        unordered_map<int,int>umap;
+        sort(nums.begin(),nums.end());
+        helper(nums,k,0,umap,ans);
+        return ans-1;
+        
+        
+    }
+};
