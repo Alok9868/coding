@@ -1,0 +1,31 @@
+https://leetcode.com/problems/the-number-of-beautiful-subsets/description/?envType=daily-question&envId=2024-05-23
+
+class Solution {
+    public void helper(int []nums, int k, int idx,HashMap<Integer,Integer>umap)
+	{
+		if (idx==nums.length)
+		{
+			ans++;
+			return;
+		}
+
+		helper(nums,k,idx+1,umap);
+		int num=nums[idx]-k;
+		if (!umap.containsKey(num) || umap.get(num)==0)
+		{
+			umap.put(nums[idx],1);
+			helper(nums,k,idx+1,umap);
+			umap.put(nums[idx],0);
+		}
+	}
+	Integer ans;
+	public int beautifulSubsets(int[] nums, int k) {
+
+		HashMap<Integer,Integer>umap=new HashMap<>();
+		ans=0;
+		Arrays.sort(nums);
+		helper(nums,k,ans,umap);
+		return ans-1;
+
+	}
+}
