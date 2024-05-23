@@ -1,0 +1,36 @@
+https://leetcode.com/problems/the-number-of-beautiful-subsets/description/?envType=daily-question&envId=2024-05-23
+
+class Solution {
+public:
+
+    void helper(vector<int>&nums , int &k , int idx,unordered_set<int>&set)
+    {
+        if(idx==n)
+        {
+            ans+=1;
+            return ;
+        }
+
+        helper(nums,k,idx+1,set);
+        int num=nums[idx]-k;
+        if(set.find(num)==set.end())
+        {
+            set.insert(nums[idx]);
+            helper(nums,k,idx+1,set);
+            set.erase(nums[idx]);
+        }
+
+    }
+    int n,ans;
+
+    int beautifulSubsets(vector<int>& nums, int k) {
+        n=nums.size();
+        ans=0;
+        unordered_set<int>set;
+        sort(nums.begin(),nums.end());
+        helper(nums,k,0,set);
+        return ans-1;
+        
+        
+    }
+};
