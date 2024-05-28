@@ -1,0 +1,36 @@
+https://leetcode.com/problems/get-equal-substrings-within-budget/description/?envType=daily-question&envId=2024-05-28
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        
+        int n=s.length();
+		Integer arr[]=new Integer[n];
+		for (int i=0;i<n;i++)
+		{
+			arr[i]=Math.abs(s.charAt(i)-t.charAt(i));
+		}
+
+
+        int curr_ans=0;
+		int k=0;
+        int ans=0;
+		// 2 2 2 2 4 5 
+		
+		// maxcost-10 
+		// curr-ans= 6 
+		// k=0
+		//ans=3
+		for (int st_pos=0;st_pos<n;st_pos++)
+		{
+			curr_ans+=arr[st_pos];
+			while (curr_ans>maxCost)
+			{
+				curr_ans-=arr[k];
+                k++;
+			}
+			ans=Math.max(ans,st_pos-k+1);
+		}
+
+		return ans;
+
+    }
+}
