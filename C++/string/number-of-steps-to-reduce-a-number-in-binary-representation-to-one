@@ -1,0 +1,55 @@
+https://leetcode.com/problems/number-of-steps-to-reduce-a-number-in-binary-representation-to-one/?envType=daily-question&envId=2024-05-29
+
+class Solution {
+public:
+
+    void addOne(string &s , int idx)
+    {
+        int carry=0;
+        for(int i=idx;i<s.size();i++)
+        {
+            if(s[i]=='0')
+            {
+                s[i]='1';
+                return ;
+            }
+            else
+            {
+                s[i]='0';
+                carry=1;
+            }
+        }
+
+        s.push_back('1');
+
+    }
+
+
+    // 1 0
+    // idx- 0 
+    // size - 2
+    // ans - 1
+
+    int numSteps(string s) {
+
+        int idx=0;
+        int size=s.size();
+        int ans=0;
+        reverse(s.begin(),s.end());
+        while(idx<size-1)
+        {
+            ans++;
+            if(s[idx]=='0')
+            {
+                idx++;
+            }
+            else
+            {
+                addOne(s,idx);
+                size=s.size();
+            }
+        }
+        return ans;
+        
+    }
+};
