@@ -1,0 +1,50 @@
+https://leetcode.com/problems/find-common-characters/description/?envType=daily-question&envId=2024-06-05
+
+
+class Solution {
+	public List<String> commonChars(String[] words) {
+			int n=words.length;
+
+		int dict[]=new int[26];
+
+		int len=words[0].length();
+		for(int i=0;i<len;i++)
+		{
+			int idx=words[0].charAt(i)-'a';
+			dict[idx]++;
+		}
+
+			for (int i=1;i<n;i++)
+			{
+				int curr_len=words[i].length();
+				int tempDict[]=new int[26];
+				for (int j=0;j<curr_len;j++)
+				{
+					int idx=words[i].charAt(j)-'a';
+					// b - 2
+					// e - 1
+					// l - 2
+					// a - 1
+					tempDict[idx]++;
+				}
+				
+				for (int k=0;k<26;k++)
+				{
+					dict[k]=Math.min(dict[k],tempDict[k]);
+				}
+			}
+			
+		List<String>res=new ArrayList<>();
+		for (int i=0;i<26;i++)
+		{
+			while(dict[i]>0)
+			{
+				res.add(""+(char)('a'+i));
+				dict[i]--;
+			}
+		}
+
+		return res;
+
+	}
+}
