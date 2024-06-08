@@ -1,0 +1,64 @@
+https://leetcode.com/problems/maximum-score-words-formed-by-letters/?envType=daily-question&envId=2024-05-24
+
+
+class Solution {
+
+    	int helper(String[] words, int []dict,int[] score , int idx )
+	{
+		if (idx==words.length)
+		{
+			return 0;
+		}
+
+		int j;
+		int not_take=helper(words,dict,score,idx+1);
+		int take=0;
+		int curr_score=0;
+		
+		int newDict[]=new int[26];
+		for (int i=0;i<26;i++)
+		{
+			newDict[i]=dict[i];
+		}
+		
+		for (j=0;j<words[idx].length();j++)
+		{
+			int curr_idx=words[idx].charAt(j)-'a';
+			if (newDict[curr_idx]>0)
+			{
+				curr_score+=score[curr_idx];
+				newDict[curr_idx]--;
+			}
+			else {
+				break;
+			}
+		}
+
+		if (j==words[idx].length())
+		{
+			take=helper(words,newDict,score,idx+1)+curr_score;
+		}
+        
+		return Math.max(take,not_take);
+
+	}
+
+
+
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+
+        
+		int dict[]=new int[26];
+
+		for (int i=0;i<letters.length;i++)
+		{
+			int idx=letters[i]-'a';
+			dict[idx]++;
+		}
+
+
+		return helper(words,dict,score,0);
+
+        
+    }
+}
