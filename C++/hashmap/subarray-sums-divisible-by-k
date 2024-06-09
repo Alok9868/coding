@@ -1,0 +1,80 @@
+https://leetcode.com/problems/subarray-sums-divisible-by-k/?envType=daily-question&envId=2024-06-09
+
+class Solution {
+public: 
+    int subarraysDivByK(vector<int>& nums, int k) {
+
+
+        int n=nums.size();
+        vector<int>prefixSum(n+1,0);
+        for(int i=0;i<n;i++)
+        {
+            prefixSum[i+1]=nums[i]+prefixSum[i];
+        }
+
+        int cnt=0;
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=i-1;j>=0;j--)
+            {
+                if((prefixSum[j]-prefixSum[i])%k==0)
+                {
+                    cnt++;
+                }
+            }
+        }
+
+        return cnt;
+
+
+
+
+        
+    }
+};
+
+
+More optimized soln with haashmap
+----------
+
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+
+        unordered_map<int,int>umap;
+        umap[0]=1;
+        int n=nums.size();
+        int curr_sum=0;
+        int cnt=0;
+
+
+        // 1 2 9 
+        // k =2 
+        // 1 expected - 2 
+
+        // 0 -1
+        // -1 - 1 
+        // 1 -1 
+        // 
+        for(int i=0;i<n;i++)
+        {
+            curr_sum+=nums[i];
+            int rem=(curr_sum%k);
+            if(rem<0)
+            {
+                rem+=k;
+            }
+            if(umap.find(rem)!=umap.end())
+            {
+                cnt+=umap[rem];
+            }
+            umap[rem]++;
+        }
+
+
+        return cnt;
+
+
+        
+    }
+};
