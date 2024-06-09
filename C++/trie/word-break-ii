@@ -1,0 +1,125 @@
+https://leetcode.com/problems/word-break-ii/submissions/?envType=daily-question&envId=2024-05-25
+
+class Solution {
+public:
+
+class TrieNode
+{
+    public:
+    char ch;
+    TrieNode**children;
+    bool isTerminal;
+
+    TrieNode(char ch)
+    {
+        children=new TrieNode*[26];
+        for(int i=0;i<26;i++)
+        {
+            children[i]=NULL;
+        }
+        this->ch=ch;
+        this->isTerminal=false;
+    }
+};
+
+
+
+class Trie {
+public:
+
+    TrieNode*root;
+    Trie() {
+        root=new TrieNode('\0');
+    }
+    
+    void insert(string &word) {
+
+        int n=word.length();
+        TrieNode*temp=root;
+        for(int i=0;i<n;i++)
+        {
+            int index=word[i]-'a';
+            if(temp->children[index]==NULL)
+            {
+                temp->children[index]=new TrieNode(word[i]);
+            }
+            temp=temp->children[index];
+        }
+        temp->isTerminal=true;
+    }
+
+        bool search(string word) {
+
+        int n=word.length();
+        TrieNode*temp=root;
+        for(int i=0;i<n;i++)
+        {
+            int index=word[i]-'a';
+            if(temp->children[index]==NULL)
+            {
+                return false;
+            }
+            temp=temp->children[index];
+        }
+
+        if(temp->isTerminal==false)
+        {
+            return false;
+        }
+
+        return true;
+        
+    }
+
+    vector<string>result;
+    void searchAnywhere(string  &word , int idx, string &res)
+    {   
+        if(idx==word.size())
+        {
+            res.pop_back();
+            result.push_back(res);
+            return ;
+        }
+
+        TrieNode*temp=root;
+        for(int i=idx;i<word.size();i++)
+        {
+            int index=word[i]-'a';
+            if(temp->children[index]==NULL)
+            {
+                return ;
+            }
+            temp=temp->children[index];
+            if(temp->isTerminal)
+            {
+                string curr_res=res+word.substr(idx,i+1-idx)+" ";
+                searchAnywhere(word,i+1,curr_res);
+            }
+        }
+
+    }
+
+
+    vector<string> wordBreak(string &s)
+    {  
+        string res="";
+        searchAnywhere(s,0,res);
+        return result;
+    }
+
+};
+
+
+
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+
+        Trie trie;
+        int n=wordDict.size();
+        for (int i = 0; i < n; i++)
+        {
+            trie.insert(wordDict[i]);
+        }
+
+        return trie.wordBreak(s);
+    }
+};
