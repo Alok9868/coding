@@ -1,0 +1,42 @@
+https://leetcode.com/problems/student-attendance-record-ii/?envType=daily-question&envId=2024-05-26
+
+
+class Solution {
+public:
+
+
+    int mod;
+    int helper(int n , int absent , int conslate,vector<vector<vector<int>>>&dp)
+    {
+        if(absent>1 || conslate>=3)
+        {
+            return 0;
+        }
+        
+        if(n<=0)
+        {
+            return 1;
+        } 
+
+        if(dp[n][absent][conslate]!=-1)
+        {
+            return dp[n][absent][conslate];
+        }
+
+
+        long long ans=0;
+
+        ans=(helper(n-1,absent,0,dp)+ans)%mod;
+        ans=(helper(n-1,absent,conslate+1,dp)+ans)%mod;
+        ans=(helper(n-1,absent+1,0,dp)+ans)%mod;
+        return dp[n][absent][conslate]=ans%mod;
+    }
+
+    int checkRecord(int n) {
+
+        mod=1e9+7;
+        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(2,vector<int>(3,-1)));
+        return helper(n,0,0,dp);
+        
+    }
+};
