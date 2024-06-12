@@ -40,3 +40,36 @@ public:
         
     }
 };
+
+
+
+// bottom up approach
+
+int checkRecord(int n) {
+
+        mod=1e9+7;
+        vector<vector<vector<int>>>dp(n+1,vector<vector<int>>(3,vector<int>(4,0)));
+        int maxi=0;
+        for(int i=0;i<=n;i++)
+        {
+            for(int absent=0;absent<=1;absent++)
+            {
+                for(int conslate=0;conslate<=2;conslate++)
+                {
+                    if(i==0)
+                    {
+                        dp[i][absent][conslate]=1;
+                        continue;
+                    }
+                    long long ans=0;
+                    ans=(dp[i-1][absent][0]+ans)%mod;
+                    ans=(dp[i-1][absent][conslate+1]+ans)%mod;
+                    ans=(dp[i-1][absent+1][0]+ans)%mod;
+                    dp[i][absent][conslate]=ans%mod;
+                }
+            }
+        }
+
+        return dp[n][0][0];
+        
+    }
