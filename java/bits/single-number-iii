@@ -1,0 +1,39 @@
+https://leetcode.com/problems/single-number-iii/?envType=daily-question&envId=2024-05-31
+
+class Solution {
+    public int[] singleNumber(int[] nums) {
+
+        int n=nums.length;
+        int xor=0;
+        for(int i=0;i<n;i++)
+        {
+            xor=xor^nums[i];
+        }
+
+
+        int first_set_bit_pos=0;
+        int temp=xor;
+        while ( (temp &1)==0)
+        {
+            temp=temp>>1;
+            first_set_bit_pos++;
+        }
+        
+        temp=xor;
+        for (int i=0;i<n;i++)
+        {
+            if ((nums[i] & 1<<first_set_bit_pos)==0 )
+            {
+                temp=temp^nums[i];
+            }
+        }
+
+        int []result=new int[2];
+        int first_no=temp; // 3 
+        int second_no=temp^xor; //3 ^ 3^5 = 5
+        result[0]=first_no;
+        result[1]=second_no;
+        return result;
+        
+    }
+}
