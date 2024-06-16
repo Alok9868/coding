@@ -1,0 +1,27 @@
+https://leetcode.com/problems/longest-palindrome/?envType=daily-question&envId=2024-06-01
+
+class Solution {
+    public int longestPalindrome(String s) {
+        
+       HashMap<Character,Integer>hashMap=new HashMap<>();
+       int n=s.length();
+       for (int i=0;i<n;i++)
+       {
+           hashMap.put(s.charAt(i),hashMap.getOrDefault(s.charAt(i),0)+1);
+       }
+
+       int ans=0;
+       int isOdd=0;
+       for (Map.Entry<Character,Integer>map:hashMap.entrySet())
+       {
+           int cnt=map.getValue();
+           int curr_is_odd=cnt%2;
+           isOdd=Math.max(isOdd,curr_is_odd);
+           ans+=cnt-curr_is_odd;
+       }
+       
+       return ans+isOdd;
+
+
+    }
+}
