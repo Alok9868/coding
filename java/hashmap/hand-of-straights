@@ -1,0 +1,52 @@
+https://leetcode.com/problems/hand-of-straights/description/?envType=daily-question&envId=2024-06-06
+
+class Solution {
+boolean checkIfConsecutive(int num,int groupSize, HashMap<Integer,Integer>hashMap)
+    {
+
+        while (groupSize>0)
+        {
+            if (hashMap.getOrDefault(num,0)>0)
+            {
+                hashMap.put(num,hashMap.get(num)-1);
+                groupSize--;
+                num=num+1; // next consecutive number
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
+
+    }
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+
+        int n=hand.length;
+        Arrays.sort(hand);
+        HashMap<Integer,Integer>hashMap=new HashMap<>();
+        for (int i=0;i<n;i++)
+        {
+            hashMap.put(hand[i],hashMap.getOrDefault(hand[i],0)+1);
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            int num=hand[i];
+            if (hashMap.get(num)>0)
+            {
+                if(checkIfConsecutive(num,groupSize,hashMap))
+                {
+                    continue;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                continue;
+            }
+        }
+        return true;
+
+    }
+}
