@@ -1,0 +1,111 @@
+https://leetcode.com/problems/replace-words/description/?envType=daily-question&envId=2024-06-06
+
+class Solution {
+public:
+    class TrieNode
+{
+    public:
+    char ch;
+    TrieNode**children;
+    bool isTerminal;
+
+    TrieNode(char ch)
+    {
+        children=new TrieNode*[26];
+        for(int i=0;i<26;i++)
+        {
+            children[i]=NULL;
+        }
+        this->ch=ch;
+        this->isTerminal=false;
+    }
+};
+
+
+
+class Trie {
+public:
+
+    TrieNode*root;
+    Trie() {
+
+        root=new TrieNode('\0');
+    }
+    
+    void insert(string word) {
+        int n=word.length();
+        TrieNode*temp=root;
+        for(int i=0;i<n;i++)
+        {
+            int index=word[i]-'a';
+            if(temp->children[index]==NULL)
+            {
+                temp->children[index]=new TrieNode(word[i]);
+            }
+            temp=temp->children[index];
+        }
+
+        temp->isTerminal=true;
+        
+    }
+    
+    string search(string word) {
+
+        int n=word.length();
+        TrieNode*temp=root;
+        for(int i=0;i<n;i++)
+        {
+            int index=word[i]-'a';
+            if(temp->isTerminal)
+            {
+                return word.substr(0,i);
+            }
+            if(temp->children[index]==NULL)
+            {
+                return word;
+            }
+            temp=temp->children[index];
+        }
+
+
+        return word;
+        
+    }
+    
+};
+
+    string getNextWord(string &sent , int &idx)
+    {
+        string temp="";
+        while(idx<sent.size() && sent[idx]!=' ')
+        {
+            temp+=sent[idx];
+            idx++;
+        }
+        return temp;
+    }
+
+
+    string replaceWords(vector<string>& dict, string sent) {
+        
+        Trie t;
+        int n=dict.size();
+        for(int i=0;i<n;i++)
+        {
+            t.insert(dict[i]);
+        }
+
+        int len=sent.size();
+        string res="";
+        for(int i=0;i<len;i++)
+        {
+            string word=getNextWord(sent,i);
+            cout<<word<<endl;
+            res+=t.search(word)+" ";
+        }
+        res.pop_back(); // to remove the last space added
+        return res;
+
+
+    }
+};
