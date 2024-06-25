@@ -1,0 +1,48 @@
+https://leetcode.com/problems/grumpy-bookstore-owner/description/?envType=daily-question&envId=2024-06-21
+
+
+class Solution {
+public:
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        
+        int n=customers.size();
+
+        vector<int>fullSatisfy(n+1,0);
+        vector<int>currSatisfy(n+1,0);
+        fullSatisfy[0]=0;
+        currSatisfy[0]=0;
+        // 0 0
+        // 0 3
+        for(int i=1;i<=n;i++)
+        {
+            fullSatisfy[i]+=fullSatisfy[i-1]+customers[i-1];
+            currSatisfy[i]+=currSatisfy[i-1];
+            if(!grumpy[i-1])
+            {
+                currSatisfy[i]+=customers[i-1];
+            }
+        }
+
+
+
+        //              1 0 1 2 1 1 7 5 
+        //currsatisfy - 0 1 1 2 2 3 3 10 10
+        // fullsatisfy -0 1 1 2 4 5 6 13 18
+        //st - 0
+        // end - 1
+        // curr_satisfy = 2 + 0 + 8 = 10 
+        //
+        int maxSatisfy=0;
+        for(int i=0;i<n;i++)
+        {
+            int st_time =i;
+            int end_time =min(i+minutes,n);
+            int curr_satisfy=fullSatisfy[end_time]-fullSatisfy[st_time];
+            curr_satisfy+=currSatisfy[st_time]-currSatisfy[0] + currSatisfy[n]-currSatisfy[end_time];
+            maxSatisfy=max(curr_satisfy,maxSatisfy);
+        }
+
+
+        return maxSatisfy;
+    }
+};
