@@ -1,0 +1,28 @@
+https://leetcode.com/problems/average-waiting-time/description/?envType=daily-question&envId=2024-07-09
+
+class Solution {
+    public double averageWaitingTime(int[][] customers) {
+
+
+		int n=customers.length;
+		double total_time=0;
+		int curr_time=0;
+
+		// 1,2 2,5 4,3
+		for (int i = 0; i < n; i++) {
+			int arrival_time = customers[i][0]; // 1 
+			int time_need = customers[i][1]; // 2
+			curr_time=Math.max(arrival_time,curr_time); // 1
+			int time_after_food_prep=curr_time+time_need; 
+            curr_time=time_after_food_prep;
+			int waiting_time=(time_after_food_prep) -arrival_time; // 3 -1 = 2 
+			total_time+=waiting_time;
+		}	
+		
+		return total_time/n;
+        
+
+
+        
+    }
+}
