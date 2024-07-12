@@ -1,0 +1,30 @@
+https://leetcode.com/problems/crawler-log-folder/?envType=daily-question&envId=2024-07-10
+
+class Solution {
+    public int minOperations(String[] logs) {
+
+        int n=logs.length;
+		int depth=0;
+		for (int i=0;i<n;i++)
+		{
+			String curr=logs[i];
+			char first=curr.charAt(0);
+			char second=curr.charAt(1);
+			if (first=='.')
+			{
+				if (second=='.')
+				{
+					depth=Math.max(0,depth-1);
+				}
+			}
+			else {
+					depth++;
+			}
+		}
+
+
+		return depth;
+        
+        
+    }
+}
