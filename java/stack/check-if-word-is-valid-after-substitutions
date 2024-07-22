@@ -1,0 +1,64 @@
+//https://leetcode.com/problems/check-if-word-is-valid-after-substitutions/
+
+class Solution {
+
+    private Stack<Character> checkAndRemoveString(Stack<Character>stack)
+    {
+        if (stack.size()<3)
+        {
+            return stack;
+        }
+
+        Character first=stack.pop();
+        Character second=stack.pop();
+        Character third=stack.pop();
+
+        if (first=='c' && second=='b' && third=='a')
+        {
+            return stack;
+        }
+        stack.push(third);
+        stack.push(second);
+        stack.push(first);
+        return stack;
+
+    }
+
+    public boolean isValid(String s) {
+
+        int n=s.length();
+        Stack<Character>st=new Stack<>();
+        for (int i=0;i<n;i++)
+        {
+            st.push(s.charAt(i));
+            st=checkAndRemoveString(st);
+        }
+        return st.empty();
+    }
+}
+
+
+
+// optimized soln 
+T.C - O(N)
+S.C - O(1)
+public boolean isValid(String s) {
+
+       
+
+        int n=s.length();
+        int i=0; // for writing
+        char[] charArray=s.toCharArray();
+        // aabcbc
+        // abc
+        for (int j=0;j<n;j++) // for reading
+        {
+            charArray[i++]=charArray[j];
+            if (i>=3 && charArray[i-3]=='a' && charArray[i-2]=='b' && charArray[i-1]=='c')
+            {
+                i-=3;
+            }
+        }
+
+        return i==0;
+    }
