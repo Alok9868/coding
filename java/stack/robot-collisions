@@ -2,6 +2,95 @@ https://leetcode.com/problems/robot-collisions/description/?envType=daily-questi
 
 class Solution {
     public List<Integer> survivedRobotsHealths(int[] positions, int[] healths, String directions) {
+     List<List<Integer>>sortedRobots=new ArrayList<>();
+        int n=positions.length;
+        for (int i=0;i<n;i++)
+        {
+            List<Integer>list=new ArrayList<>();
+            list.add(i);
+            list.add(positions[i]);
+            list.add(healths[i]);
+            if (directions.charAt(i)=='R')
+            {
+                list.add(0); // right
+            }
+            else
+            {
+                list.add(1); // left
+            }
+            sortedRobots.add(list);
+        }
+
+        sortedRobots.sort(Comparator.comparingInt((List<Integer> list) -> list.get(1)));
+        Stack<List<Integer>>stack=new Stack<>();
+
+        //17 18 24 
+        //1 30 39
+        //L R L 
+
+
+        for (int i=0;i<n;i++)
+        {
+            if (sortedRobots.get(i).get(3) == 1 && !stack.empty() && stack.peek().get(3)==0) {
+                List<Integer>left=sortedRobots.get(i);
+                Boolean flag=false;
+                while (!stack.empty() && stack.peek().get(3) == 0) { 
+                    List<Integer> right = stack.pop();
+                    int curr_health = right.get(2) - left.get(2); // -9 
+                    if (curr_health != 0) {
+                        if (curr_health > 0) {
+                            // right health is greater than left
+                            right.set(2, right.get(2) - 1);
+                            stack.push(right);
+                            flag=false;
+                            break;
+                        } else {
+                            // again check for right in stack
+                            flag=true;
+                            left.set(2, left.get(2) - 1); //  38 
+                        }
+                    }
+                    else {
+                        // curr_health=0
+                        flag=false;
+                        break;
+                    }
+                }
+                // only when left is alive then push into stack 
+                //   
+                if (flag)
+                {
+                    stack.push(left);
+                }
+            } else {
+                stack.push(sortedRobots.get(i));
+            }
+        }
+
+
+        List<Integer>result=new ArrayList<>();
+        sortedRobots.clear();
+        while (!stack.empty())
+        {
+            sortedRobots.add(stack.pop());
+        }
+
+        sortedRobots.sort(Comparator.comparingInt(List::getFirst));
+
+
+        for (int i=0;i<sortedRobots.size();i++)
+        {
+            result.add(sortedRobots.get(i).get(2));
+        }
+        return result;
+
+    }
+}
+
+
+----------------------------------------------------------------
+class Solution {
+    public List<Integer> survivedRobotsHealths(int[] positions, int[] healths, String directions) {
         
         int n = positions.length;
         Integer[] indices = new Integer[n];
