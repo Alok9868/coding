@@ -1,0 +1,274 @@
+https://leetcode.com/problems/step-by-step-directions-from-a-binary-tree-node-to-another/?envType=daily-question&envId=2024-07-16
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+
+
+
+
+    public class Pair {
+   Integer value;
+   TreeNode treeNode;
+
+
+
+
+    public Pair(Integer value, TreeNode treeNode) {
+        this.value = value;
+        this.treeNode = treeNode;
+    }
+}
+
+
+    public Pair findLCA(TreeNode root , int value1, int value2)
+    {
+        Pair pair=new Pair(-1,null);
+        if (root==null)
+        {
+            return pair;
+        }
+
+
+        if (root.val==value1 || root.val==value2)
+        {
+            pair.treeNode=root;
+            pair.value=0;
+            return pair;
+        }
+
+
+        Pair left=findLCA(root.left,value1,value2);
+        Pair right=findLCA(root.right,value1,value2);
+
+
+        if (left.value==0 && right.value==0) // this is LCA , as we get both value as 0
+        {
+            pair.treeNode=root;
+            System.out.println(root.val);
+            pair.value=0;
+        }
+        else if(left.value==0)
+        {
+            pair.treeNode=left.treeNode;
+            pair.value=0;
+        }
+        else if (right.value==0)
+        {
+            pair.treeNode=right.treeNode;
+            pair.value=0;
+        }
+
+
+        return pair;
+    }
+
+
+     public String rootToNodePath(TreeNode root , int val)
+    {
+         if (root==null)
+        {
+            return null;
+        }
+
+
+        if (val==root.val)
+        {
+            return "";
+        }
+
+
+        String left=rootToNodePath(root.left,val);
+        if (left!=null)
+        {
+            return "L"+left;
+        }
+        String right=rootToNodePath(root.right,val);
+        if (right!=null)
+        {
+            return "R"+right;
+        }
+        return null;
+    }
+
+
+    public String getDirections(TreeNode root, int startValue, int destValue) {
+       
+        Pair lcaPair = findLCA(root, startValue, destValue);
+        TreeNode lcaNode = lcaPair.treeNode;
+        String result = "";
+        if (lcaNode!=null)
+        {
+            System.out.println(lcaNode.val);
+            String srcPath = rootToNodePath(lcaNode, startValue);
+            System.out.println(srcPath);
+            int size = srcPath.length();
+            while (size > 0) {
+                size--;
+                result += "U";
+            }
+            String destPath = rootToNodePath(lcaNode, destValue);
+            result += destPath; // UURL
+        }
+       
+        return result;
+
+
+    }
+}
+
+
+
+
+—--------------
+Optimized approach using String builder .
+The issue with above code is we are appending like this -  
+“L” + result .
+Which is very costly operation , so we first get the string and then reverse it .
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+
+
+
+
+    public class Pair {
+   Integer value;
+   TreeNode treeNode;
+
+
+
+
+    public Pair(Integer value, TreeNode treeNode) {
+        this.value = value;
+        this.treeNode = treeNode;
+    }
+}
+
+
+    public Pair findLCA(TreeNode root , int value1, int value2)
+    {
+        Pair pair=new Pair(-1,null);
+        if (root==null)
+        {
+            return pair;
+        }
+
+
+        if (root.val==value1 || root.val==value2)
+        {
+            pair.treeNode=root;
+            pair.value=0;
+            return pair;
+        }
+
+
+        Pair left=findLCA(root.left,value1,value2);
+        Pair right=findLCA(root.right,value1,value2);
+
+
+        if (left.value==0 && right.value==0) // this is LCA , as we get both value as 0
+        {
+            pair.treeNode=root;
+            pair.value=0;
+        }
+        else if(left.value==0)
+        {
+            pair.treeNode=left.treeNode;
+            pair.value=0;
+        }
+        else if (right.value==0)
+        {
+            pair.treeNode=right.treeNode;
+            pair.value=0;
+        }
+
+
+        return pair;
+    }
+
+
+    public StringBuilder rootToNodePath(TreeNode root , int val)
+    {
+        if (root==null)
+        {
+            return null;
+        }
+
+
+        if (val==root.val)
+        {
+            return new StringBuilder("");
+        }
+
+
+        StringBuilder left=rootToNodePath(root.left,val);
+        if (left!=null)
+        {
+            return left.append("L");
+        }
+        StringBuilder right=rootToNodePath(root.right,val);
+        if (right!=null)
+        {
+            return right.append("R");
+        }
+        return null;
+    }
+
+
+
+
+    public String getDirections(TreeNode root, int startValue, int destValue) {
+
+
+         Pair lcaPair = findLCA(root, startValue, destValue);
+        TreeNode lcaNode = lcaPair.treeNode;
+        StringBuilder result = new StringBuilder("");
+        if (lcaNode!=null)
+        {
+            StringBuilder srcPath = rootToNodePath(lcaNode, startValue);
+            int size = srcPath.length();
+            while (size > 0) {
+                size--;
+                result.append("U");
+            }
+            StringBuilder destPath = rootToNodePath(lcaNode, destValue);
+            destPath.reverse();
+            result.append(destPath); // UURL
+        }
+
+
+        return result.toString();
+    }
+}
+
+
