@@ -1,0 +1,167 @@
+https://leetcode.com/problems/number-of-atoms/?envType=daily-question&envId=2024-07-14
+
+
+
+
+// T.C - N*N * LOG (N)
+// S.C - N 
+class Solution {
+
+
+    public class Pair {
+    String element;
+    Integer count;
+    Integer idx;
+
+
+    public Integer getCount() {
+        return count;
+    }
+
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+
+    public Pair(String element, Integer count, Integer idx) {
+        this.element = element;
+        this.count = count;
+        this.idx = idx;
+    }
+
+
+    public String getElement() {
+        return element;
+    }
+
+
+    public void setElement(String element) {
+        this.element = element;
+    }
+
+
+    public Integer getIdx() {
+        return idx;
+    }
+
+
+    public void setIdx(Integer idx) {
+        this.idx = idx;
+    }
+}
+
+
+
+
+private Pair getNo(String formula, int idx)
+    {
+         int n = formula.length();
+        String no = "";
+        while (idx < n && formula.charAt(idx) >= '0' && formula.charAt(idx) <= '9') {
+            no += formula.charAt(idx++);
+        }
+
+
+        Integer count=1;
+        if (!no.isBlank())
+        {
+            count=Integer.parseInt(no);
+        }
+        Pair pair = new Pair(no , count , idx);
+        return pair;
+    }
+
+
+    private  Pair getNextElementWithCount(String formula, int idx)
+    {
+        int n = formula.length();
+        String element = formula.charAt(idx++) + "";
+        while (idx<n && Character.isLowerCase(formula.charAt(idx))) {
+            element += formula.charAt(idx++);
+        }
+        Integer count = 1;
+        String no = "";
+        while (idx < n && formula.charAt(idx) >= '0' && formula.charAt(idx) <= '9') {
+            no += formula.charAt(idx++);
+        }
+
+
+        if (!no.isBlank()) {
+            count = Integer.parseInt(no);
+        }
+
+
+        Pair pair = new Pair(element,  count , idx);
+        return pair;
+    }
+
+
+    public String countOfAtoms(String formula) {
+
+
+
+
+        Stack<TreeMap<String,Integer>>stack=new Stack<>();
+        TreeMap<String, Integer> hashMap = new TreeMap<>();
+        stack.push(hashMap);
+
+
+        int idx=0;
+        int n=formula.length();
+        while (idx<n)
+        {
+            if (formula.charAt(idx)=='(')
+            {
+                TreeMap<String, Integer> treeMap = new TreeMap<>();
+                stack.push(treeMap);
+                idx++;
+            }
+            else if (formula.charAt(idx)==')'){
+               Pair countPair = getNo(formula,idx+1);
+                idx=countPair.getIdx();
+                TreeMap<String, Integer> innerTreeMap=stack.pop();
+                for (Map.Entry<String,Integer>entry:innerTreeMap.entrySet())
+                {
+                    Integer curr_count=entry.getValue()* countPair.getCount();
+                    innerTreeMap.put(entry.getKey(),curr_count);
+                }
+
+
+                TreeMap<String, Integer> outerTreeMap=stack.peek();
+
+
+                for (Map.Entry<String,Integer>entry:innerTreeMap.entrySet())
+                {
+                    Integer curr_count=outerTreeMap.getOrDefault(entry.getKey(),0) + entry.getValue();
+                    outerTreeMap.put(entry.getKey(),curr_count);
+                }
+
+
+            }
+            else {
+                Pair elementPair=getNextElementWithCount(formula,idx);
+                hashMap=stack.peek();
+                hashMap.put(elementPair.getElement(),hashMap.getOrDefault(elementPair.getElement(),0)+ elementPair.getCount());
+                idx= elementPair.getIdx();
+            }
+        }
+
+
+
+
+        String result = "";
+        TreeMap<String, Integer> treeMap=stack.pop();
+        for (Map.Entry<String,Integer>map:treeMap.entrySet())
+        {
+            result+=map.getKey();
+            if (map.getValue()>1)
+            {
+                result+=map.getValue();
+            }
+        }
+        return result;
+    }
+
+
+}
