@@ -1,0 +1,84 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+
+https://leetcode.com/problems/create-binary-tree-from-descriptions/?envType=daily-question&envId=2024-07-15
+
+
+
+
+// T.C - O (N)
+// S.C - O (N)
+class Solution {
+    public TreeNode createBinaryTree(int[][] descriptions) {
+
+
+         int n = descriptions.length;
+        HashMap<Integer, TreeNode> hashMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int parent = descriptions[i][0];
+            int child = descriptions[i][1];
+            int isLeft = descriptions[i][2];
+
+
+            TreeNode parentNode = hashMap.get(parent);
+            TreeNode childNode = hashMap.get(child);
+            if (parentNode == null)
+            {
+                parentNode = new TreeNode(parent);
+                hashMap.put(parent,parentNode);
+            }
+            if (childNode == null) {
+                childNode = new TreeNode(child);
+                hashMap.put(child,childNode);
+            }
+
+
+            // put the child in its position under the parent
+            if (isLeft==1) // place it in left position
+            {
+                parentNode.left=childNode;
+            }
+            else { // place it in right position
+                parentNode.right=childNode;
+            }
+
+
+        }
+
+
+        // check which node is parent
+        // 50
+
+
+        // [[20,15,1],[20,17,0],[50,20,1],[50,80,0],[80,19,1]]
+
+
+        for (int i=0;i<n;i++)
+        {
+            int child = descriptions[i][1];
+            hashMap.remove(child);
+        }
+
+
+        Map.Entry<Integer, TreeNode> parentEntry = hashMap.entrySet().iterator().next();
+        TreeNode parentNode=parentEntry.getValue();
+        return parentNode;
+       
+    }
+}
+
+
