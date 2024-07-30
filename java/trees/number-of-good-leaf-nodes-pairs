@@ -1,0 +1,91 @@
+https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/?envType=daily-question&envId=2024-07-18
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+
+
+class Solution {
+
+    public HashMap<Integer,Integer> helper(TreeNode root)
+	{
+		HashMap<Integer,Integer>leafDistMap=new HashMap<>();
+		if (root==null)
+		{
+			return leafDistMap;
+		}
+
+		if (root.left==null && root.right==null)
+		{
+			leafDistMap.put(1,1);
+			return leafDistMap;
+		}
+
+		HashMap<Integer,Integer>leafDistLeftMap=helper(root.left);
+		HashMap<Integer,Integer>leafDistRightMap=helper(root.right);
+
+
+		for (Map.Entry<Integer,Integer>entry:leafDistLeftMap.entrySet())
+		{
+			entry.getKey(); // distance
+			entry.getValue(); // no of nodes at that distance
+
+			int maxDist=distance-entry.getKey(); // 2
+			for (int dist=maxDist;dist>=0;dist--)
+			{
+				if (leafDistRightMap.get(dist)!=null)
+				{
+					// calc the pairs
+					this.goodPairs+=entry.getValue()*leafDistRightMap.get(dist);
+				}
+			}
+		}
+
+
+		for (Map.Entry<Integer,Integer>entry:leafDistLeftMap.entrySet())
+		{
+			Integer dist=entry.getKey()+1; // distance
+			entry.getValue(); // no of nodes at that distance
+			leafDistMap.put(dist, entry.getValue());
+		}
+
+		for (Map.Entry<Integer,Integer>entry:leafDistRightMap.entrySet())
+		{
+			Integer dist=entry.getKey()+1; // distance
+			entry.getValue(); // no of nodes at that distance
+			leafDistMap.put(dist,leafDistMap.getOrDefault(dist,0)+entry.getValue());
+		}
+		
+		return leafDistMap;
+
+	}
+
+
+	int distance;
+	int goodPairs;
+
+	public int countPairs(TreeNode root, int distance) {
+
+		this.distance = distance;
+        this.goodPairs=0;
+		helper(root);
+		return goodPairs;
+
+
+	}
+}
