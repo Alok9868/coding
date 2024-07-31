@@ -1,0 +1,43 @@
+https://leetcode.com/problems/lucky-numbers-in-a-matrix/?envType=daily-question&envId=2024-07-19
+
+class Solution {
+    public List<Integer> luckyNumbers (int[][] matrix) {
+
+        List<Integer>result=new ArrayList<>();
+		int n=matrix.length;
+		int m=matrix[0].length;
+		for (int i=0;i<n;i++)
+		{
+			// traverse the row , and get the min num and its idx (col)
+			int mini=Integer.MAX_VALUE;
+			int index=-1;
+			for (int j=0;j<m;j++)
+			{
+				if (mini>matrix[i][j])
+				{
+					mini=matrix[i][j];
+					index=j;
+				}
+			}
+
+			Boolean flag=true;
+			for (int row=0;row<n;row++)
+			{
+				if (mini<matrix[row][index])
+				{
+					flag=false;
+					break;
+				}
+			}
+
+			if (flag)
+			{
+				result.add(mini);
+			}
+
+		}
+
+		return result;
+        
+    }
+}
