@@ -1,0 +1,25 @@
+https://leetcode.com/problems/number-of-senior-citizens/description/?envType=daily-question&envId=2024-08-01
+
+
+class Solution {
+    public int countSeniors(String[] details) {
+        int n=details.length;
+        int result=0;
+        for(int i=0;i<n;i++)
+        {
+            String passengerInfo=details[i];
+            String age=passengerInfo.charAt(11) + "" + passengerInfo.charAt(12);
+            if (passengerInfo.charAt(11)>'6')
+            {
+
+                    result++;
+
+            }
+            else if (passengerInfo.charAt(11)=='6' && passengerInfo.charAt(12)>='1')
+            {
+                result++;
+            }
+        }
+        return result;
+    }
+}
