@@ -1,0 +1,58 @@
+https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together-ii/description/?envType=daily-question&envId=2024-08-02
+
+class Solution {
+    public int minSwaps(int[] nums) {
+        
+          int st_win_idx=0;
+        int end_win_idx=0;
+
+        int n=nums.length;
+        int totalOnes=0;
+        for (int i=0;i<n;i++)
+        {
+            if (nums[i]==1)
+            {
+                totalOnes++;
+            }
+        }
+
+        int windows_size=totalOnes;
+        int curr_window_ones=0;
+        for (int i=0;i<windows_size;i++)
+        {
+            if (nums[i]==1)
+            {
+                curr_window_ones++;
+            }
+        }
+
+        if(windows_size==n)
+        {
+            return 0;
+        }
+
+        st_win_idx=0;
+        end_win_idx=windows_size;
+        int maxi_ones_window=curr_window_ones;
+
+        while (st_win_idx<n && end_win_idx<n)
+        {
+            if (nums[st_win_idx]==1)
+            {
+                curr_window_ones--;
+            }
+            if (nums[end_win_idx]==1)
+            {
+                curr_window_ones++;
+            }
+            end_win_idx=(end_win_idx+1)%n;
+            st_win_idx++;
+            maxi_ones_window=Math.max(maxi_ones_window,curr_window_ones); // 2
+        }
+
+        return totalOnes-maxi_ones_window;
+
+    }
+
+
+}
