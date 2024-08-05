@@ -1,0 +1,35 @@
+https://leetcode.com/problems/kth-distinct-string-in-an-array/description/?envType=daily-question&envId=2024-08-05
+
+class Solution {
+    public String kthDistinct(String[] arr, int k) {
+        
+        int n = arr.length;
+		HashMap<String, Integer> hashMap = new LinkedHashMap<>();
+		for (int i = 0; i < n; i++) {
+			String key = arr[i];
+			hashMap.put(key, hashMap.getOrDefault(key, 0) + 1);
+		}
+
+
+		String result="";
+
+
+		for (Map.Entry<String,Integer>map:hashMap.entrySet())
+		{
+			if (map.getValue()==1) {
+				k--;
+				if (k==0)
+				{
+					result=map.getKey();
+					break;
+				}
+
+			}
+
+		}
+
+		return result;
+
+
+    }
+}
