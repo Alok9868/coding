@@ -1,0 +1,50 @@
+static Boolean dfs(List<Integer> adj[], int u, Stack<Integer> ans, Integer vis[]) {
+
+
+        // 1 -> 2
+        // 3 -> 2
+        vis[u] = 1;
+        for (Integer a : adj[u]) {
+            if (vis[a] == 0) {
+                if (dfs(adj, a, ans, vis))
+                {
+                    return true;
+                }
+            } else if (vis[a] == 1) {
+              return true;
+            }
+        }
+        vis[u] = 2;
+        ans.push(u);
+        return false;
+    }
+
+    public static int[] topoSort(int V, List<Integer> adj[]) {
+        // code here
+        Stack<Integer> stack = new Stack<>();
+        int result[] = null;
+        Integer vis[] = new Integer[V];
+
+        for (int i = 0; i < V; i++) {
+            vis[i] = 0;
+        }
+
+        Boolean cycle = false;
+        for (int i = 1; i < V; i++) {
+            if (vis[i] == 0) {
+                if (dfs(adj, i, stack, vis)) {
+                    return result;
+                }
+            }
+
+        }
+        result = new int[V-1];
+        int i = 0;
+        while (!stack.empty()) {
+            result[i] = stack.pop();
+            i++;
+        }
+
+
+        return result;
+    }
