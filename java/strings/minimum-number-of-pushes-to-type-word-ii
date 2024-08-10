@@ -1,0 +1,49 @@
+https://leetcode.com/problems/minimum-number-of-pushes-to-type-word-ii/description/?envType=daily-question&envId=2024-08-06
+
+
+class Solution {
+    public int minimumPushes(String word) {
+
+
+        Integer []dict=new Integer[26];
+
+        for (int i=0;i<26;i++)
+        {
+            dict[i]=0;
+        }
+        for (int i = 0; i < word.length(); i++) {
+            int idx=word.charAt(i)-'a';
+            int curr_freq=dict[idx]+1;
+            dict[idx]=curr_freq;
+        }
+
+        int result=0;
+        Arrays.sort(dict,Collections.reverseOrder());
+
+        int keySize=8;
+        List<Integer>phoneMapping=new ArrayList<>(keySize);
+
+        for (int i=0;i<keySize;i++)
+        {
+            phoneMapping.add(i,0);
+        }
+        int curr_map_idx=0;
+        for (int i=0;i<dict.length;i++) {
+            if (dict[i]==0)
+            {
+                break;
+            }
+            result += (phoneMapping.get(curr_map_idx)+1)*dict[i];
+            int curr_str_size=phoneMapping.get(curr_map_idx) +1;
+            phoneMapping.add(curr_map_idx,curr_str_size);
+            curr_map_idx=(curr_map_idx+1)%keySize;
+        }
+
+          return result;
+
+
+        
+
+        
+    }
+}
