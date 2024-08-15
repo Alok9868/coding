@@ -1,0 +1,55 @@
+https://leetcode.com/problems/find-k-th-smallest-pair-distance/description/?envType=daily-question&envId=2024-08-14
+
+
+class Solution {
+
+     public int slidingWindowCount(int nums[],int dist)
+    {
+        int pairs=0;
+        int i=0;
+        int j=i+1;
+        int n=nums.length;
+        while (j<n)
+        {
+
+            while (nums[j]-nums[i]>dist)
+            {
+                i++;
+            }
+            pairs+=j-i;
+            j++;
+        }
+        return pairs;
+
+    }
+
+
+
+    public int smallestDistancePair(int[] nums, int k) {
+
+        int n = nums.length;
+        int low =0 ;
+        int high = (int) 1e9;
+        Arrays.sort(nums);
+
+        int result=0;
+        while (high>=low)
+        {
+            int mid=(high-low)/2+low;
+
+            // find out the no pairs of this distance
+            int countPairs=slidingWindowCount(nums,mid);
+            if (countPairs<k)
+            {
+                low=mid+1;
+            }
+            else {
+                result=mid;
+                high=mid-1;
+            }
+
+        }
+
+        return result;
+    }
+}
