@@ -1,0 +1,77 @@
+https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/?envType=daily-question&envId=2024-08-29
+
+
+class Solution {
+
+
+    public int findParent(int x)
+	{
+		if (parent[x]==x)
+		{
+			return x;
+		}
+		return parent[x]=findParent(parent[x]);
+	}
+
+	int parent[];
+	int rank[];
+	int isConnected(int x, int y )
+	{
+		int parent_x=findParent(x);
+		int parent_y=findParent(y);
+
+		if (parent_y==parent_x)
+		{
+			return 0;
+		}
+		if (rank[parent_x]>rank[parent_y])
+		{
+			parent[parent_y]=parent_x;
+		}
+		else if (rank[parent_x]<rank[parent_y])
+		{
+			parent[parent_x]=parent_y;
+		}
+		else {
+			parent[parent_x]=parent_y;
+			rank[parent_x]++;
+		}
+
+		return 1;
+	}
+
+
+    public int removeStones(int[][] stones) {
+        
+
+        parent=new int[stones.length];
+		rank=new int[stones.length];
+		for (int i=0;i<stones.length;i++)
+		{
+			parent[i]=i;
+			rank[i]=0;
+		}
+
+		int removed_stones=0;
+		int []nodes=new int[stones.length];
+		for (int i=0;i<stones.length;i++)
+		{
+			int x=stones[i][0];
+			int y=stones[i][1];
+			for (int j=0;j<stones.length;j++)
+			{
+				int x_new=stones[j][0];
+				int y_new=stones[j][1];
+				if (x==x_new || y==y_new)
+				{
+					removed_stones+=isConnected(i,j);
+				}
+			}
+		}
+		
+		
+		return removed_stones;
+
+
+    }
+}
