@@ -1,0 +1,71 @@
+https://leetcode.com/problems/walking-robot-simulation/description/?envType=daily-question&envId=2024-09-04
+
+class Solution {
+
+
+    int[] xdir ={0,1,0,-1};
+	int[] ydir ={1,0,-1,0};
+
+	public  List<Integer> walk(int x,int y ,Set<String>set,int distance, int dir)
+	{
+		int ans=0;
+		List<Integer> list=new ArrayList<>();
+		while (distance>0)
+		{
+			int newx=x+xdir[dir];
+			int newy=y+ydir[dir];
+			String temp=newx+"$"+newy;
+			if (set.contains(temp))
+			{
+				break;
+			}
+			int curr_ans=(newx*newx+newy*newy);
+			ans=Math.max(ans,curr_ans);
+			distance--;
+			x=newx;
+			y=newy;
+		}
+		list.add(x);
+		list.add(y);
+		list.add(ans);
+		return list;
+	}
+    public int robotSim(int[] commands, int[][] obstacles) {
+
+        int result=0;
+			Set<String>set=new HashSet<>();
+			for (int i=0;i<obstacles.length;i++)
+			{
+				String temp=obstacles[i][0]+"$"+obstacles[i][1];
+				set.add(temp);
+			}
+
+
+			int curr_x=0;
+			int curr_y=0;
+			int dir=0;
+			for (int i=0;i<commands.length;i++)
+			{
+				if (commands[i]>0)
+				{
+					// simply continue on the current direction
+					List<Integer>walkAns=walk(curr_x,curr_y,set,commands[i],dir);
+					int dist=walkAns.get(2);
+					curr_y=walkAns.get(1);
+					curr_x=walkAns.get(0);
+					result=Math.max(dist,result);
+				} else if (commands[i]==-1) {
+					//turn right 90 degrees
+					dir=(dir+1)%4;
+				}
+				else
+				{
+					// turn left 90 degrees
+					dir=(dir+3)%4;
+				}
+			}
+
+			return result;
+        
+    }
+}
