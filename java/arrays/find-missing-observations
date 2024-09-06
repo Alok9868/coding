@@ -1,0 +1,39 @@
+https://leetcode.com/problems/find-missing-observations/?envType=daily-question&envId=2024-09-05
+
+
+
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        
+        int nsum = 0;
+        int msum = 0;
+        int m=rolls.length;
+        for (int i=0;i<rolls.length;i++)
+        {
+            msum+=rolls[i];
+        }
+
+        nsum=(mean*(m+n))-msum;
+        // rolls = [1,2,3,4], mean = 6, n = 4
+        // 6*8 = 48 - 10 = 38/4 // max value - 6*n , min value - 1*n
+        int []result=new int[0];
+        int max_value=6*n;
+        int min_value=1*n;
+        if (nsum<min_value || nsum>max_value)
+        {
+            return result;
+        }
+        // now divide the nsum into n with min (1,6);
+        result=new int[n];
+        int curr_size=n;
+        for (int i=0;i<n;i++)
+        {
+            int curr_ele=Math.floorDiv(nsum, curr_size);
+            result[i]=curr_ele;
+            nsum-=curr_ele;
+            curr_size--;
+        }
+
+        return result;
+    }
+}
