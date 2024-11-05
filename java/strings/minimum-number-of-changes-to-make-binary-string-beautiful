@@ -1,0 +1,21 @@
+https://leetcode.com/problems/minimum-number-of-changes-to-make-binary-string-beautiful/description/?envType=daily-question&envId=2024-11-05
+
+
+class Solution {
+    public int minChanges(String s) {
+
+        int cnt=0;
+        for (int i=0;i<s.length()-1;i+=2) {
+            char curr_char = s.charAt(i);
+            char next_char = s.charAt(i + 1);
+            if (curr_char != next_char) {
+                cnt++;
+            }
+        }
+        
+        return cnt;
+
+
+        
+    }
+}
