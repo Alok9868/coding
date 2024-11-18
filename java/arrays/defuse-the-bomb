@@ -1,0 +1,166 @@
+https://leetcode.com/problems/defuse-the-bomb/description/?envType=daily-question&envId=2024-11-13
+
+T.C - O(N*N) , S.C - O(1)
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+
+        int n = code.length;
+        int ans[] = new int[n];
+        if (k == 0) {
+            for (int i = 0; i < n; i++) {
+                ans[i] = 0;
+            }
+
+        }
+        //Input: code = [5,7,1,4], k = 3
+        //Output: [12,10,16,13]
+
+        else if (k > 0) {
+            for (int i = 0; i < n; i++) {
+                int sum = 0;
+                int times = k;
+                int idx = (i + 1) % n;
+                while (times > 0) {
+                    times--;
+                    sum += code[idx];
+                    idx = (idx + 1) % n;
+                }
+                ans[i] = sum;
+            }
+        } else {
+//            Input: code = [2,4,9,3], k = -2
+//            Output: [12,5,6,13]
+            //idx = 0
+            // idx = n -k = 2
+            // (idx+1)%n
+            for (int i = 0; i < n; i++) {
+                int sum = 0;
+                int times = Math.abs(k);
+                int idx = (n + k+i)%n;
+                while (times > 0) {
+                    times--;
+                    sum += code[idx];
+                    idx = (idx + 1) % n;
+                }
+                ans[i] = sum;
+            }
+        }
+
+        return ans;
+        
+    }
+}
+
+
+// optimized soln - T.C - O(N) , S.C - O(2*N)
+class Solution {
+
+
+
+    public int[] decrypt(int[] code, int k) {
+
+        int n = code.length;
+        int ans[] = new int[n];
+        if (k == 0) {
+            for (int i = 0; i < n; i++) {
+                ans[i] = 0;
+            }
+
+        }
+
+        //Input: code = [5,7,1,4], k = 3
+        //Output: [12,10,16,13]
+        // 5 12 13 17 22
+        // 5 7 1 4 5 7 1 4
+        // 5 12 13 17 22 29 30 34
+        // i=1 , ans = 10
+        //i =0 , ans = 12
+        // i= 2 , ans = 29-13 = 16
+        // i= 3 , ans = 30 - 17 = 13
+
+
+        else if (k > 0) {
+            int[] temparr=new int[n*2];
+            temparr[0]=code[0];
+            for (int i=1;i<n;i++)
+            {
+                temparr[i]=code[i]+temparr[i-1];
+            }
+
+            for (int idx=n;idx<2*n ;idx++)
+            {
+                temparr[idx]=code[idx-n]+temparr[idx-1];
+            }
+
+            // 5 12 13 17 22 29 30 34
+            for (int i = 0; i < n; i++) {
+                int sum = temparr[i+k]-temparr[i];
+                ans[i] = sum;
+            }
+        } else {
+//            Input: code = [2,4,9,3], k = -2
+//            Output: [12,5,6,13]
+
+            // 3 9 4 2 3 9 4 2
+            int[] temparr=new int[n*2];
+
+            // 3 12 16 18 21 30 34 36
+            // 3 12 16 18 21 30 34 36
+            // i = 1 , ans = 13
+            // idx = n -k + i = 4 -2 +1 = 3
+
+
+            int low=0;
+            int high=n-1;
+            while(low<high)
+            {
+                int temp=code[low];
+                code[low]=code[high];
+                code[high]=temp;
+                low++;
+                high--;
+            }
+
+            temparr[0]=code[0];
+            for (int i=1;i<n;i++)
+            {
+                temparr[i]=code[i]+temparr[i-1];
+            }
+
+            for (int idx=n;idx<2*n ;idx++)
+            {
+                temparr[idx]=code[idx-n]+temparr[idx-1];
+            }
+
+
+            for (int i=0;i<2*n;i++)
+            {
+                System.out.println(temparr[i]);
+            }
+
+            k = Math.abs(k);
+            // 3 9 4 2
+            // 3 12 16 18 21 30 34 36
+            // i = 1 , ans = 13
+            // idx = n -k + i = 4 -2 +1 = 3
+            for (int i = 0; i < n; i++) {
+
+                int sum = temparr[i+k]-temparr[i];
+                ans[i] = sum;
+            }
+
+            low=0;
+            high=n-1;
+            while(low<high)
+            {
+                int temp=ans[low];
+                ans[low]=ans[high];
+                ans[high]=temp;
+                low++;
+                high--;
+            }
+        }
+
+        return ans;
+    }
+}
