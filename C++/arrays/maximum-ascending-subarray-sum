@@ -1,0 +1,29 @@
+https://leetcode.com/problems/maximum-ascending-subarray-sum/description/?envType=daily-question&envId=2025-02-04
+
+class Solution {
+public:
+    int maxAscendingSum(vector<int>& nums) {
+
+        int n=nums.size();
+        int curr_sum=0;
+        int max_sum=0;
+        int prev=0;
+        for(int i=0;i<n;i++)
+        {
+            if(prev<nums[i])
+            {
+                curr_sum+=nums[i];
+            }
+            else
+            {
+                curr_sum=nums[i];
+            }
+            prev=nums[i];
+            max_sum=max(curr_sum,max_sum);
+        }   
+
+        return max_sum;
+
+
+    }
+};
