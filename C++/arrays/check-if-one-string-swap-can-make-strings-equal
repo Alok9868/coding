@@ -1,0 +1,57 @@
+https://leetcode.com/problems/check-if-one-string-swap-can-make-strings-equal/description/?envType=daily-question&envId=2025-02-05
+
+class Solution {
+public:
+    bool areAlmostEqual(string s1, string s2) {
+
+        if(s1.size()!=s2.size())
+        {
+            return false;
+        }
+
+        int n=s2.size();
+        vector<int>dict(26,0);
+        for(int i=0;i<n;i++)
+        {
+            int idx1=s1[i]-'a';
+            int idx2=s2[i]-'a';
+            dict[idx1]++;
+            dict[idx2]--;
+        }
+
+        for(int i=0;i<26;i++)
+        {
+            if(dict[i]!=0)
+            {
+                return false;
+            }
+        }
+
+        int ptr=0;
+        char swapped_s1=' ';
+        char swapped_s2=' ';
+        while(ptr<n)
+        {
+            if(s1[ptr]!=s2[ptr])
+            {
+                //check if we have already swapped the characters or not 
+                if(swapped_s1!=' ')
+                {
+                    if(swapped_s1!=s1[ptr] || swapped_s2!=s2[ptr])
+                    {   
+                        return false;
+                    }
+                }
+                else
+                {
+                        swapped_s1=s2[ptr]; // k 
+                        swapped_s2=s1[ptr]; // b
+                }
+            }
+            ptr++;
+        }
+
+        return true;
+        
+    }
+};
