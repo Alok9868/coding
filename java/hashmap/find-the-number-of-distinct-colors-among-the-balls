@@ -1,0 +1,51 @@
+https://leetcode.com/problems/find-the-number-of-distinct-colors-among-the-balls/?envType=daily-question&envId=2025-02-07
+
+class Solution {
+    public int[] queryResults(int limit, int[][] queries) {
+
+        
+        int n = queries.length;
+        int[] ans = new int[n];
+
+        Map<Integer, Integer> ballMap = new HashMap<>();
+        Map<Integer, Integer> colorMap = new HashMap<>();
+
+// [[0,2],[1,10],[0,10],[0,3],[1,5]]
+        for (int i = 0; i < n; i++) {
+            int ball = queries[i][0]; // 0
+            int color = queries[i][1]; // 2
+
+            if (ballMap.get(ball) != null) {
+                int prev_color = ballMap.get(ball);
+                if (colorMap.get(prev_color) != null) {
+                    int freq = colorMap.get(prev_color);
+                    freq--; // subtract the freq
+                    if (freq == 0) {
+                        colorMap.remove(prev_color);
+                    }
+                    else
+                    {
+                        colorMap.put(prev_color,freq);
+                    }
+                }
+            }
+
+            ballMap.put(ball, color);
+            // 0 , 2 
+            // 1, 10 
+            //
+            colorMap.put(color, colorMap.getOrDefault(color, 0) + 1);
+            // increase the freq , or add that in hashmap if not present prev
+
+
+            // 5 ,2
+            // 3 ,1
+            ans[i] = colorMap.size();
+        }
+
+        // 1
+        return ans;
+
+        
+    }
+}
