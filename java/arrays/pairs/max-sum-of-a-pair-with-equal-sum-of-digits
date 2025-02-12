@@ -1,0 +1,40 @@
+https://leetcode.com/problems/max-sum-of-a-pair-with-equal-sum-of-digits/?envType=daily-question&envId=2025-02-12
+
+
+class Solution {
+ 
+    static int getSumOfCurrentNumber(int num)
+    {
+        int sum=0;
+        while (num>0)
+        {
+            sum+=num%10;
+            num=num/10;
+        }
+        return sum;
+    }
+
+
+    public int maximumSum(int[] nums) {
+        Arrays.sort(nums);
+        Map<Integer,Integer>hashmap=new HashMap<>();
+        int n=nums.length;
+        int ans=-1;
+        for (int i=n-1;i>=0;i--)
+        {
+            int curr_num=nums[i];
+            int curr_sum=getSumOfCurrentNumber(curr_num);
+            if (hashmap.get(curr_sum)!=null)
+            {
+                int index=hashmap.get(curr_sum);
+                int sum=curr_num+nums[index];
+                ans=Math.max(sum,ans);
+            }
+            else {
+                hashmap.put(curr_sum,i);
+            }
+        }
+        
+        return ans;
+    }
+}
