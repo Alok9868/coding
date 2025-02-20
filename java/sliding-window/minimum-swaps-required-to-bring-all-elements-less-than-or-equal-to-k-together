@@ -1,0 +1,58 @@
+https://www.geeksforgeeks.org/problems/minimum-swaps-required-to-bring-all-elements-less-than-or-equal-to-k-together4847/1
+
+int minSwap(int[] arr, int k) {
+        // Complete the function
+        
+        // 21365 
+        
+        // count ele >=k
+        
+        //  2 1 3
+        
+        // 2 7 9 5 8 7 4 
+        
+        // 0 1 2 3 4 5 6 
+        
+        // 0 3 6 
+        
+        // k - 6
+        
+        int count=0;
+        int n=arr.length;
+        // calc total ele <=k
+        for(int i=0;i<n;i++)
+        {
+            if(arr[i]<=k)
+            {
+                count++;
+            }
+        }
+        
+        // find the ans for curr window 
+        int swap=0;
+        for(int i=0;i<count;i++)
+        {
+            if(arr[i]>k)
+            {
+                swap++;
+            }
+        }
+        
+        
+        // now do sliding window , and calculate the swap req accordingly
+        int j=0;
+        int result=swap;
+        
+        for(int i=count;i<n;i++)
+        {
+            if(arr[j]>k) swap--;
+            if(arr[i]>k) swap++;
+             j++;
+            result=Math.min(result,swap);
+        }
+        
+        // 
+        
+        return result;
+        
+    }
