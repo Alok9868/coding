@@ -1,6 +1,6 @@
 https://leetcode.com/problems/find-the-original-array-of-prefix-xor/?envType=daily-question&envId=2023-10-31
 
-// this uestion can be easily solved , we just have to identify the pattern 
+// this question can be easily solved , we just have to identify the pattern
 
 x^y = z
 x^z=y

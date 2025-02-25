@@ -64,4 +64,81 @@ public:
 
         
     }
+
+
+    // second soln
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+
+            if(n==1)
+            {
+                return {0};
+            }
+            vector<int>ans;
+            vector<int>adj[n];
+            vector<int>indegree(n,0);
+            for(int i=0;i<edges.size();i++)
+            {
+                int u=edges[i][0];
+                int v=edges[i][1];
+                adj[u].push_back(v);
+                adj[v].push_back(u);
+                indegree[u]++;
+                indegree[v]++;
+            }
+
+            int min_height=INT_MAX;
+            queue<int>q;
+            vector<int>vis(n,0);
+            int cnt=0;
+            int maxIndegree=INT_MIN;
+            for(int i=0;i<n;i++)
+            {
+                if(indegree[i]==1)
+                {
+                    cnt++;
+                    q.push(i);
+                }
+                if(indegree[i]>maxIndegree)
+                {
+                    maxIndegree=indegree[i];
+                }
+            }
+
+            while(n>2)
+            {
+                int levels=q.size();
+                n-=levels;
+                while(levels--)
+                {
+                    int front=q.front();
+                    q.pop();
+
+                    for(auto it:adj[front])
+                    {
+                        if(indegree[it]>1)
+                        {
+                            indegree[it]--;
+                            if(indegree[it]==1)
+                            {
+                                cnt++;
+                                q.push(it);
+                            }
+                        }
+                    }
+                }
+            }
+
+            while(!q.empty())
+            {
+                ans.push_back(q.front());
+                q.pop();
+            }
+
+            return ans;
+
+
+        }
+
+
+
 };

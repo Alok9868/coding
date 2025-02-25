@@ -42,3 +42,47 @@ public:
         
     }
 };
+
+// other soln
+class Solution {
+
+
+    public int findFirstSetBitIndex(int n) {
+        int idx=0;
+        while ((n&1)==0) {
+            n=n>>1;
+            idx++;
+        }
+        return idx;
+    }
+
+
+
+
+    public int binaryGap(int n) {
+         int maxDist = 0;
+        int currDist = 0;
+
+        // first start from 0 th pos and move forward and count the distance
+        // find the first set bit .
+
+        int idx=findFirstSetBitIndex(n);
+
+        // 1 0 1 1 0
+        for (int i=idx;i<32;i++)
+        {
+            int curr_bit=n>>i&1;
+            if (curr_bit == 1) {
+                maxDist = Math.max(maxDist, currDist);
+                currDist = 1;
+            } else {
+                // cnt the distance
+                currDist++;
+            }
+
+        }
+
+        return maxDist;
+
+    }
+}

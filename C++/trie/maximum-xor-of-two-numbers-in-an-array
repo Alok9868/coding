@@ -76,7 +76,7 @@ public:
                 if(temp->right==NULL)
                 {
                     temp=temp->left;
-                   continue;
+                    continue;
                 }
                 temp=temp->right;
                 max_xor+=pow(2,i);

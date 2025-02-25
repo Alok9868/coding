@@ -45,7 +45,6 @@ class Solution
     
     class comp
     {
-      
       public:
       bool operator()(pair<int,int>&a,pair<int,int>&b)
       {

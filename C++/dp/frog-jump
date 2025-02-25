@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/frog-jump/
+https://leetcode.com/problems/frog-jump/
 
 // we can further improve this question by using binary search .
 class Solution {

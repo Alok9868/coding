@@ -44,7 +44,7 @@ public:
                     // if prev == 9 , then we have to make it to 0 
                     if(prev=='9')
                     {
-                        front[idx]='1';
+                        front[idx]='0';
                     } 
                     else
                     {

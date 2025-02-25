@@ -49,7 +49,7 @@ public:
             slow=slow->next;
         }
 
-        // reversethe second half of the linkedlist and match the nodes
+        // reverse the second half of the linked list and match the nodes
         prev->next=NULL;
         ListNode*head2=reverse(slow);
         ListNode*head1=head;
