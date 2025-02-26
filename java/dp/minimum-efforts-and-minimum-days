@@ -1,0 +1,96 @@
+package org.example;
+
+
+import lombok.Data;
+
+public class Main {
+
+    //0, 13 ,15 ,8
+//    idx=1
+//    days - 1
+    private static Pair helper(int[] arr, int idx, int days) {
+        Pair result = new Pair();
+        result.setDays(days);
+        result.setEfforts(0);
+
+        if (idx == arr.length) {
+            return result;
+        }
+
+        if (arr[idx] == 0) {
+            return helper(arr, idx + 1, days);
+        }
+
+        Pair arb_case = helper(arr, idx + 1, days + 1);
+
+        arb_case.setEfforts(arb_case.getEfforts() + arr[idx]);
+
+        //0 13 15 8
+        Pair adj_case = new Pair();
+        adj_case.setDays(Integer.MAX_VALUE);
+        adj_case.setEfforts(Integer.MAX_VALUE);
+
+        if (idx + 1 < arr.length && arr[idx + 1] > 0) { // check if it is broken or not
+            adj_case = helper(arr, idx + 2, days + 1);
+            adj_case.setEfforts(adj_case.getEfforts() + 2 * (arr[idx + 1] + arr[idx]));
+        }
+
+        if (arb_case.getDays() < adj_case.getDays()) {
+            result.setEfforts(arb_case.getEfforts());
+            result.setDays(arb_case.getDays());
+        } else if (arb_case.getDays() > adj_case.getDays()) {
+            result.setEfforts(adj_case.getEfforts());
+            result.setDays(adj_case.getDays());
+        } else { // equal case 
+            result.setEfforts(Math.min(adj_case.getEfforts(), arb_case.getEfforts()));
+            result.setDays(adj_case.getDays());
+        }
+
+        return result;
+    }
+
+    public static Integer findMinimumEfforts(int[] arr) {
+        int[][] dp = new int[arr.length][arr.length];
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+
+                dp[i][j] = -1;
+            }
+        }
+
+        Pair pair = helper(arr, 0, 0);
+
+        System.out.println(pair.getDays());
+        System.out.println(pair.getEfforts());
+//        for (int i = 0; i < arr.length; i++) {
+//            for (int j = 0; j < arr.length; j++) {
+//                System.out.print(dp[i][j]);
+//            }
+//            System.out.println();
+//        }
+//
+//        for (int j = 0; j < arr.length; j++) {
+//            if (dp[0][j] != -1) {
+//                return dp[0][j];
+//            }
+//        }
+        return null;
+
+    }
+
+
+    public static void main(String[] args) {
+
+        int[] arr = {0, 13, 15, 8};
+        System.out.println(findMinimumEfforts(arr));
+
+    }
+
+}
+
+@Data
+class Pair {
+    Integer efforts;
+    Integer days;
+}
