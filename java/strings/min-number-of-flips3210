@@ -1,0 +1,49 @@
+https://www.geeksforgeeks.org/problems/min-number-of-flips3210/1
+
+class Solution {
+    public int minFlips(String s) {
+        // Code here
+        
+         int n = s.length();
+
+
+        // flips for 0 starting
+        // flip for 1 starting
+
+
+        int start_0_flips = 0;
+        int start_1_flips = 0;
+
+//        "001"
+        for (int i = 0; i < n; i++) {
+            // curr char is 0
+            if (s.charAt(i) == '0') {
+                // zero case
+                if (i % 2 == 0) {
+                    start_1_flips++;
+                    // we don't have to do anything in this case , as it is our best case
+                } else {
+                    start_0_flips++;
+                }
+
+            } else {
+
+                // zero start case 
+                // one start case 
+                if (i % 2 == 0) {
+                    start_0_flips++;
+                } else {
+                    start_1_flips++;
+                }
+
+            }
+        }
+        
+        
+        return Math.min(start_0_flips, start_1_flips);
+        
+        
+        
+        
+    }
+}
