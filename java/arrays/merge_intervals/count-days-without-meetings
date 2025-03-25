@@ -1,0 +1,47 @@
+https://leetcode.com/problems/count-days-without-meetings/description/?envType=daily-question&envId=2025-03-25
+
+
+class Solution {
+    public int countDays(int days, int[][] meetings) {
+        
+         Arrays.sort(meetings, (int[] a, int[] b) -> {
+            if (a[0] == b[0]) {
+                return a[1] - b[1];
+            }
+            return a[0] - b[0];
+        });
+
+        int prev_meeting_end_time = meetings[0][1];
+
+        int prev_meeting_start_time = meetings[0][0];
+
+        int ans = 0;
+
+        if (prev_meeting_start_time > 1) {
+            ans += prev_meeting_start_time - 1;
+        }
+
+        
+        for (int i = 1; i < meetings.length; i++) {
+
+            int curr_start_time = meetings[i][0];
+            int curr_end_time = meetings[i][1];
+
+
+            if (curr_start_time <= prev_meeting_end_time) {
+
+                // merge them
+                prev_meeting_end_time = Math.max(prev_meeting_end_time, curr_end_time);
+
+            } else {
+                ans += curr_start_time - prev_meeting_end_time - 1;
+                prev_meeting_end_time = curr_end_time;
+            }
+
+        }
+
+        ans += days - prev_meeting_end_time;
+        return ans;
+        
+    }
+}
