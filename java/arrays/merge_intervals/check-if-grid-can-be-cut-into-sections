@@ -1,0 +1,81 @@
+
+https://leetcode.com/problems/check-if-grid-can-be-cut-into-sections/?envType=daily-question&envId=2025-03-25
+
+class Solution {
+    public boolean checkValidCuts(int n, int[][] rectangles) {
+        
+        int size=rectangles.length;
+        int[][] x = new int[size][2];
+
+        int[][] y = new int[size][2];
+
+        for (int i = 0; i < size; i++) {
+
+            int x1 = rectangles[i][0];
+            int y1 = rectangles[i][1];
+            int x2 = rectangles[i][2];
+            int y2 = rectangles[i][3];
+
+
+//            [[1,0,5,2],[0,2,2,4],[3,2,5,3],[0,4,4,5]]
+
+            x[i][0] = x1;
+            x[i][1] = x2;
+            y[i][0] = y1;
+            y[i][1] = y2;
+
+        }
+
+        Arrays.sort(x, (int[] a, int[] b) -> {
+            if (a[0] == b[0]) {
+                return a[1] - b[1];
+            }
+            return a[0] - b[0];
+        });
+        Arrays.sort(y, (int[] a, int[] b) -> {
+            if (a[0] == b[0]) {
+                return a[1] - b[1];
+            }
+            return a[0] - b[0];
+        });
+        
+        int x_prev_end = x[0][1];
+
+        int y_prev_end = y[0][1];
+
+        int x_merge = 0;
+        int y_merge = 0;
+
+        for (int i = 1; i < size; i++) {
+
+
+            int x_curr_start = x[i][0];
+            int x_curr_end = x[i][1];
+
+
+            int y_curr_start = y[i][0];
+            int y_curr_end = y[i][1];
+
+            // if start is less than prev _end or
+            if (x_curr_start < x_prev_end) {
+                x_prev_end = Math.max(x_curr_end, x_prev_end);
+                x_merge++;
+            } else {
+                x_prev_end = x_curr_end;
+            }
+
+            if (y_curr_start < y_prev_end) {
+                y_prev_end = Math.max(y_curr_end, y_prev_end);
+                y_merge++;
+            } else {
+                y_prev_end = y_curr_end;
+            }
+        }
+
+        int isPossibleXCut = x.length - x_merge;
+        int isPossibleYCut = y.length - y_merge;
+
+
+        return (isPossibleXCut >= 3) || (isPossibleYCut >= 3);
+    }
+}
