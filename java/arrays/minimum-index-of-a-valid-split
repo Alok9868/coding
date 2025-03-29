@@ -1,0 +1,87 @@
+https://leetcode.com/problems/minimum-index-of-a-valid-split/?envType=daily-question&envId=2024-11-13
+
+
+class Solution {
+    public int minimumIndex(List<Integer> nums) {
+
+        // [1,2,2,2]
+
+        // dominant ele - 2 
+
+        // 1 ,2 ,2 | 2 
+
+        // find the dominant ele 
+
+        // create a map of it for that ele with index 
+
+        // cnt - 3 
+        // left size (3) right size (1)
+        // 2    
+
+        if (nums.size() == 0) {
+
+            return -1;
+        }
+
+        // find the dominant ele
+
+        int dominantEle = nums.get(0);
+        int dominantEleCnt = 1;
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums.get(i) == dominantEle) {
+                dominantEleCnt++;
+            } else {
+                dominantEleCnt--;
+                if (dominantEleCnt == 0) {
+                    dominantEle = nums.get(i);
+                    dominantEleCnt = 1;
+                }
+            }
+        }
+
+        dominantEleCnt = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (dominantEle == nums.get(i)) {
+                dominantEleCnt++;
+            }
+        }
+
+        if (dominantEleCnt <= nums.size() / 2) {
+            return -1;
+        }
+
+        // find the dominant ele
+        // create a map of it for that ele with index
+        // cnt - 3
+        // left size (3) right size (1)
+        // 2            1
+
+        int leftDominantEleCnt = 0;
+        int rightDominantEleCnt = dominantEleCnt;
+
+        // 1 2 2 2
+
+        // leftDominantEleCnt =2 , rightDominantEleCnt= 1
+        // leftArraySize = 3 , rightArraySize = 1
+        for (int i = 0; i < nums.size(); i++) {
+
+            if (nums.get(i) == dominantEle) {
+                // we will add this ele to left , and sub from right
+                leftDominantEleCnt++;
+                rightDominantEleCnt--;
+
+                int leftArraySize = i + 1;
+                int rightArraySize = nums.size() - i - 1; // 4 - 1 -1 = 2
+
+                // we find the left and right array
+                if (leftDominantEleCnt > (leftArraySize / 2) &&
+                        rightDominantEleCnt > (rightArraySize / 2)) {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+
+    }
+}
