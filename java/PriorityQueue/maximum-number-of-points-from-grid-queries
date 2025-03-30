@@ -1,0 +1,109 @@
+https://leetcode.com/problems/maximum-number-of-points-from-grid-queries/?envType=daily-question&envId=2024-11-13
+
+
+class Solution {
+
+    static int[][] dir = { { 0, -1 }, { 0, 1 }, { 1, 0 }, { -1, 0 } };
+
+    private static Boolean isValid(int x, int y, int n, int m) {
+        if (x >= 0 && x < n && y >= 0 && y < m) {
+            return true;
+        }
+        return false;
+    }
+
+    static PriorityQueue<List<Integer>> nextPossibleCandidates;
+
+    private static int bfs(int[][] grid, int x, Boolean[][] vis) {
+
+        int n = grid.length;
+        int m = grid[0].length;
+
+        Queue<List<Integer>> queue = new LinkedList<>();
+
+        // iterate on possible candidate and add to queue .
+        while (!nextPossibleCandidates.isEmpty()) {
+            List<Integer> curr = nextPossibleCandidates.peek();
+            if (curr.get(0) < x) {
+                queue.add(curr);
+                nextPossibleCandidates.poll();
+            } else {
+                break;
+            }
+        }
+
+        int ans = 0;
+
+        // what we can do in this case , rather than going from 0,0 , start from
+        // last prev saved indexes
+        // while traversing , if grid[x][y] < quers[i] , then it can be candidate for next querie
+        // so what we can do is we can preserve these candidate in queue , and we again come for queri
+        // then we can just check if condition met , then we continue traversing them otherwise not .
+
+        while (!queue.isEmpty()) {
+
+            List<Integer> cur = queue.poll();
+
+            int score = cur.get(0);
+            int currX = cur.get(1);
+            int currY = cur.get(2);
+            // check the curr and traverse the grid
+
+            ans += 1;
+
+            for (int[] direction : dir) {
+                int newX = currX + direction[0];
+                int newY = currY + direction[1];
+
+                if ((isValid(newX, newY, n, m)) &&
+                        (vis[newX][newY] == false)) {
+
+                    if (grid[newX][newY] < x) {
+                        queue.add(Arrays.asList(grid[newX][newY], newX, newY));
+                    } else {
+                        nextPossibleCandidates.add(Arrays.asList(grid[newX][newY], newX, newY));
+                    }
+                    vis[newX][newY] = true;
+                }
+            }
+        }
+
+        return ans;
+
+    }
+
+    public int[] maxPoints(int[][] grid, int[] queries) {
+        int[] ans = new int[queries.length];
+
+        nextPossibleCandidates = new PriorityQueue<>((List<Integer> a, List<Integer> b) -> a.get(0) - b.get(0));
+
+        List<List<Integer>> queryArray = new ArrayList<>();
+        for (int i = 0; i < queries.length; i++) {
+            queryArray.add(Arrays.asList(queries[i], i));
+        }
+
+        Collections.sort(queryArray, (List<Integer> a, List<Integer> b) -> a.get(0) - b.get(0));
+
+        Boolean[][] vis = new Boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            Arrays.fill(vis[i], false);
+        }
+
+        int prevAns = 0;
+        for (int i = 0; i < queryArray.size(); i++) {
+
+            int x = queryArray.get(i).get(0);
+            int idx = queryArray.get(i).get(1);
+
+            if (!vis[0][0] && grid[0][0] < x) {
+                vis[0][0] = true;
+                nextPossibleCandidates.add(Arrays.asList(grid[0][0], 0, 0));
+            }
+            // do bfs to get points
+            ans[idx] = bfs(grid, x, vis) + prevAns;
+            prevAns = ans[idx];
+        }
+
+        return ans;
+    }
+}
