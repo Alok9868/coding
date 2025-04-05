@@ -1,0 +1,25 @@
+https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-ii/description/?envType=daily-question&envId=2025-04-04
+
+
+class Solution {
+    public long maximumTripletValue(int[] nums) {
+        
+        // get the 2 peak points and 1 lower points
+
+        // we will maintain two variables to find the prevmax , and max diff that we got till now
+
+        int prevMax=nums[0];
+        long diff=Integer.MIN_VALUE;
+
+        long ans=0;
+        for (int i = 1; i < nums.length - 1; i++) {
+        prevMax=Math.max(prevMax, nums[i]);
+        diff=Math.max(diff, prevMax-nums[i]);
+        long currAns= diff *nums[i+1];
+        ans=Math.max(ans, currAns);
+        }
+
+        return ans;
+
+    }
+}
