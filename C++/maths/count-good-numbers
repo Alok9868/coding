@@ -1,0 +1,34 @@
+https://leetcode.com/problems/count-good-numbers/description/?envType=daily-question&envId=2024-11-13
+
+class Solution {
+public:
+    int mod=1e9+7;
+    long long binaryExponentiation(long long no,long long power)
+    {
+        if(power==0)
+        {
+            return 1;
+        }
+
+        long long half=binaryExponentiation(no,power/2);        
+        long long result=(half*half)%mod;;
+        if(power%2==1) // odd check
+        {
+            result=result*no;
+        }
+        return (result%mod);
+    }
+
+    int countGoodNumbers(long long n) {
+
+        long long odd_len=n/2;
+        long long even_len=n-odd_len;
+
+        cout<<binaryExponentiation(5,even_len)<<endl;
+        cout<<binaryExponentiation(4,odd_len)<<endl;
+        int ans=((binaryExponentiation(5,even_len)) * ((binaryExponentiation(4,odd_len))))%mod;
+        return ans;
+
+        
+    }
+};
