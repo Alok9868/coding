@@ -1,0 +1,45 @@
+https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/
+
+class Solution {
+public:
+    int findSubarrayEqualToTarget(vector<int>& dp, int& target) {
+        int n = dp.size();
+        unordered_map<int, int> umap;
+        int curr_sum = 0;
+        umap[0] = 1;
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            curr_sum += dp[i];
+            if (umap.find(curr_sum - target) != umap.end()) {
+                cnt += umap[curr_sum - target];
+            }
+            umap[curr_sum] += 1;
+        }
+        return cnt;
+    }
+
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int& target) {
+        // first create a dp array for 1 col with all rows
+
+        int row = matrix.size();
+        int col = matrix[0].size();
+        int ans = 0;
+
+        for (int j = 0; j < col; j++) {
+            vector<int> dp(row, 0);
+            for (int k = j; k < col; k++) { // end col
+                for (int i = 0; i < row;
+                     i++) { // iterate over all rows of that end col
+                    dp[i] += matrix[i][k];
+                }
+                ans += findSubarrayEqualToTarget(dp, target);
+            }
+        }
+
+        return ans;
+    }
+
+    int numSubmatrixSumTarget(vector<vector<int>>& matrix, int target) {
+        return maxSumSubmatrix(matrix, target);
+    }
+};
