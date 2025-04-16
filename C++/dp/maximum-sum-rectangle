@@ -1,0 +1,38 @@
+https://www.naukri.com/code360/problems/maximum-sum-rectangle_1082564?leftPanelTabValue=SUBMISSION
+
+
+#include <bits/stdc++.h> 
+int kadensAlgo(vector<int>& dp,int &ans) {
+        int n = dp.size();
+        int curr_ans = 0;
+        for (int i = 0; i < n; i++) {
+            curr_ans += dp[i];
+            if (curr_ans >ans) {
+                ans = max(ans,curr_ans);
+            }
+            if (curr_ans < 0) {
+                curr_ans = 0;
+            }
+        }
+
+        return ans;
+    }
+int maxSumRectangle(vector<vector<int>>& matrix, int n, int m)
+{
+		int row = matrix.size();
+        int col = matrix[0].size();
+        int ans = INT_MIN;
+
+        for (int j = 0; j < col; j++) {
+            vector<int> dp(row, 0);
+            for (int k = j; k < col; k++) { // end col
+                for (int i = 0; i < row;
+                     i++) { // iterate over all rows of that end col
+                    dp[i] += matrix[i][k];
+                }
+                kadensAlgo(dp,ans);
+            }
+        }
+
+        return ans;
+}
