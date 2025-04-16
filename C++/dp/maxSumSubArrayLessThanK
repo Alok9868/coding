@@ -1,0 +1,18 @@
+    int maxSumSubArrayLessThanK(vector<int>&dp, int k) { // O(N * logN)
+
+        set<int>set;
+        set.insert(0); // to handle base case 
+        int ans = INT_MIN;
+        int n=dp.size();
+        for (int i = 0, right = 0; i < n; ++i) {
+            right += dp[i];
+            auto it = set.lower_bound(right - k); // right - left <= k -> left >= right - k
+            if(it!=set.end())
+            {
+                int left=*it;
+                ans=max(ans,right-left);
+            }
+            set.insert(right);
+        }
+        return ans;
+    }
