@@ -1,0 +1,44 @@
+https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/
+
+class Solution {
+public:
+    int maxSumSubArrayLessThanK(vector<int>&dp, int k) { // O(N * logN)
+
+        set<int>set;
+        set.insert(0); // to handle base case 
+        int ans = INT_MIN;
+        int n=dp.size();
+        for (int i = 0, right = 0; i < n; ++i) {
+            right += dp[i];
+            auto it = set.lower_bound(right - k); // right - left <= k -> left >= right - k
+            if(it!=set.end())
+            {
+                int left=*it;
+                ans=max(ans,right-left);
+            }
+            set.insert(right);
+        }
+        return ans;
+    }
+
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int ki) {
+        // first create a dp array for 1 col with all rows
+
+        int row = matrix.size();
+        int col = matrix[0].size();
+        int ans = INT_MIN;
+
+        for (int j = 0; j < col; j++) {
+            vector<int> dp(row, 0);
+            for (int k = j; k < col; k++) { // end col
+                for (int i = 0; i < row;
+                     i++) { // iterate over all rows of that end col
+                    dp[i] += matrix[i][k];
+                }
+               ans=max(ans,maxSumSubArrayLessThanK(dp,ki));
+            }
+        }
+
+        return ans;
+    }
+};
