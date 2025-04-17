@@ -1,0 +1,41 @@
+https://leetcode.com/problems/count-the-number-of-good-subarrays/?envType=daily-question&envId=2025-04-17
+
+class Solution {
+public:
+    long long countGood(vector<int>& nums, int k) {
+
+        int n = nums.size();
+        int l = 0;
+        int r = 0;
+        unordered_map<int, int> umap;
+        int curr_pairs = 0;
+        long long ans = 0;
+        while (r < n) {
+            umap[nums[r]] += 1;
+            if (umap[nums[r]] > 1) {
+                int freq = umap[nums[r]];
+                int prev_freq = freq - 1;
+                int prev_pairs = (prev_freq * (prev_freq - 1)) / 2;
+                int new_pairs = ((freq) * (freq - 1)) / 2;
+                // we. get a pair
+                // check if we have desired pairs ==k
+                curr_pairs -= prev_pairs;
+                curr_pairs += new_pairs;
+
+                while (l < r && curr_pairs >= k) {
+                    ans += n - r;
+                    int prev_freq = umap[nums[l]];
+                    int prev_pairs = (prev_freq * (prev_freq - 1)) / 2;
+                    int new_pairs = ((prev_freq - 1) * (prev_freq - 2)) / 2;
+                    umap[nums[l]]--;
+                    curr_pairs -= prev_pairs;
+                    curr_pairs += new_pairs;
+                    l++;
+                }
+            }
+            r++;
+        }
+
+        return ans;
+    }
+};
