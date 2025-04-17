@@ -1,0 +1,89 @@
+class NumArray {
+public:
+    vector<int> tree;
+    int n;
+    int buildSegmentTree(vector<int>& tree, vector<int>& nums, int idx, int l,
+                         int r) {
+        if (l == r) {
+            tree[idx] = nums[l];
+            return tree[idx];
+        }
+
+        int mid = (r + l) / 2;
+        int left_idx = 2 * idx + 1;
+        int right_idx = 2 * idx + 2;
+        int left_sum = buildSegmentTree(tree, nums, left_idx, l, mid);
+        int right_sum = buildSegmentTree(tree, nums, right_idx, mid + 1, r);
+        tree[idx] = left_sum + right_sum;
+        return tree[idx];
+    }
+
+
+    // updateSegmentTree(tree, 0, val, index, 0, n - 1);
+
+    int updateSegmentTree(vector<int>& tree, int idx, int val, int update_idx,
+                          int l, int r) {
+
+        //    updateSegmentTree(tree, 0, val, index, 0, n - 1);
+        int mid = (l + r) / 2;
+        if (l == r && r== update_idx) {
+            tree[idx] = val;
+            return tree[idx];
+        }
+
+        int left_idx = 2 * idx + 1;
+        int right_idx = 2 * idx + 2;
+        if (mid+1<= update_idx && update_idx <= r) {
+            updateSegmentTree(tree, right_idx, val, update_idx, mid + 1, r);
+        } else if (l<= update_idx && update_idx <=mid) {
+            updateSegmentTree(tree, left_idx, val, update_idx, l, mid);
+        }
+
+        return tree[idx] = tree[left_idx] + tree[right_idx];
+    }
+
+    int sumSegmentTree(vector<int>& tree, int idx, int left, int right,
+                       int left_range, int right_range) {
+        if (right < left_range) {
+            return 0;
+        } else if (left > right_range) {
+            return 0;
+        } else {
+            if (left_range >= left && right_range <= right) {
+                return tree[idx];
+            } else {
+
+                int left_idx = 2 * idx + 1;
+                int right_idx = 2 * idx + 2;
+                int mid = (right_range + left_range) / 2;
+
+                int left_sum = sumSegmentTree(tree, left_idx, left, right,
+                                              left_range, mid);
+                int right_sum = sumSegmentTree(tree, right_idx, left, right,
+                                               mid + 1, right_range);
+                return left_sum + right_sum;
+            }
+        }
+    }
+
+    NumArray(vector<int>& nums) {
+        this->n = nums.size();
+        tree.resize(n * 4, 0);
+        buildSegmentTree(tree, nums, 0, 0, n - 1);
+    }
+
+    void update(int index, int val) {
+        updateSegmentTree(tree, 0, val, index, 0, n - 1);
+    }
+
+    int sumRange(int left, int right) {
+        return sumSegmentTree(tree, 0, left, right, 0, n - 1);
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
