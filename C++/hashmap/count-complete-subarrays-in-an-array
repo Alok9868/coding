@@ -1,0 +1,32 @@
+https://leetcode.com/problems/count-complete-subarrays-in-an-array/?envType=daily-question&envId=2024-11-13
+
+class Solution {
+public:
+    int countCompleteSubarrays(vector<int>& nums) {
+
+        int n = nums.size();
+
+        unordered_map<int, int> umap;
+        for (int i = 0; i < n; i++) {
+            umap[nums[i]]++;
+        }
+
+        int distinct_ele = umap.size();
+        int l = 0;
+        umap.clear();
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            umap[nums[i]]++;
+            while (l <= i && umap.size() == distinct_ele) {
+                ans += n - i;
+                umap[nums[l]]--;
+                if (umap[nums[l]] == 0) {
+                    umap.erase(nums[l]);
+                }
+                l++;
+            }
+        }
+
+        return ans;
+    }
+};
