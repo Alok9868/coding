@@ -1,0 +1,37 @@
+https://leetcode.com/problems/house-robber-ii/?envType=company&envId=google&favoriteSlug=google-thirty-days
+class Solution {
+public:
+    int helper(vector<int>&nums,int i,vector<int>&dp,int size)
+    {
+        if(i>=size)
+        {
+            return 0;
+        }
+        if(dp[i]!=-1)
+        {
+            return dp[i];
+        }
+
+
+        int pick =helper(nums,i+2,dp,size)+nums[i];
+        int notpick=helper(nums,i+1,dp,size);
+        return dp[i]= max(pick,notpick);
+    }
+    int rob(vector<int>& nums) {
+        
+
+        vector<int>dp(nums.size(),-1);
+        int n=nums.size();
+        
+        if(n==1)
+        {
+            return nums[0];
+        }
+        int first_case=helper(nums,0,dp,n-1);
+        fill(dp.begin(), dp.end(), -1);
+        int second_case=helper(nums,1,dp,n);
+        return max(first_case,second_case);
+
+
+    }
+};
