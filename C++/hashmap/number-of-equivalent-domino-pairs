@@ -1,0 +1,26 @@
+https://leetcode.com/problems/number-of-equivalent-domino-pairs/?envType=daily-question&envId=2025-05-04
+
+
+class Solution {
+public:
+    int numEquivDominoPairs(vector<vector<int>>& dominoes) {
+
+        int n = dominoes.size();
+        unordered_map<string, int> umap;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            int first = min(dominoes[i][0], dominoes[i][1]); // 1
+            int second = max(dominoes[i][0], dominoes[i][1]); // 2 
+            string temp = to_string(first) + "$" + to_string(second); // 1$2 - 3 
+            umap[temp]++;
+            ans += umap[temp] - 1; // 1  
+        }
+
+
+        // a b c 
+        // a b  , a c , b c 
+        //  1 
+
+        return ans;
+    }
+};
