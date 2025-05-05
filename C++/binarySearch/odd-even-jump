@@ -1,0 +1,44 @@
+https://leetcode.com/problems/odd-even-jump/description/?envType=company&envId=google&favoriteSlug=google-thirty-days
+
+
+class Solution {
+public:
+    int oddEvenJumps(vector<int>& arr) {
+
+        int n=arr.size();
+        map<int,int>map;
+        int total_good_starting_points=1;
+        vector<bool>higher(n,false);
+        vector<bool>lower(n,false);
+        higher[n-1]=true;
+        lower[n-1]=true;
+        map[arr[n-1]]=n-1;
+        for(int i=n-2;i>=0;i--)
+        {
+            auto smaller_it=map.lower_bound(arr[i]);
+            auto larger_it=map.upper_bound(arr[i]);
+
+            if(smaller_it!=map.end())
+            {
+                higher[i]=lower[smaller_it->second];
+            }
+            if(larger_it!=map.begin())
+            {
+                --larger_it;
+                lower[i]=higher[larger_it->second];
+            }
+
+            // our first jump always be odd that 's why 
+            // we always check for higher array only for ans
+            if(higher[i])
+            {
+                total_good_starting_points++;
+            }
+            map[arr[i]]=i;
+
+        }
+
+        return total_good_starting_points;
+        
+    }
+};
