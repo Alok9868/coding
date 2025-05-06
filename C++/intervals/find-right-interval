@@ -1,0 +1,50 @@
+https://leetcode.com/problems/find-right-interval/description/
+
+
+class Solution {
+public:
+    int lower_bound(vector<vector<int>>& intervals, int target, int low,
+                    int high) {
+        int ans = -1;
+        while (low <= high) {
+            int mid = (high - low) / 2 + low;
+            if (intervals[mid][0] >= target) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    vector<int> findRightInterval(vector<vector<int>>& intervals) {
+
+        int n = intervals.size();
+        for (int i = 0; i < n; i++) {
+            intervals[i].push_back(i);
+        }
+
+        sort(intervals.begin(), intervals.end(), [](auto& a, auto& b) {
+            if (a[0] == b[0]) {
+                return a[1] < b[1];
+            }
+            return a[0] < b[0];
+        });
+
+        vector<int> res(n, 0);
+        for (int i = 0; i < n; i++) {
+            int end_time = intervals[i][1];
+            // binary search on intervals array based on start
+            int idx = lower_bound(intervals, end_time, i, n - 1);
+            int ans = -1;
+            if (idx != -1) {
+                ans = intervals[idx][2];
+            }
+            res[intervals[i][2]] = ans;
+        }
+
+        return res;
+    }
+};
