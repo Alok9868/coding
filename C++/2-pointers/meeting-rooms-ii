@@ -1,0 +1,51 @@
+https://leetcode.com/problems/meeting-rooms-ii/
+
+Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
+
+Example 1:
+
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: 2
+Example 2:
+
+Input: intervals = [[7,10],[2,4]]
+Output: 1
+
+
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+
+        int n = intervals.size();
+
+        vector<int> start_time(n);
+        vector<int> end_time(n);
+
+        for (int i = 0; i < n; i++) {
+            start_time[i] = intervals[i][0];
+            end_time[i] = intervals[i][1];
+        }
+
+        sort(start_time.begin(), start_time.end());
+        sort(end_time.begin(), end_time.end());
+
+        // 1 13 
+        // 13 15  
+
+        int cnt = 0;
+        int j = 0;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            int curr_st_time = start_time[i]; // 15 
+            while (curr_st_time >= end_time[j]) { 
+                j++;
+                cnt--;
+            }
+            // for curr meeting
+            cnt++;
+            ans = max(ans, cnt); // 1 2 
+        }
+
+        return ans;
+    }
+};
