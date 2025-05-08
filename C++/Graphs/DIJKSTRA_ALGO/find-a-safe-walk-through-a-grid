@@ -1,0 +1,54 @@
+https://leetcode.com/problems/find-a-safe-walk-through-a-grid/
+
+class Solution {
+public:
+    bool isValid(int next_row, int next_col, int n, int m) {
+        if (next_row >= 0 && next_row < n && next_col >= 0 && next_col < m) {
+            return true;
+        }
+        return false;
+    }
+
+    bool findSafeWalk(vector<vector<int>>& grid, int health) {
+
+        int n = grid.size();
+        int m = grid[0].size();
+
+        vector<vector<int>> dp(n, vector<int>(m, INT_MIN));
+        priority_queue<vector<int>> pq;
+        if(grid[0][0]==1)
+        {
+            health--;
+        }
+        pq.push({health, 0, 0});
+
+        int directions[4][2] = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+        while (!pq.empty()) {
+            vector<int> top = pq.top();
+            pq.pop();
+            int curr_health = top[0];
+            int curr_row = top[1];
+            int curr_col = top[2];
+            if (dp[curr_row][curr_col] >= curr_health) {
+                continue;
+            }
+            dp[curr_row][curr_col] = curr_health;
+            if (curr_row == n - 1 && curr_col == m - 1) {
+                return dp[curr_row][curr_col]>=1;
+            }
+
+            for (auto& dir : directions) {
+                int next_row = curr_row + dir[0];
+                int next_col = curr_col + dir[1];
+                if (isValid(next_row, next_col, n, m)) {
+                    int next_health = curr_health - grid[next_row][next_col];
+                    if (next_health >= 1) {
+                        pq.push({next_health, next_row, next_col});
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+};
