@@ -1,0 +1,66 @@
+https://leetcode.com/problems/find-minimum-time-to-reach-last-room-ii/?envType=daily-question&envId=2025-05-08
+
+
+class Solution {
+public:
+    int minTimeToReach(vector<vector<int>>& moveTime) {
+
+        int n = moveTime.size();
+        int m = moveTime[0].size();
+        vector<vector<int>> dp(n, vector<int>(m, INT_MAX));
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>>
+            pq;
+        pq.push({0, 0, 0, 1});
+        moveTime[0][0] = 0;
+        int min_time = INT_MAX;
+        vector<vector<int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        while (!pq.empty()) {
+            vector<int> p = pq.top();
+            pq.pop();
+            int currTime = p[0];
+            int currRow = p[1];
+            int currCol = p[2];
+            int prev_move = p[3];
+
+            if (currTime >= dp[currRow][currCol]) {
+                continue;
+            }
+
+            dp[currRow][currCol] = currTime;
+            if (currRow == n - 1 && currCol == m - 1) {
+                return currTime;
+            }
+
+            for (auto& direction : directions) {
+                int nextRow = currRow + direction[0];
+                int nextCol = currCol + direction[1];
+                if (nextRow >= 0 && nextRow < n && nextCol >= 0 &&
+                    nextCol < m && dp[nextRow][nextCol] == INT_MAX) {
+                    int nextTime = max(moveTime[nextRow][nextCol], currTime) +
+                                   (prev_move + 1) % 2 + 1;
+                    if (dp[nextRow][nextCol] > nextTime) {
+                        pq.push({nextTime, nextRow, nextCol, prev_move + 1});
+                    }
+                }
+            }
+
+            // vertical
+            // if (row + 1 < n) {
+            //     int curr_time = max(time, moveTime[row + 1][col]) + 1;
+            //     if (dp[row + 1][col] > curr_time) {
+            //         // dp[row + 1][col] = curr_time;
+            //         pq.push({curr_time, row + 1, col});
+            //     }
+            // }
+            // // horizontal
+            // if (col + 1 < m) {
+            //     int curr_time = max(time, moveTime[row][col + 1]) + 1;
+            //     if (dp[row][col + 1] > curr_time) {
+            //         // dp[row][col + 1] = curr_time;
+            //         pq.push({curr_time, row, col + 1});
+            //     }
+            // }
+        }
+        return -1;
+    }
+};
