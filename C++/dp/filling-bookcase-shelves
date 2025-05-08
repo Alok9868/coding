@@ -1,0 +1,39 @@
+https://leetcode.com/problems/filling-bookcase-shelves/
+
+
+class Solution {
+public:
+    int shelfWidth;
+    int helper(vector<vector<int>>& books, int idx, int remWidth, int height,
+               vector<vector<int>>& dp) {
+        if (idx == books.size()) {
+            return height;
+        }¯
+
+        if (dp[idx][remWidth] != -1) {
+            return dp[idx][remWidth];
+        }
+
+        int take_in_curr_row = INT_MAX;
+        if (books[idx][0] <= remWidth) {
+            take_in_curr_row = helper(books, idx + 1, remWidth - books[idx][0],
+                                      max(height, books[idx][1]), dp);
+        }
+
+        int take_in_next_row =
+            helper(books, idx + 1, shelfWidth - books[idx][0], books[idx][1],
+                   dp) +
+            height;
+
+        return dp[idx][remWidth] = min({take_in_curr_row, take_in_next_row});
+    }
+
+    int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
+
+        int n = books.size();
+        this->shelfWidth = shelfWidth;
+        vector<vector<int>> dp(n, vector<int>(shelfWidth + 1, 0));
+
+        return helper(books, 0, shelfWidth, 0, dp);
+    }
+};
