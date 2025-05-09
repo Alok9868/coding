@@ -1,0 +1,36 @@
+https://leetcode.com/problems/my-calendar-iii/
+
+
+class MyCalendarThree {
+public:
+
+
+    map<int,int>umap;
+
+    MyCalendarThree() {
+        
+    }
+    
+    int book(int start, int end) {
+        
+        umap[start]+=1;
+        umap[end]-=1;
+        int curr_cnt=0;
+        int max_cnt=0;
+        for(auto it:umap)
+        {
+            curr_cnt+=it.second;
+            max_cnt=max(max_cnt,curr_cnt);
+        }
+
+        return max_cnt;
+
+
+    }
+};
+
+/**
+ * Your MyCalendarThree object will be instantiated and called as such:
+ * MyCalendarThree* obj = new MyCalendarThree();
+ * int param_1 = obj->book(startTime,endTime);
+ */
