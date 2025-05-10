@@ -1,0 +1,47 @@
+https://leetcode.com/problems/minimum-equal-sum-of-two-arrays-after-replacing-zeros/?envType=daily-question&envId=2025-05-10
+
+
+class Solution {
+public:
+    long long minSum(vector<int>& nums1, vector<int>& nums2) {
+
+        int n = nums1.size();
+        int m = nums2.size();
+
+        long long num1_sum = 0;  // 137
+        int num1_zero = 0; // 3
+        for (int i = 0; i < n; i++) {
+            num1_sum += nums1[i];
+            if (nums1[i] == 0) {
+                num1_zero++;
+                num1_sum += 1;
+            }
+        }
+        int num2_zero = 0; // 0
+        long long num2_sum = 0; // 139
+        for (int j = 0; j < m; j++) {
+            num2_sum += nums2[j];
+            if (nums2[j] == 0) {
+                num2_zero++;
+                num2_sum += 1;
+            }
+        }
+
+        // find the max_sum
+        long long maxi_sum = max(num1_sum, num2_sum); // 139 
+
+        if (maxi_sum != num1_sum) { 
+            // check if we can make the min sum to this sum
+            if (num1_zero == 0) {
+                return -1;
+            }
+        } else if(maxi_sum != num2_sum) {
+            // can we make nums2_sum as maxi
+            if (num2_zero == 0) {
+                return -1;
+            }
+        }
+
+        return maxi_sum;
+    }
+};
