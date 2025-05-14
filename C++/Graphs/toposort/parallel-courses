@@ -1,0 +1,62 @@
+https://leetcode.com/problems/parallel-courses/description/
+
+
+
+You are given an integer n, which indicates that there are n courses labeled from 1 to n. You are also given an array relations where relations[i] = [prevCoursei, nextCoursei], representing a prerequisite relationship between course prevCoursei and course nextCoursei: course prevCoursei has to be taken before course nextCoursei.
+
+In one semester, you can take any number of courses as long as you have taken all the prerequisites in the previous semester for the courses you are taking.
+
+Return the minimum number of semesters needed to take all courses. If there is no way to take all the courses, return -1.
+
+
+class Solution {
+public:
+    int findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        int n = prerequisites.size();
+        vector<int> adj[numCourses+1];
+        vector<int> indegree(numCourses+1, 0);
+        for (int i = 0; i < n; i++) {
+            int u = prerequisites[i][0];
+            int v = prerequisites[i][1];
+            adj[v].push_back(u);
+            indegree[u]++;
+        }
+
+        queue<int> q;
+        for (int i = 1; i <= numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+        vector<int> ans;
+        int semester=0;
+        while (!q.empty()) {
+            int size = q.size();
+            semester++;
+            while (size--) {
+                int front = q.front();
+                q.pop();
+                ans.push_back(front);
+                for (auto it : adj[front]) {
+                    indegree[it]--;
+                    if (indegree[it] == 0) {
+                        q.push(it);
+                    }
+                }
+            }
+        }
+
+        if (ans.size() == numCourses) {
+            return semester;
+        }
+
+        return -1;
+    }
+
+    int minimumSemesters(int n, vector<vector<int>>& relations) {
+
+       return findOrder(n,relations);
+
+    }
+};
