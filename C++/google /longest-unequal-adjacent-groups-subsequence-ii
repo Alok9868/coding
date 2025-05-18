@@ -1,0 +1,52 @@
+https://leetcode.com/problems/longest-unequal-adjacent-groups-subsequence-ii/description/?envType=daily-question&envId=2025-05-16
+
+
+class Solution {
+public:
+    int findHammingDistance(const string& a, const string& b) {
+        int dist = 0;
+        if(a.size()!=b.size())
+        {
+            return INT_MAX;
+        }
+        for (int i = 0; i < a.size(); ++i)
+            dist += a[i] != b[i];
+        return dist;
+    }
+
+    vector<string> getWordsInLongestSubsequence(vector<string>& words,
+                                                vector<int>& groups) {
+        int n = words.size();
+        vector<string> res;
+        vector<int> dp(n, 1);
+
+        int ans = 1;
+        int max_idx=0;
+        vector<int>parent(n,-1);
+        for (int i = 0; i < words.size(); i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (groups[i] != groups[j] &&
+                    findHammingDistance(words[i], words[j]) == 1 &&
+                    dp[i] < dp[j] + 1) {
+                    dp[i] = dp[j] + 1;
+                    parent[i]=j;
+                }
+            }
+            if(ans<dp[i])
+            {
+                ans=dp[i];
+                max_idx=i;
+            }
+        }
+
+
+        while(max_idx!=-1)
+        {
+            res.push_back(words[max_idx]);
+            max_idx=parent[max_idx];
+        }
+
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
