@@ -1,0 +1,52 @@
+https://leetcode.com/problems/lexicographical-numbers/?envType=daily-question&envId=2025-06-08
+
+
+
+class Solution {
+public:
+
+    void generateAllPossibility(int no,int max,vector<int>&ans)
+    {
+                    
+        // generate all possibility for 1 
+        for(int i=0;i<=9;i++)
+        {
+            int temp_no=no*10+i; // 10 + 1 = 11
+            if(temp_no<=max) // 10<13
+            {
+                ans.push_back(temp_no); // 10 
+                generateAllPossibility(temp_no,max,ans); //
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+
+
+    vector<int> lexicalOrder(int n) {
+       vector<int>dict = {0,1,2,3,4,5,6,7,8,9};
+       vector<int>ans;
+       for(int i=1;i<=9;i++)
+       {
+            // 1 << n // - proceed otherwise not .
+            if(i<=n)
+            {
+                ans.push_back(i); // 1 
+                generateAllPossibility(i,n,ans);
+            }
+            else
+            {
+                return ans;
+            } 
+       }
+
+
+       return ans;
+
+
+        
+    }
+};
