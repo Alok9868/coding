@@ -1,0 +1,47 @@
+
+You're asking: Given two strings a and b, what is the minimal number of subsequences of b needed to form string a?
+
+🔍 Problem Definition
+You are allowed to take any subsequence (i.e., not necessarily contiguous) from b.
+
+You can use multiple subsequences of b, concatenated together, to try to form string a.
+
+Your task is to find the minimum number of subsequences of b needed to form a.
+
+Constraints:
+
+If a character in a does not exist in b, then it is impossible to form a.
+
+
+
+int minSubsequences(string a, string b) {
+    map<char, vector<int>> charPos;
+
+    // Preprocess positions of each character in b
+    for (int i = 0; i < b.length(); ++i) {
+        charPos[b[i]].push_back(i);
+    }
+
+    int subsequences = 1;
+    int i = -1;  // Pointer in b
+
+    for (char c : a) {
+        if (charPos.find(c) == charPos.end()) {
+            return -1;  // character not present in b
+        }
+
+        // Find the next position of c in b after index i
+        auto& posList = charPos[c];
+        auto it = upper_bound(posList.begin(), posList.end(), i);
+
+        if (it == posList.end()) {
+            // Need to start a new subsequence
+            subsequences++;
+            i = posList[0];
+        } else {
+            i = *it;
+        }
+    }
+
+    return subsequences;
+}

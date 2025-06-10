@@ -26,8 +26,7 @@ int maxSumRectangle(vector<vector<int>>& matrix, int n, int m)
         for (int j = 0; j < col; j++) {
             vector<int> dp(row, 0);
             for (int k = j; k < col; k++) { // end col
-                for (int i = 0; i < row;
-                     i++) { // iterate over all rows of that end col
+                for (int i = 0; i < row; i++) { // iterate over all rows of that end col
                     dp[i] += matrix[i][k];
                 }
                 kadensAlgo(dp,ans);
