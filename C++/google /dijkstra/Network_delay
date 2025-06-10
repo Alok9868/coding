@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+
+
+        // t.c - (O(V+E))
+        unordered_map<int, vector<pair<int, int>>> umap;
+        for (int i = 0; i < times.size(); i++) {
+            int u = times[i][0];
+            int v = times[i][1];
+            int w = times[i][2];
+            umap[u].push_back({v, w});
+        }
+
+
+
+        vector<int> intervals(n + 1, INT_MAX); //
+        priority_queue<pair<int, int>, vector<pair<int, int>>,
+                       greater<pair<int, int>>>
+            pq;
+        pq.push({0, k});
+        intervals[k] = 0;
+
+        while (!pq.empty()) { // (V+E)log(V)
+            pair<int, int> p = pq.top();
+            pq.pop();
+
+            int u = p.second;
+            int w = p.first;
+
+            if (w > intervals[u]) continue;
+            // vis its neighbour
+            for (auto it : umap[u]) {
+                int dest = it.first;
+                int curr_w = w + it.second;
+                if (intervals[dest] > curr_w) {
+                    intervals[dest] = curr_w;
+                    pq.push({curr_w, dest});
+                }
+            }
+        }
+
+        int maxi = INT_MIN;
+        for (int i = 1; i <= n; i++) { // O(V)
+            if (intervals[i] == INT_MAX) {
+                return -1;
+            }
+            maxi = max(maxi, intervals[i]);
+        }
+
+        return maxi;
+    }
+};

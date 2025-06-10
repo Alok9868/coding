@@ -1,0 +1,96 @@
+You're given a log stream of a chat application. Every log entry has the following fields:
+
+timestamp: long - the number of seconds that have elapsed since 1970-01-01.
+sender: str - username of the sender
+receiver: str - username of the receiver
+message_text: str - the message payload
+We want to implement a log stream processor which supports two methods:
+
+RegisterEvent(timestamp, sender_username, receiver_username, message_text) - registers the event that the message have been sent
+GetMostActiveUser() - Returns the user with the largest number of active conversations. We count any amount of messages exchanged between two unique users as a single conversation.
+Examples:
+
+RegisterEvent(0, "A", "B", "Hi!")
+GetMostActiveUser() -> "A" or "B"
+// Both users have a single conversation.
+RegisterEvent(10, "A", "C", "Hi!")
+RegisterEvent(15, "C", "A", "Hi, there!")
+GetMostActiveUser() -> "A"
+
+
+
+#include <iostream>
+#include <unordered_map>
+#include <unordered_set>
+#include <set>
+#include <string>
+
+using namespace std;
+
+class ChatLogProcessor {
+    // user -> set of users they have conversations with
+    unordered_map<string, unordered_set<string>> convMap;
+
+    // user -> count of active conversations
+    unordered_map<string, int> userCount;
+
+    // multiset to keep track of counts for quick max retrieval
+    // stores pairs (-count, username) to simulate max-heap behavior with set
+    set<pair<int, string>> countSet;
+
+    void updateUserCount(const string& user, int oldCount, int newCount) {
+        if (oldCount > 0) {
+            // Remove old count record
+            countSet.erase({-oldCount, user});
+        }
+        // Insert new count record
+        countSet.insert({-newCount, user});
+        userCount[user] = newCount;
+    }
+
+public:
+    void RegisterEvent(long timestamp, const string& sender, const string& receiver, const string& message_text) {
+        // If sender or receiver don't exist in map, they'll be added automatically
+        bool newConversation = false;
+
+        // Check if receiver is already in sender's set
+        if (convMap[sender].find(receiver) == convMap[sender].end()) {
+            // New conversation for sender
+            convMap[sender].insert(receiver);
+            int oldCount = userCount[sender];
+            updateUserCount(sender, oldCount, oldCount + 1);
+            newConversation = true;
+        }
+
+        // Check if sender is already in receiver's set
+        if (convMap[receiver].find(sender) == convMap[receiver].end()) {
+            // New conversation for receiver
+            convMap[receiver].insert(sender);
+            int oldCount = userCount[receiver];
+            updateUserCount(receiver, oldCount, oldCount + 1);
+            newConversation = true;
+        }
+
+        // If no new conversation, counts remain same; no update needed
+    }
+
+    string GetMostActiveUser() {
+        if (countSet.empty()) return "";
+
+        // The first element in set has the max count (negative stored)
+        return countSet.begin()->second;
+    }
+};
+
+int main() {
+    ChatLogProcessor processor;
+
+    processor.RegisterEvent(0, "A", "B", "Hi!");
+    cout << processor.GetMostActiveUser() << endl;  // Output: A or B
+
+    processor.RegisterEvent(10, "A", "C", "Hi!");
+    processor.RegisterEvent(15, "C", "A", "Hi, there!");
+    cout << processor.GetMostActiveUser() << endl;  // Output: A
+
+    return 0;
+}

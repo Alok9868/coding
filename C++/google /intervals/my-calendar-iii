@@ -1,6 +1,7 @@
 https://leetcode.com/problems/my-calendar-iii/
 
 
+// line sweep algo
 class MyCalendarThree {
 public:
 

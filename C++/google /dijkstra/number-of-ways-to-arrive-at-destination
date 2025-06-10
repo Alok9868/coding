@@ -1,0 +1,97 @@
+https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/
+
+
+class Solution {
+public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+
+        unordered_map<int, vector<pair<int, int>>> umap;
+        for (int i = 0; i < roads.size(); i++) {
+            int u = roads[i][0];
+            int v = roads[i][1];
+            int time = roads[i][2];
+            umap[u].push_back({v, time});
+            umap[v].push_back({u, time});
+        }
+
+        priority_queue<pair<long long, int>, vector<pair<long long , int>>,
+                       greater<pair<long long, int>>>
+            pq;
+        pq.push({0, 0});
+        vector<long long> time_arr(n, LLONG_MAX);
+        vector<long long> ways(n, 0);
+        ways[0] = 1;
+        time_arr[0] = 0;
+        int mod=1e9+7;
+        while (!pq.empty()) {
+            pair<long, long> p = pq.top();
+            pq.pop();
+
+            int u = p.second;
+            long long time = p.first;
+            if (time > time_arr[u])
+                continue;
+            for (auto it : umap[u]) {
+                int v = it.first;
+                int t = it.second;
+                long long curr_time = time + t;
+                if (curr_time < time_arr[v]) {
+                    time_arr[v] = curr_time;
+                    ways[v] = ways[u];
+                    pq.push({curr_time, v});
+                } else if (curr_time == time_arr[v]) {
+                     ways[v] = (ways[u] + ways[v])%mod;
+                }
+            }
+        }
+
+        return ways[n-1];
+    }
+};
+
+// class Solution {
+// public:
+//     int countPaths(int n, vector<vector<int>>& roads) {
+//         const int MOD = 1e9 + 7;
+
+//         // Build graph
+//         vector<vector<pair<int, int>>> adj(n);
+//         for (auto& r : roads) {
+//             int u = r[0], v = r[1], t = r[2];
+//             adj[u].push_back({v, t});
+//             adj[v].push_back({u, t});
+//         }
+
+//         // Dijkstra
+//         priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<>> pq;
+//         vector<long long> dist(n, LLONG_MAX);
+//         vector<int> ways(n, 0);
+
+//         dist[0] = 0;
+//         ways[0] = 1;
+//         pq.push({0, 0});
+
+//         while (!pq.empty()) {
+//             auto [currTime, u] = pq.top();
+//             pq.pop();
+
+//             if (currTime > dist[u]) continue;
+
+//             for (auto& [v, t] : adj[u]) {
+//                 long long newTime = currTime + t;
+//                 if (newTime < dist[v]) {
+//                     dist[v] = newTime;
+//                     ways[v] = ways[u];
+//                     pq.push({newTime, v});
+//                 } else if (newTime == dist[v]) {
+//                     ways[v] = (ways[v] + ways[u]) % MOD;
+//                 }
+//             }
+//         }
+
+//         return ways[n - 1];
+//     }
+// };
+
+
+

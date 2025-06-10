@@ -1,0 +1,44 @@
+https://leetcode.com/problems/my-calendar-ii/
+
+
+class MyCalendarTwo {
+public:
+    vector<pair<int, int>> allBookings;
+    vector<pair<int, int>> doubleBookings;
+
+    bool checkOverlap(int start1, int end1, int start2, int end2) {
+        return max(start1, start2) < min(end1, end2);
+    }
+
+    MyCalendarTwo() {}
+
+    bool book(int start, int end) {
+
+        for (pair<int, int> bookings : doubleBookings) {
+            int start1 = bookings.first;
+            int end1 = bookings.second;
+            if (checkOverlap(start, end, start1, end1)) {
+                return false;
+            }
+        }
+
+        for (pair<int, int> bookings : allBookings) {
+            int start1 = bookings.first;
+            int end1 = bookings.second;
+            if (checkOverlap(start, end, start1, end1)) {
+                int curr_start=max(start,start1);
+                int curr_end=min(end,end1);
+                doubleBookings.push_back({curr_start,curr_end});
+            }
+        }
+
+        allBookings.push_back({start,end});
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendarTwo object will be instantiated and called as such:
+ * MyCalendarTwo* obj = new MyCalendarTwo();
+ * bool param_1 = obj->book(startTime,endTime);
+ */
