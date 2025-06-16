@@ -1,0 +1,54 @@
+https://leetcode.com/problems/second-minimum-time-to-reach-destination/
+
+
+class Solution {
+public:
+    int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
+
+        unordered_map<int, vector<int>> umap;
+        for (int i = 0; i < edges.size(); i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            umap[u].push_back(v);
+            umap[v].push_back(u);
+        }
+
+        priority_queue<pair<int, int>, vector<pair<int, int>>,
+                       greater<pair<int, int>>>
+            pq;
+        pq.push({0, 1});
+        vector<int> dist1(n + 1, INT_MAX);
+        vector<int> dist2(n + 1, INT_MAX);
+        // 0,0
+        dist1[1] = 0;
+        while (!pq.empty()) {
+            pair<int, int> top = pq.top();
+            pq.pop();
+            int u = top.second;
+            int curr_time = top.first;
+
+            if (u == n && dist2[n] != INT_MAX) {
+                return dist2[n];
+            }
+            int no_of_change = (curr_time / change);
+            if (no_of_change % 2 == 1) // red light is there
+            {
+                curr_time = (no_of_change + 1) * change;
+            }
+
+            for (auto v : umap[u]) {
+                int next_time = curr_time + time;
+                if (dist1[v] > next_time) {
+                    dist2[v] = dist1[v];
+                    dist1[v] = next_time;
+                    pq.push({next_time, v});
+                } else if (dist2[v] > next_time && next_time != dist1[v]) {
+                    dist2[v] = next_time;
+                    pq.push({next_time, v});
+                }
+            }
+        }
+
+        return -1;
+    }
+};
