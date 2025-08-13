@@ -1,0 +1,30 @@
+https://leetcode.com/problems/power-of-three/description/?envType=daily-question&envId=2025-08-13
+
+
+
+
+class Solution {
+
+
+
+    public boolean isPowerOfThree(int n) {
+
+        if(n<=0)
+        {
+            return false;
+        }
+
+        // we are using this trick - 3 max power i.e - 3pow 19 / n 
+        // if it fully divides then it is powerof3 otherwise not
+        Double N=Math.pow(3,19);
+
+        if(N%n==0)
+        {
+            return true;
+        }
+
+        return false;
+
+        
+    }
+}
